@@ -1,0 +1,9 @@
+
+{
+  "parts": [
+    {
+      "implements": "part:@sanity/base/tool",
+      "path": "./lib/index.js"
+    }
+  ]
+}
