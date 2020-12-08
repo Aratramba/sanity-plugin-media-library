@@ -7,7 +7,7 @@
     "sanity.json"
   ],
   "scripts": {
-    "example": "yarn build && cp -R . ../sanity-media-library-example/plugins/sanity-plugin-media-library",
+    "example": "yarn build && cp -R ./lib ../sanity-media-library-example/plugins/sanity-plugin-media-library && cp sanity.json ../sanity-media-library-example/plugins/sanity-plugin-media-library/sanity.json",
     "build": "tsc",
     "dev": "tsc -w"
   },
