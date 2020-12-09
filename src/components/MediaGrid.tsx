@@ -43,7 +43,13 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
 export const MediaGrid = ({ assets = [], onSelect, selectedAssets }: Props) => (
   <StyledContainer>
     {assets.map(({ _id, ...rest }) => (
-      <MediaItem _id={_id} selected={selectedAssets.indexOf(_id) > -1} onSelect={(_id) => onSelect(_id)} {...rest} />
+      <MediaItem
+        _id={_id}
+        key={_id}
+        onSelect={(_id) => onSelect(_id)}
+        selected={selectedAssets.indexOf(_id) > -1}
+        {...rest}
+      />
     ))}
   </StyledContainer>
 );
