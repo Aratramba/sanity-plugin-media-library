@@ -1,5 +1,5 @@
-import { Button } from './Button';
 import { FilterList } from './FilterList';
+import { UploadButton } from './UploadButton';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,6 +7,7 @@ interface Props {
   mimeTypes?: Array<{ isActive: boolean; value: string }>;
   onMimeTypeClick: (value: string) => void;
   onTagClick: (value: string) => void;
+  onUpload: (files: FileList) => void;
   tags?: Array<{ isActive: boolean; value: string }>;
 }
 
@@ -29,7 +30,7 @@ const StyledTitle = styled.h2`
   margin: 0 0 1em;
 `;
 
-export const Sidebar = ({ mimeTypes = [], onMimeTypeClick, onTagClick, tags = [] }: Props) => (
+export const Sidebar = ({ mimeTypes = [], onMimeTypeClick, onTagClick, onUpload, tags = [] }: Props) => (
   <StyledContainer>
     <StyledPartContainer>
       <StyledTitle>Filters</StyledTitle>
@@ -37,9 +38,7 @@ export const Sidebar = ({ mimeTypes = [], onMimeTypeClick, onTagClick, tags = []
       <FilterList items={tags} iconType="tag" onItemClick={onTagClick} />
     </StyledPartContainer>
     <StyledPartContainer>
-      <Button grow onClick={() => alert('joe')} icon="upload">
-        Upload
-      </Button>
+      <UploadButton onUpload={onUpload} />
     </StyledPartContainer>
   </StyledContainer>
 );

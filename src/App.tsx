@@ -63,29 +63,49 @@ export const App = () => {
   }, [assets, activeMimeTypes, activeTags, sort, searchQuery]);
 
   useEffect(() => {
-    (async function asyncFunction() {
-      try {
-        const newAssets: Array<Asset> = await client.fetch(`*[_type == "sanity.imageAsset"]`, {});
-        setAssets(newAssets);
-        console.log(newAssets);
-
-        // const response = await client.patch(newAssets[0]._id).set({ tags: ['Cats', 'Photos', 'Projects', '2020'], alt: 'Cat', }).commit()
-        // console.log(response)
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setTimeout(() => setLoading(false), 500);
-      }
-    })();
+    fetchAssets();
   }, []);
+
+  async function fetchAssets() {
+    try {
+      setLoading(true);
+      const newAssets: Array<Asset> = await client.fetch(`*[_type == "sanity.imageAsset"]`, {}); // @TODO: also show files, like pdfs
+      console.log(newAssets);
+      setAssets(newAssets);
+
+      // const response = await client.patch(newAssets[0]._id).set({ tags: ['Cats', 'Photos', 'Projects', '2020'], alt: 'Cat', }).commit()
+      // console.log(response)
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onUpload(files: FileList) {
+    try {
+      setLoading(true);
+      const fileArray = Array.from(files);
+      await Promise.all(
+        fileArray.map((file) => client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file))
+      );
+      await fetchAssets();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const onMimeTypeClick = (value: string) => onFilterClick(value, activeMimeTypes, setActiveMimeTypes);
   const onTagClick = (value: string) => onFilterClick(value, activeTags, setActiveTags);
+
   const mimeTypes: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
     assets,
     activeMimeTypes,
     (acc, { mimeType }) => [...acc, mimeType]
   );
+
   const tags: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
     assets,
     activeTags,
@@ -95,7 +115,13 @@ export const App = () => {
   return (
     <StyledContainer>
       <StyledSidebarGridContainer>
-        <Sidebar mimeTypes={mimeTypes} onMimeTypeClick={onMimeTypeClick} onTagClick={onTagClick} tags={tags} />
+        <Sidebar
+          mimeTypes={mimeTypes}
+          onMimeTypeClick={onMimeTypeClick}
+          onTagClick={onTagClick}
+          onUpload={onUpload}
+          tags={tags}
+        />
         <MediaLibrary
           assets={filteredAssets}
           loading={loading}
