@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import { Asset } from './types/Asset'
+import { MediaLibrary } from './components/MediaLibrary'
+import { Sidebar } from './components/Sidebar'
 import client from 'part:@sanity/base/client'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-interface Asset {
-  _id: string,
-  alt?: string,
-  mimeType: string,
-  tags?: Array<string>,
-  url: string,
-}
+const StyledContainer = styled.div`
+  background-color: #000;
+  color: #ffffff;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+`
+
+const StyledSidebarGridContainer = styled.div`
+  display: flex;
+  height: 100%;
+`
 
 export const App = () => {
   const [assets, setAssets] = useState<Array<Asset>>([])
@@ -30,36 +41,15 @@ export const App = () => {
     })()
   }, [])
 
-  const mimeTypes = assets.map(({ mimeType }) => mimeType)
+  const mimeTypes: Array<string> = Array.from(new Set(assets.map(({ mimeType }) => mimeType)))
+  const tags: Array<string> = Array.from(new Set(assets.reduce<Array<string>>((acc, { tags }) => tags ? [...acc, ...tags] : acc, [])))
 
   return (
-    <div>
-      <div>
-        <div>
-          <div><input type="search" placeholder="Search..." /></div>
-          <div>
-            <h2>Categories</h2>
-            <ul>
-              {mimeTypes.map(x => <li key={x}><button>{x}</button></li>)}
-            </ul>
-          </div>
-          <div>
-            <h2>Tags</h2>
-            <ul>
-              {['projects', 'people', 'red'].map(x => <li key={x}><button>{x}</button></li>)}
-            </ul>
-          </div>
-          <div><button>Upload</button></div>
-        </div>
-        <div>
-          {loading && <div>Loading</div>}
-          {assets.map(({ url }) => <img src={`${url}?w=200&h=200&fit=crop`} />)}
-        </div>
-      </div>
-
-      <div>
-        <button>Cancel</button> of <button>Insert</button>
-      </div>
-    </div>
+    <StyledContainer>
+      <StyledSidebarGridContainer>
+        <Sidebar categories={mimeTypes} tags={tags} />
+        <MediaLibrary assets={assets} loading={loading} isModal={false} />
+      </StyledSidebarGridContainer>
+    </StyledContainer>
   )
 }
