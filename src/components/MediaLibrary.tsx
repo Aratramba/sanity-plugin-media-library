@@ -9,6 +9,8 @@ interface Props {
   assets?: Array<Asset>,
   isModal: Boolean,
   loading: Boolean,
+  searchQuery: string,
+  setSearchQuery: (value: string) => void,
 }
 
 const StyledContainer = styled.div`
@@ -22,9 +24,9 @@ const StyledMediaGridContainer = styled.div`
   flex: 1;
 `
 
-export const MediaLibrary = ({ assets = [], isModal, loading }: Props) => (
+export const MediaLibrary = ({ assets = [], isModal, loading, searchQuery, setSearchQuery }: Props) => (
   <StyledContainer>
-    <TopBar />
+    <TopBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
     <StyledMediaGridContainer>
       <MediaGrid assets={assets} />
     </StyledMediaGridContainer>

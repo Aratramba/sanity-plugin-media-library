@@ -22,7 +22,18 @@ const StyledSidebarGridContainer = styled.div`
 
 export const App = () => {
   const [assets, setAssets] = useState<Array<Asset>>([])
+  const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets)
   const [loading, setLoading] = useState<Boolean>(true)
+  const [searchQuery, setSearchQuery] = useState<string>('')
+
+  useEffect(() => {
+    if (!searchQuery || searchQuery === '') {
+      return setFilteredAssets(assets)
+    }
+
+    const newFilteredAssets = [...assets].filter(({ originalFilename }) => originalFilename.indexOf(searchQuery) > -1)
+    setFilteredAssets(newFilteredAssets)
+  }, [assets, searchQuery])
 
   useEffect(() => {
     (async function asyncFunction() {
@@ -48,7 +59,7 @@ export const App = () => {
     <StyledContainer>
       <StyledSidebarGridContainer>
         <Sidebar categories={mimeTypes} tags={tags} />
-        <MediaLibrary assets={assets} loading={loading} isModal={false} />
+        <MediaLibrary assets={filteredAssets} loading={loading} isModal={false} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </StyledSidebarGridContainer>
     </StyledContainer>
   )

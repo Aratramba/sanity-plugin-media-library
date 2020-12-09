@@ -2,6 +2,11 @@ import { Icon } from './Icon'
 import React from 'react'
 import styled from 'styled-components'
 
+interface Props {
+  searchQuery: string,
+  setSearchQuery: (value: string) => void,
+}
+
 const StyledContainer = styled.label`
   align-items: center;
   background-color: #333;
@@ -27,9 +32,9 @@ const StyledInput = styled.input`
   outline: 0;
 `
 
-export const SearchBar = () => (
+export const SearchBar = ({ searchQuery, setSearchQuery }: Props) => (
   <StyledContainer>
     <Icon type='search' />
-    <StyledInput placeholder="Search by title" type='search' />
+    <StyledInput value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search by title" type='search' />
   </StyledContainer>
 )

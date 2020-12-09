@@ -4,6 +4,11 @@ import { Select } from './Select'
 import React from 'react'
 import styled from 'styled-components'
 
+interface Props {
+  searchQuery: string,
+  setSearchQuery: (value: string) => void,
+}
+
 const StyledContainer = styled.div`
   align-items: center;
   border-bottom: solid 1px #222;
@@ -36,14 +41,14 @@ const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
   }
 `
 
-export const TopBar = () => (
+export const TopBar = ({ searchQuery, setSearchQuery }: Props) => (
   <StyledContainer>
     <StyledItemsContainer>
       <StyledListGridButton isActive><Icon type='grid' /></StyledListGridButton>
       <StyledListGridButton><Icon type='list' /></StyledListGridButton>
     </StyledItemsContainer>
     <StyledItemsContainer>
-      <SearchBar />
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Select options={[
         'Sort by Date',
         'Sort Alphabetically',
