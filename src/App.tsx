@@ -70,7 +70,6 @@ export const App = () => {
     try {
       setLoading(true);
       const newAssets: Array<Asset> = await client.fetch(`*[_type == "sanity.imageAsset"]`, {}); // @TODO: also show files, like pdfs
-      console.log(newAssets);
       setAssets(newAssets);
 
       // const response = await client.patch(newAssets[0]._id).set({ tags: ['Cats', 'Photos', 'Projects', '2020'], alt: 'Cat', }).commit()
@@ -85,15 +84,14 @@ export const App = () => {
   async function onUpload(files: FileList) {
     try {
       setLoading(true);
-      const fileArray = Array.from(files);
       await Promise.all(
-        fileArray.map((file) => client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file))
+        Array.from(files).map((file) => client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file))
       );
-      await fetchAssets();
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
+      await fetchAssets();
     }
   }
 
