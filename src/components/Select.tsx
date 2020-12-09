@@ -1,9 +1,11 @@
 import { Icon } from './Icon'
+import { sortOption } from '../types/sortOption'
 import React from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  options: Array<string>
+  onSortChange: (value: sortOption) => void,
+  options: Array<{ label: string, value: sortOption }>,
 }
 
 const StyledContainer = styled.label`
@@ -38,10 +40,10 @@ const StyledSelect = styled.select`
   padding: 8px 36px 8px 16px;
 `
 
-export const Select = ({ options }: Props) => (
+export const Select = ({ onSortChange, options }: Props) => (
   <StyledContainer>
-    <StyledSelect>
-      {options.map(option => <option key={option}>{option}</option>)}
+    <StyledSelect onChange={e => onSortChange(e.target.value as sortOption)}>
+      {options.map(({ label, value }) => <option key={value} value={value}>{label}</option>)}
     </StyledSelect>
     <Icon type='chevron' />
   </StyledContainer>

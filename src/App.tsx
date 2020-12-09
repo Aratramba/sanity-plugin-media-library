@@ -1,6 +1,7 @@
 import { Asset } from './types/Asset'
 import { MediaLibrary } from './components/MediaLibrary'
 import { Sidebar } from './components/Sidebar'
+import { sortOption } from './types/sortOption'
 import client from 'part:@sanity/base/client'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -25,15 +26,29 @@ export const App = () => {
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets)
   const [loading, setLoading] = useState<Boolean>(true)
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const [sort, setSort] = useState<sortOption>('date')
 
   useEffect(() => {
-    if (!searchQuery || searchQuery === '') {
-      return setFilteredAssets(assets)
+    let newFilteredAssets = [...assets]
+
+    if (searchQuery && searchQuery !== '') {
+      newFilteredAssets = newFilteredAssets.filter(({ originalFilename }) => originalFilename.indexOf(searchQuery) > -1)
     }
 
-    const newFilteredAssets = [...assets].filter(({ originalFilename }) => originalFilename.indexOf(searchQuery) > -1)
+    if (sort === 'date') {
+      newFilteredAssets.sort((a, b) => a._createdAt > b._createdAt ? -1 : 1)
+    }
+
+    if (sort === 'az') {
+      newFilteredAssets.sort((a, b) => a.originalFilename.localeCompare(b.originalFilename) ? 1 : -1)
+    }
+
+    if (sort === 'za') {
+      newFilteredAssets.sort((a, b) => a.originalFilename.localeCompare(b.originalFilename) ? -1 : 1)
+    }
+
     setFilteredAssets(newFilteredAssets)
-  }, [assets, searchQuery])
+  }, [assets, sort, searchQuery])
 
   useEffect(() => {
     (async function asyncFunction() {
@@ -59,7 +74,7 @@ export const App = () => {
     <StyledContainer>
       <StyledSidebarGridContainer>
         <Sidebar categories={mimeTypes} tags={tags} />
-        <MediaLibrary assets={filteredAssets} loading={loading} isModal={false} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <MediaLibrary assets={filteredAssets} loading={loading} isModal={false} onSortChange={setSort} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </StyledSidebarGridContainer>
     </StyledContainer>
   )

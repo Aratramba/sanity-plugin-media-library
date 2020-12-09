@@ -1,10 +1,12 @@
 import { Icon } from './Icon'
 import { SearchBar } from './SearchBar'
 import { Select } from './Select'
+import { sortOption } from '../types/sortOption'
 import React from 'react'
 import styled from 'styled-components'
 
 interface Props {
+  onSortChange: (value: sortOption) => void,
   searchQuery: string,
   setSearchQuery: (value: string) => void,
 }
@@ -41,7 +43,7 @@ const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
   }
 `
 
-export const TopBar = ({ searchQuery, setSearchQuery }: Props) => (
+export const TopBar = ({ onSortChange, searchQuery, setSearchQuery }: Props) => (
   <StyledContainer>
     <StyledItemsContainer>
       <StyledListGridButton isActive><Icon type='grid' /></StyledListGridButton>
@@ -49,10 +51,14 @@ export const TopBar = ({ searchQuery, setSearchQuery }: Props) => (
     </StyledItemsContainer>
     <StyledItemsContainer>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <Select options={[
-        'Sort by Date',
-        'Sort Alphabetically',
-      ]} />
+      <Select
+        onSortChange={onSortChange}
+        options={[
+          { label: 'Sort by Date', value: 'date' },
+          { label: 'Sort A - Z', value: 'az' },
+          { label: 'Sort Z - A', value: 'za' }
+        ]}
+      />
     </StyledItemsContainer>
   </StyledContainer>
 )
