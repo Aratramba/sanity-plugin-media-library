@@ -1,6 +1,6 @@
-import { Icon } from './Icon'
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import { Icon } from './Icon';
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
 
 const rotate = keyframes`
   from {
@@ -22,10 +22,10 @@ const StyledContainer = styled.div`
     height: 20px;
     width: 20px;
   }
-`
+`;
 
 export const Loader = () => (
   <StyledContainer>
-    <Icon type='loader' />
+    <Icon type="loader" />
   </StyledContainer>
-)
+);

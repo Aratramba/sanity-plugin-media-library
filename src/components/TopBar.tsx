@@ -1,14 +1,14 @@
-import { Icon } from './Icon'
-import { SearchBar } from './SearchBar'
-import { Select } from './Select'
-import { sortOption } from '../types/sortOption'
-import React from 'react'
-import styled from 'styled-components'
+import { Icon } from './Icon';
+import { SearchBar } from './SearchBar';
+import { Select } from './Select';
+import { sortOption } from '../types/sortOption';
+import React from 'react';
+import styled from 'styled-components';
 
 interface Props {
-  onSortChange: (value: sortOption) => void,
-  searchQuery: string,
-  setSearchQuery: (value: string) => void,
+  onSortChange: (value: sortOption) => void;
+  searchQuery: string;
+  setSearchQuery: (value: string) => void;
 }
 
 const StyledContainer = styled.div`
@@ -17,7 +17,7 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 40px;
-`
+`;
 
 const StyledItemsContainer = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const StyledItemsContainer = styled.div`
   & > :not(:last-child) {
     margin: 0 20px 0 0;
   }
-`
+`;
 
 const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
   background-color: transparent;
@@ -37,28 +37,32 @@ const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
   width: 20px;
 
   & svg {
-    fill: ${({ isActive }) => isActive ? '#fff' : '#666'};
+    fill: ${({ isActive }) => (isActive ? '#fff' : '#666')};
     height: 20px;
     width: 20px;
   }
-`
+`;
 
 export const TopBar = ({ onSortChange, searchQuery, setSearchQuery }: Props) => (
   <StyledContainer>
     <StyledItemsContainer>
-      <StyledListGridButton isActive><Icon type='grid' /></StyledListGridButton>
-      <StyledListGridButton><Icon type='list' /></StyledListGridButton>
+      <StyledListGridButton isActive>
+        <Icon type="grid" />
+      </StyledListGridButton>
+      <StyledListGridButton>
+        <Icon type="list" />
+      </StyledListGridButton>
     </StyledItemsContainer>
     <StyledItemsContainer>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Select
         onSortChange={onSortChange}
         options={[
-          { label: 'Sort by Date', value: 'date' },
-          { label: 'Sort A - Z', value: 'az' },
-          { label: 'Sort Z - A', value: 'za' }
+          { label: 'Latest First', value: 'date' },
+          { label: 'Filename A - Z', value: 'az' },
+          { label: 'Filename Z - A', value: 'za' },
         ]}
       />
     </StyledItemsContainer>
   </StyledContainer>
-)
+);

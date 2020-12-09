@@ -1,11 +1,11 @@
-import { Icon } from './Icon'
-import { sortOption } from '../types/sortOption'
-import React from 'react'
-import styled from 'styled-components'
+import { Icon } from './Icon';
+import { sortOption } from '../types/sortOption';
+import React from 'react';
+import styled from 'styled-components';
 
 interface Props {
-  onSortChange: (value: sortOption) => void,
-  options: Array<{ label: string, value: sortOption }>,
+  onSortChange: (value: sortOption) => void;
+  options: Array<{ label: string; value: sortOption }>;
 }
 
 const StyledContainer = styled.label`
@@ -26,25 +26,29 @@ const StyledContainer = styled.label`
     transform: translateY(-50%);
     width: 20px;
   }
-`
+`;
 
 const StyledSelect = styled.select`
   appearance: none;
   background-color: transparent;
   border: 0;
   color: #fff;
-  font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   font-size: 14px;
   line-height: 1.1;
   outline: 0;
   padding: 8px 36px 8px 16px;
-`
+`;
 
 export const Select = ({ onSortChange, options }: Props) => (
   <StyledContainer>
-    <StyledSelect onChange={e => onSortChange(e.target.value as sortOption)}>
-      {options.map(({ label, value }) => <option key={value} value={value}>{label}</option>)}
+    <StyledSelect onChange={(e) => onSortChange(e.target.value as sortOption)}>
+      {options.map(({ label, value }) => (
+        <option key={value} value={value}>
+          {label}
+        </option>
+      ))}
     </StyledSelect>
-    <Icon type='chevron' />
+    <Icon type="chevron" />
   </StyledContainer>
-)
+);
