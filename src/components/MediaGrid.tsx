@@ -50,6 +50,6 @@ export const MediaGrid = ({ assets = [], onSelect, selectedAssets }: Props) => (
 
 const MediaItem = ({ _id, alt, onSelect, selected, url }: AssetWithSelectedAndOnSelect) => (
   <StyledMediaItem selected={selected} onClick={() => onSelect(_id)}>
-    <img alt={alt} src={`${url}?w=150&h=150&fit=crop`} />
+    <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
   </StyledMediaItem>
 );
