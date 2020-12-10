@@ -23,8 +23,25 @@ const StyledContainer = styled.div`
   width: 100%;
 `;
 
-const StyledMediaGridContainer = styled.div`
+const StyledFlexGrowContainer = styled.div`
   flex: 1;
+  overflow: hidden;
+  position: relative;
+`;
+
+const StyledMediaGridContainer = styled.div`
+  -ms-overflow-style: none; /* IE and Edge */
+  height: 100%;
+  left: 0;
+  overflow-y: scroll;
+  position: absolute;
+  scrollbar-width: none; /* Firefox */
+  top: 0;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const MediaLibrary = ({
@@ -52,9 +69,11 @@ export const MediaLibrary = ({
   return (
     <StyledContainer>
       <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <StyledMediaGridContainer>
-        <MediaGrid assets={assets} onSelect={onSelect} selectedAssets={selectedAssets} />
-      </StyledMediaGridContainer>
+      <StyledFlexGrowContainer>
+        <StyledMediaGridContainer>
+          <MediaGrid assets={assets} onSelect={onSelect} selectedAssets={selectedAssets} />
+        </StyledMediaGridContainer>
+      </StyledFlexGrowContainer>
       <BottomBar loading={loading} isModal={isModal} onEdit={onEdit} selectedAssets={selectedAssets} />
     </StyledContainer>
   );

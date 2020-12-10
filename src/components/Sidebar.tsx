@@ -19,8 +19,29 @@ const StyledContainer = styled.div`
   width: 300px;
 `;
 
+const StyledFlexGrowContainer = styled.div`
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+`;
+
 const StyledPartContainer = styled.div`
   padding: 40px;
+`;
+
+const StyledFilterContainer = styled(StyledPartContainer)`
+  -ms-overflow-style: none; /* IE and Edge */
+  height: 100%;
+  left: 0;
+  overflow-y: scroll;
+  position: absolute;
+  scrollbar-width: none; /* Firefox */
+  top: 0;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledTitle = styled.h2`
@@ -32,11 +53,13 @@ const StyledTitle = styled.h2`
 
 export const Sidebar = ({ extensions = [], onExtensionClick, onTagClick, onUpload, tags = [] }: Props) => (
   <StyledContainer>
-    <StyledPartContainer>
-      <StyledTitle>Filters</StyledTitle>
-      <FilterList items={extensions} iconType="file" onItemClick={onExtensionClick} />
-      <FilterList items={tags} iconType="tag" onItemClick={onTagClick} />
-    </StyledPartContainer>
+    <StyledFlexGrowContainer>
+      <StyledFilterContainer>
+        <StyledTitle>Filters</StyledTitle>
+        <FilterList items={extensions} iconType="file" onItemClick={onExtensionClick} />
+        <FilterList items={tags} iconType="tag" onItemClick={onTagClick} />
+      </StyledFilterContainer>
+    </StyledFlexGrowContainer>
     <StyledPartContainer>
       <UploadButton onUpload={onUpload} />
     </StyledPartContainer>
