@@ -5,7 +5,7 @@ import { LabelWithInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
 import client from 'part:@sanity/base/client';
-import React, { FormEvent, useState } from 'react';
+import React, { Fragment, FormEvent, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
