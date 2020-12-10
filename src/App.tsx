@@ -1,5 +1,6 @@
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
+import { DeleteModal } from './components/DeleteModal';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
 import { sortOption } from './types/sortOption';
@@ -26,6 +27,7 @@ export const App = () => {
   const [activeExtensions, setActiveExtensions] = useState<Array<string>>([]);
   const [activeTags, setActiveTags] = useState<Array<string>>([]);
   const [assets, setAssets] = useState<Array<Asset>>([]);
+  const [assetsToDelete, setAssetsToDelete] = useState<Array<Asset> | null>(null);
   const [assetToEdit, setAssetToEdit] = useState<Asset | null>(null);
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
   const [loading, setLoading] = useState<Boolean>(true);
@@ -131,6 +133,7 @@ export const App = () => {
           assets={filteredAssets}
           isModal={false}
           loading={loading}
+          onDelete={setAssetsToDelete}
           onEdit={setAssetToEdit}
           onSortChange={setSort}
           searchQuery={searchQuery}
@@ -144,6 +147,18 @@ export const App = () => {
           onClose={() => setAssetToEdit(null)}
           onSaveComplete={() => {
             setAssetToEdit(null);
+            fetchAssets();
+          }}
+          setLoading={setLoading}
+        />
+      )}
+      {assetsToDelete && (
+        <DeleteModal
+          assets={assetsToDelete}
+          loading={loading}
+          onClose={() => setAssetsToDelete(null)}
+          onDeleteComplete={() => {
+            setAssetsToDelete(null);
             fetchAssets();
           }}
           setLoading={setLoading}

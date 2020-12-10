@@ -7,6 +7,7 @@ import styled from 'styled-components';
 interface BottomBarProps {
   isModal: Boolean;
   loading: Boolean;
+  onDelete: (value: Array<Asset> | null) => void;
   onEdit: (value: Asset | null) => void;
   selectedAssets: Array<Asset>;
 }
@@ -27,7 +28,7 @@ const StyledItemsContainer = styled.div`
   }
 `;
 
-export const BottomBar = ({ isModal, loading, onEdit, selectedAssets }: BottomBarProps) => {
+export const BottomBar = ({ isModal, loading, onDelete, onEdit, selectedAssets }: BottomBarProps) => {
   const selectedAsset = selectedAssets.length > 0 ? selectedAssets[0] : null;
 
   const onView = () => (selectedAsset ? window.open(selectedAsset.url, '_blank') : null);
@@ -48,7 +49,7 @@ export const BottomBar = ({ isModal, loading, onEdit, selectedAssets }: BottomBa
           </Fragment>
         ) : (
           <Fragment>
-            <Button disabled={!selectedAsset} secondary onClick={() => console.log(selectedAsset)}>
+            <Button disabled={selectedAssets.length === 0} secondary onClick={() => onDelete(selectedAssets)}>
               Delete Image
             </Button>
             <Button disabled={!selectedAsset} secondary onClick={onView}>

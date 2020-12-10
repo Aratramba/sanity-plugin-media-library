@@ -10,6 +10,7 @@ interface Props {
   assets?: Array<Asset>;
   isModal: Boolean;
   loading: Boolean;
+  onDelete: (value: Array<Asset> | null) => void;
   onEdit: (value: Asset | null) => void;
   onSortChange: (value: sortOption) => void;
   searchQuery: string;
@@ -48,6 +49,7 @@ export const MediaLibrary = ({
   assets = [],
   isModal,
   loading,
+  onDelete,
   onEdit,
   onSortChange,
   searchQuery,
@@ -78,7 +80,13 @@ export const MediaLibrary = ({
           <MediaGrid assets={assets} onSelect={onSelect} selectedAssets={selectedAssets} />
         </StyledMediaGridContainer>
       </StyledFlexGrowContainer>
-      <BottomBar loading={loading} isModal={isModal} onEdit={onEdit} selectedAssets={selectedAssets} />
+      <BottomBar
+        loading={loading}
+        isModal={isModal}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        selectedAssets={selectedAssets}
+      />
     </StyledContainer>
   );
 };
