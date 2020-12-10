@@ -1,6 +1,7 @@
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
 import { DeleteModal } from './components/DeleteModal';
+import { DragArea } from './components/DragArea';
 import { ErrorNotifications } from './components/ErrorNotifications';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
@@ -164,57 +165,59 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
   return (
     <StyledContainer>
-      <StyledSidebarGridContainer>
-        <Sidebar
-          extensions={extensions}
-          loading={loading}
-          onExtensionClick={onExtensionClick}
-          onTagClick={onTagClick}
-          onUpload={onUpload}
-          tags={tags}
-        />
-        <MediaLibrary
-          assets={filteredAssets}
-          handleSelect={handleSelect}
-          isAssetSource={!tool}
-          loading={loading}
-          onClose={onClose}
-          onDelete={setAssetsToDelete}
-          onEdit={setAssetToEdit}
-          onSortChange={setSort}
-          searchQuery={searchQuery}
-          selectedAssets={localSelectedAssets}
-          setSearchQuery={setSearchQuery}
-          setSelectedAssets={setLocalSelectedAssets}
-        />
-      </StyledSidebarGridContainer>
-      {assetToEdit && (
-        <AssetModal
-          asset={assetToEdit}
-          handleError={handleError}
-          loading={loading}
-          onClose={() => setAssetToEdit(null)}
-          onSaveComplete={() => {
-            setAssetToEdit(null);
-            fetchAssets();
-          }}
-          setLoading={setLoading}
-        />
-      )}
-      {assetsToDelete && (
-        <DeleteModal
-          assets={assetsToDelete}
-          handleError={handleError}
-          loading={loading}
-          onClose={() => setAssetsToDelete(null)}
-          onDeleteComplete={() => {
-            setAssetsToDelete(null);
-            fetchAssets();
-          }}
-          setLoading={setLoading}
-        />
-      )}
-      {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
+      <DragArea loading={loading} onUpload={onUpload}>
+        <StyledSidebarGridContainer>
+          <Sidebar
+            extensions={extensions}
+            loading={loading}
+            onExtensionClick={onExtensionClick}
+            onTagClick={onTagClick}
+            onUpload={onUpload}
+            tags={tags}
+          />
+          <MediaLibrary
+            assets={filteredAssets}
+            handleSelect={handleSelect}
+            isAssetSource={!tool}
+            loading={loading}
+            onClose={onClose}
+            onDelete={setAssetsToDelete}
+            onEdit={setAssetToEdit}
+            onSortChange={setSort}
+            searchQuery={searchQuery}
+            selectedAssets={localSelectedAssets}
+            setSearchQuery={setSearchQuery}
+            setSelectedAssets={setLocalSelectedAssets}
+          />
+        </StyledSidebarGridContainer>
+        {assetToEdit && (
+          <AssetModal
+            asset={assetToEdit}
+            handleError={handleError}
+            loading={loading}
+            onClose={() => setAssetToEdit(null)}
+            onSaveComplete={() => {
+              setAssetToEdit(null);
+              fetchAssets();
+            }}
+            setLoading={setLoading}
+          />
+        )}
+        {assetsToDelete && (
+          <DeleteModal
+            assets={assetsToDelete}
+            handleError={handleError}
+            loading={loading}
+            onClose={() => setAssetsToDelete(null)}
+            onDeleteComplete={() => {
+              setAssetsToDelete(null);
+              fetchAssets();
+            }}
+            setLoading={setLoading}
+          />
+        )}
+        {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
+      </DragArea>
     </StyledContainer>
   );
 };
