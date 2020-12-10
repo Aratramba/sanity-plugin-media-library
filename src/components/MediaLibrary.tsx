@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 interface Props {
   assets?: Array<Asset>;
-  handleSelect?: () => void;
+  handleSelect?: (selectedAssets: Array<Asset>) => void;
   isAssetSource: Boolean;
   loading: Boolean;
   onClose?: () => void;
@@ -79,7 +79,14 @@ export const MediaLibrary = ({
       <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
-          <MediaGrid assets={assets} onSelect={onSelect} selectedAssets={selectedAssets} />
+          <MediaGrid
+            assets={assets}
+            onDoubleClick={(asset: Asset) =>
+              isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset)
+            }
+            onSelect={onSelect}
+            selectedAssets={selectedAssets}
+          />
         </StyledMediaGridContainer>
       </StyledFlexGrowContainer>
       <BottomBar

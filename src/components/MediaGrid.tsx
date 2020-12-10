@@ -5,11 +5,13 @@ import styled from 'styled-components';
 
 interface Props {
   assets?: Array<Asset>;
+  onDoubleClick: (asset: Asset) => void;
   onSelect: (asset: Asset) => void;
   selectedAssets: Array<Asset>;
 }
 
 interface AssetWithSelectedAndOnSelect extends Asset {
+  onDoubleClick: () => void;
   onSelect: () => void;
   selected?: Boolean;
 }
@@ -60,13 +62,14 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   }
 `;
 
-export const MediaGrid = ({ assets = [], onSelect, selectedAssets }: Props) => (
+export const MediaGrid = ({ assets = [], onDoubleClick, onSelect, selectedAssets }: Props) => (
   <StyledContainer>
     {assets.map((asset) =>
       asset._type === 'sanity.imageAsset' ? (
         <ImageItem
           key={asset._id}
           onSelect={() => onSelect(asset)}
+          onDoubleClick={() => onDoubleClick(asset)}
           selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
           {...asset}
         />
@@ -74,6 +77,7 @@ export const MediaGrid = ({ assets = [], onSelect, selectedAssets }: Props) => (
         <FileItem
           key={asset._id}
           onSelect={() => onSelect(asset)}
+          onDoubleClick={() => onDoubleClick(asset)}
           selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
           {...asset}
         />
@@ -82,14 +86,14 @@ export const MediaGrid = ({ assets = [], onSelect, selectedAssets }: Props) => (
   </StyledContainer>
 );
 
-const ImageItem = ({ alt, onSelect, selected, url }: AssetWithSelectedAndOnSelect) => (
-  <StyledMediaItem selected={selected} onClick={() => onSelect()}>
+const ImageItem = ({ alt, onDoubleClick, onSelect, selected, url }: AssetWithSelectedAndOnSelect) => (
+  <StyledMediaItem selected={selected} onClick={() => onSelect()} onDoubleClick={() => onDoubleClick()}>
     <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
   </StyledMediaItem>
 );
 
-const FileItem = ({ originalFilename, onSelect, selected }: AssetWithSelectedAndOnSelect) => (
-  <StyledMediaItem selected={selected} onClick={() => onSelect()}>
+const FileItem = ({ originalFilename, onDoubleClick, onSelect, selected }: AssetWithSelectedAndOnSelect) => (
+  <StyledMediaItem selected={selected} onClick={() => onSelect()} onDoubleClick={() => onDoubleClick()}>
     <Icon type="file" />
     <div>{originalFilename}</div>
   </StyledMediaItem>

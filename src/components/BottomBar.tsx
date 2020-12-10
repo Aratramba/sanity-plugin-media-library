@@ -5,7 +5,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 interface BottomBarProps {
-  handleSelect?: () => void;
+  handleSelect?: (selectedAssets: Array<Asset>) => void;
   isAssetSource: Boolean;
   loading: Boolean;
   onCancel?: () => void;
@@ -53,7 +53,7 @@ export const BottomBar = ({
             <Button secondary onClick={onCancel ? onCancel : () => {}}>
               Cancel
             </Button>
-            <Button disabled={!selectedAsset} onClick={handleSelect ? handleSelect : () => {}}>
+            <Button disabled={!selectedAsset} onClick={() => (handleSelect ? handleSelect(selectedAssets) : null)}>
               Select
             </Button>
           </Fragment>

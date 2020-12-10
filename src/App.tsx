@@ -129,9 +129,9 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
   }
 
-  function handleSelect() {
-    if (onSelect && localSelectedAssets.length > 0) {
-      const assetsWithDocumentIds = localSelectedAssets.map(({ _id }) => ({ kind: 'assetDocumentId', value: _id }));
+  function handleSelect(selectedAssets: Array<Asset>) {
+    if (onSelect && selectedAssets.length > 0) {
+      const assetsWithDocumentIds = selectedAssets.map(({ _id }) => ({ kind: 'assetDocumentId', value: _id }));
       onSelect(assetsWithDocumentIds);
     }
   }
