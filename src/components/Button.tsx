@@ -8,7 +8,7 @@ type Props = {
   disabled?: Boolean;
   grow?: Boolean;
   icon?: iconTypes;
-  onClick: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
   secondary?: Boolean;
 };
 
