@@ -1,4 +1,5 @@
 import { Asset } from './types/Asset';
+import { AssetModal } from './components/AssetModal';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
 import { sortOption } from './types/sortOption';
@@ -30,8 +31,6 @@ export const App = () => {
   const [loading, setLoading] = useState<Boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sort, setSort] = useState<sortOption>('date');
-
-  console.log('onEdit', assetToEdit);
 
   useEffect(() => {
     let newFilteredAssets = [...assets];
@@ -74,9 +73,6 @@ export const App = () => {
       setLoading(true);
       const newAssets: Array<Asset> = await client.fetch(`*[_type == "sanity.imageAsset"]`, {}); // @TODO: also show files, like pdfs
       setAssets(newAssets);
-
-      // const response = await client.patch(newAssets[0]._id).set({ tags: ['Cats', 'Photos', 'Projects', '2020'], alt: 'Cat', }).commit()
-      // console.log(response)
     } catch (e) {
       console.error(e);
     } finally {
@@ -133,6 +129,18 @@ export const App = () => {
           setSearchQuery={setSearchQuery}
         />
       </StyledSidebarGridContainer>
+      {assetToEdit && (
+        <AssetModal
+          asset={assetToEdit}
+          loading={loading}
+          onClose={() => setAssetToEdit(null)}
+          onSaveComplete={() => {
+            setAssetToEdit(null);
+            fetchAssets();
+          }}
+          setLoading={setLoading}
+        />
+      )}
     </StyledContainer>
   );
 };
