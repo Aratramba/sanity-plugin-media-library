@@ -4,12 +4,12 @@ import styled from 'styled-components';
 
 interface Props {
   assets?: Array<Asset>;
-  onSelect: (_id: string) => void;
-  selectedAssets: Array<string>;
+  onSelect: (asset: Asset) => void;
+  selectedAssets: Array<Asset>;
 }
 
 interface AssetWithSelectedAndOnSelect extends Asset {
-  onSelect: (_id: string) => void;
+  onSelect: () => void;
   selected?: Boolean;
 }
 
@@ -42,20 +42,19 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
 
 export const MediaGrid = ({ assets = [], onSelect, selectedAssets }: Props) => (
   <StyledContainer>
-    {assets.map(({ _id, ...rest }) => (
+    {assets.map((asset) => (
       <MediaItem
-        _id={_id}
-        key={_id}
-        onSelect={(_id) => onSelect(_id)}
-        selected={selectedAssets.indexOf(_id) > -1}
-        {...rest}
+        key={asset._id}
+        onSelect={() => onSelect(asset)}
+        selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
+        {...asset}
       />
     ))}
   </StyledContainer>
 );
 
-const MediaItem = ({ _id, alt, onSelect, selected, url }: AssetWithSelectedAndOnSelect) => (
-  <StyledMediaItem selected={selected} onClick={() => onSelect(_id)}>
+const MediaItem = ({ alt, onSelect, selected, url }: AssetWithSelectedAndOnSelect) => (
+  <StyledMediaItem selected={selected} onClick={() => onSelect()}>
     <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
   </StyledMediaItem>
 );

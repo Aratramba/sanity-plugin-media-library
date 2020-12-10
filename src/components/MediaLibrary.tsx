@@ -27,10 +27,10 @@ const StyledMediaGridContainer = styled.div`
 `;
 
 export const MediaLibrary = ({ assets = [], isModal, loading, onSortChange, searchQuery, setSearchQuery }: Props) => {
-  const [selectedAssets, setSelectedAssets] = useState<Array<string>>([]);
+  const [selectedAssets, setSelectedAssets] = useState<Array<Asset>>([]);
 
-  function onSelect(_id: string) {
-    setSelectedAssets([_id]);
+  function onSelect(asset: Asset) {
+    setSelectedAssets([asset]);
     // @TODO: select multiple with shift or control :)
     // const newSelectedAssets = [...selectedAssets];
     // const index = selectedAssets.indexOf(_id);
