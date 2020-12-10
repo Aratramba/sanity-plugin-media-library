@@ -4,8 +4,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  mimeTypes?: Array<{ isActive: boolean; value: string }>;
-  onMimeTypeClick: (value: string) => void;
+  extensions?: Array<{ isActive: boolean; value: string }>;
+  onExtensionClick: (value: string) => void;
   onTagClick: (value: string) => void;
   onUpload: (files: FileList) => void;
   tags?: Array<{ isActive: boolean; value: string }>;
@@ -30,11 +30,11 @@ const StyledTitle = styled.h2`
   margin: 0 0 1em;
 `;
 
-export const Sidebar = ({ mimeTypes = [], onMimeTypeClick, onTagClick, onUpload, tags = [] }: Props) => (
+export const Sidebar = ({ extensions = [], onExtensionClick, onTagClick, onUpload, tags = [] }: Props) => (
   <StyledContainer>
     <StyledPartContainer>
       <StyledTitle>Filters</StyledTitle>
-      <FilterList items={mimeTypes} iconType="file" onItemClick={onMimeTypeClick} />
+      <FilterList items={extensions} iconType="file" onItemClick={onExtensionClick} />
       <FilterList items={tags} iconType="tag" onItemClick={onTagClick} />
     </StyledPartContainer>
     <StyledPartContainer>

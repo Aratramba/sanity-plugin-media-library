@@ -23,7 +23,7 @@ const StyledSidebarGridContainer = styled.div`
 `;
 
 export const App = () => {
-  const [activeMimeTypes, setActiveMimeTypes] = useState<Array<string>>([]);
+  const [activeExtensions, setActiveExtensions] = useState<Array<string>>([]);
   const [activeTags, setActiveTags] = useState<Array<string>>([]);
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [assetToEdit, setAssetToEdit] = useState<Asset | null>(null);
@@ -41,8 +41,8 @@ export const App = () => {
       );
     }
 
-    if (activeMimeTypes.length > 0) {
-      newFilteredAssets = newFilteredAssets.filter(({ mimeType }) => activeMimeTypes.indexOf(mimeType) > -1);
+    if (activeExtensions.length > 0) {
+      newFilteredAssets = newFilteredAssets.filter(({ extension }) => activeExtensions.indexOf(extension) > -1);
     }
 
     if (activeTags.length > 0) {
@@ -62,7 +62,7 @@ export const App = () => {
     }
 
     setFilteredAssets(newFilteredAssets);
-  }, [assets, activeMimeTypes, activeTags, sort, searchQuery]);
+  }, [assets, activeExtensions, activeTags, sort, searchQuery]);
 
   useEffect(() => {
     fetchAssets();
@@ -94,13 +94,13 @@ export const App = () => {
     }
   }
 
-  const onMimeTypeClick = (value: string) => onFilterClick(value, activeMimeTypes, setActiveMimeTypes);
+  const onExtensionClick = (value: string) => onFilterClick(value, activeExtensions, setActiveExtensions);
   const onTagClick = (value: string) => onFilterClick(value, activeTags, setActiveTags);
 
-  const mimeTypes: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
+  const extensions: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
     assets,
-    activeMimeTypes,
-    (acc, { mimeType }) => [...acc, mimeType]
+    activeExtensions,
+    (acc, { extension }) => [...acc, extension]
   );
 
   const tags: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
@@ -113,8 +113,8 @@ export const App = () => {
     <StyledContainer>
       <StyledSidebarGridContainer>
         <Sidebar
-          mimeTypes={mimeTypes}
-          onMimeTypeClick={onMimeTypeClick}
+          extensions={extensions}
+          onExtensionClick={onExtensionClick}
           onTagClick={onTagClick}
           onUpload={onUpload}
           tags={tags}
@@ -163,7 +163,7 @@ function onFilterClick(value: string, stateValue: Array<string>, setStateValue: 
     return setStateValue([...stateValue, value]);
   }
 
-  const newMimeTypes = [...stateValue];
-  newMimeTypes.splice(index, 1);
-  setStateValue(newMimeTypes);
+  const newValues = [...stateValue];
+  newValues.splice(index, 1);
+  setStateValue(newValues);
 }

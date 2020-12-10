@@ -9,7 +9,6 @@ export interface Asset {
       width: number;
     };
   };
-  mimeType: string;
   originalFilename: string;
   size: number;
   tags?: Array<string>;

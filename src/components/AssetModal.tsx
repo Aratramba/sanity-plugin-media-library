@@ -109,8 +109,6 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
     }
   }
 
-  console.log(asset);
-
   return (
     <Modal onClose={onClose}>
       <StyledFormContainer onSubmit={handleSubmit}>
