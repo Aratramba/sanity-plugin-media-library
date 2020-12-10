@@ -37,7 +37,10 @@ export const App = () => {
 
     if (searchQuery && searchQuery !== '') {
       newFilteredAssets = newFilteredAssets.filter(
-        ({ originalFilename }) => originalFilename.indexOf(searchQuery) > -1
+        ({ alt, originalFilename, tags }) =>
+          originalFilename.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
+          (alt || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
+          (tags?.join(',') || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
       );
     }
 
