@@ -74,7 +74,11 @@ export const App = () => {
   async function fetchAssets() {
     try {
       setLoading(true);
-      const newAssets: Array<Asset> = await client.fetch(`*[_type == "sanity.imageAsset"]`, {}); // @TODO: also show files, like pdfs
+      // @TODO: also fetch files, like pdfs or word docs
+      const newAssets: Array<Asset> = await client.fetch(
+        `*[_type == "sanity.imageAsset"] { _createdAt, _id, alt, extension, metadata, originalFilename, size, tags, url }`,
+        {}
+      );
       setAssets(newAssets);
     } catch (e) {
       console.error(e);
@@ -89,11 +93,11 @@ export const App = () => {
       await Promise.all(
         Array.from(files).map((file) => client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file))
       );
+      await fetchAssets();
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
-      await fetchAssets();
     }
   }
 
@@ -117,6 +121,7 @@ export const App = () => {
       <StyledSidebarGridContainer>
         <Sidebar
           extensions={extensions}
+          loading={loading}
           onExtensionClick={onExtensionClick}
           onTagClick={onTagClick}
           onUpload={onUpload}

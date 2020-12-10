@@ -9,15 +9,16 @@ const StyledInput = styled.input`
 `;
 
 interface Props {
+  disabled: Boolean;
   onUpload: (files: FileList) => void;
 }
 
-export const UploadButton = ({ onUpload }: Props) => {
+export const UploadButton = ({ disabled, onUpload }: Props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <div>
-      <Button grow onClick={() => inputRef?.current?.click()} icon="upload">
+      <Button disabled={disabled} grow onClick={() => inputRef?.current?.click()} icon="upload">
         Upload
       </Button>
       <StyledInput

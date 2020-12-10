@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 interface Props {
   extensions?: Array<{ isActive: boolean; value: string }>;
+  loading: Boolean;
   onExtensionClick: (value: string) => void;
   onTagClick: (value: string) => void;
   onUpload: (files: FileList) => void;
@@ -51,7 +52,7 @@ const StyledTitle = styled.h2`
   margin: 0 0 1em;
 `;
 
-export const Sidebar = ({ extensions = [], onExtensionClick, onTagClick, onUpload, tags = [] }: Props) => (
+export const Sidebar = ({ extensions = [], loading, onExtensionClick, onTagClick, onUpload, tags = [] }: Props) => (
   <StyledContainer>
     <StyledFlexGrowContainer>
       <StyledFilterContainer>
@@ -61,7 +62,7 @@ export const Sidebar = ({ extensions = [], onExtensionClick, onTagClick, onUploa
       </StyledFilterContainer>
     </StyledFlexGrowContainer>
     <StyledPartContainer>
-      <UploadButton onUpload={onUpload} />
+      <UploadButton disabled={loading} onUpload={onUpload} />
     </StyledPartContainer>
   </StyledContainer>
 );
