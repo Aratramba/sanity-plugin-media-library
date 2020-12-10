@@ -25,10 +25,13 @@ export const App = () => {
   const [activeMimeTypes, setActiveMimeTypes] = useState<Array<string>>([]);
   const [activeTags, setActiveTags] = useState<Array<string>>([]);
   const [assets, setAssets] = useState<Array<Asset>>([]);
+  const [assetToEdit, setAssetToEdit] = useState<Asset | null>(null);
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
   const [loading, setLoading] = useState<Boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sort, setSort] = useState<sortOption>('date');
+
+  console.log('onEdit', assetToEdit);
 
   useEffect(() => {
     let newFilteredAssets = [...assets];
@@ -122,8 +125,9 @@ export const App = () => {
         />
         <MediaLibrary
           assets={filteredAssets}
-          loading={loading}
           isModal={false}
+          loading={loading}
+          onEdit={setAssetToEdit}
           onSortChange={setSort}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

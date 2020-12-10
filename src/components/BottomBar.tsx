@@ -7,6 +7,7 @@ import styled from 'styled-components';
 interface BottomBarProps {
   isModal: Boolean;
   loading: Boolean;
+  onEdit: (value: Asset | null) => void;
   selectedAssets: Array<Asset>;
 }
 
@@ -26,7 +27,7 @@ const StyledItemsContainer = styled.div`
   }
 `;
 
-export const BottomBar = ({ isModal, loading, selectedAssets }: BottomBarProps) => {
+export const BottomBar = ({ isModal, loading, onEdit, selectedAssets }: BottomBarProps) => {
   const selectedAsset = selectedAssets.length > 0 ? selectedAssets[0] : null;
 
   const onView = () => (selectedAsset ? window.open(selectedAsset.url, '_blank') : null);
@@ -53,7 +54,7 @@ export const BottomBar = ({ isModal, loading, selectedAssets }: BottomBarProps) 
             <Button disabled={!selectedAsset} secondary onClick={onView}>
               View Image
             </Button>
-            <Button disabled={!selectedAsset} onClick={() => console.log(selectedAsset)}>
+            <Button disabled={!selectedAsset} onClick={() => onEdit(selectedAsset)}>
               Edit Image
             </Button>
           </Fragment>
