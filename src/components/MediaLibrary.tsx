@@ -50,7 +50,7 @@ export const MediaLibrary = ({ assets = [], isModal, loading, onSortChange, sear
       <StyledMediaGridContainer>
         <MediaGrid assets={assets} onSelect={onSelect} selectedAssets={selectedAssets} />
       </StyledMediaGridContainer>
-      <BottomBar loading={loading} isModal={isModal} />
+      <BottomBar loading={loading} isModal={isModal} selectedAssets={selectedAssets} />
     </StyledContainer>
   );
 };

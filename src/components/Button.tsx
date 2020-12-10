@@ -5,13 +5,14 @@ import styled from 'styled-components';
 
 type Props = {
   children: React.ReactNode;
+  disabled?: Boolean;
   grow?: Boolean;
   icon?: iconTypes;
   onClick: (event: React.MouseEvent) => void;
   secondary?: Boolean;
 };
 
-const StyledButton = styled.button<{ grow?: Boolean; secondary?: Boolean }>`
+const StyledButton = styled.button<{ disabled?: Boolean; grow?: Boolean; secondary?: Boolean }>`
   background-color: ${({ secondary }) => (secondary ? 'transparent' : '#FFE900')};
   border-radius: 2px;
   border: solid 1px ${({ secondary }) => (secondary ? '#666' : '#FFE900')};
@@ -24,6 +25,11 @@ const StyledButton = styled.button<{ grow?: Boolean; secondary?: Boolean }>`
   line-height: 1.1;
   padding: 12px 16px;
   width: ${({ grow }) => (grow ? '100%' : 'auto')};
+
+  &:disabled,
+  &[disabled] {
+    opacity: 0.4;
+  }
 `;
 
 const StyledButtonInner = styled.span<{ grow?: Boolean }>`
@@ -38,8 +44,8 @@ const StyledButtonInner = styled.span<{ grow?: Boolean }>`
   }
 `;
 
-export const Button = ({ children, grow, icon, onClick, secondary }: Props) => (
-  <StyledButton grow={grow} onClick={onClick} secondary={secondary}>
+export const Button = ({ children, disabled, grow, icon, onClick, secondary }: Props) => (
+  <StyledButton disabled={!!disabled} grow={grow} onClick={onClick} secondary={secondary}>
     <StyledButtonInner grow={grow}>
       {icon && <Icon type={icon} />}
       {children}
