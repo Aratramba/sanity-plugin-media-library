@@ -29,6 +29,8 @@ const StyledItemsContainer = styled.div`
 export const BottomBar = ({ isModal, loading, selectedAssets }: BottomBarProps) => {
   const selectedAsset = selectedAssets.length > 0 ? selectedAssets[0] : null;
 
+  const onView = () => (selectedAsset ? window.open(selectedAsset.url, '_blank') : null);
+
   return (
     <StyledContainer>
       <div>{loading && <Loader />}</div>
@@ -48,7 +50,7 @@ export const BottomBar = ({ isModal, loading, selectedAssets }: BottomBarProps) 
             <Button disabled={!selectedAsset} secondary onClick={() => console.log(selectedAsset)}>
               Delete Image
             </Button>
-            <Button disabled={!selectedAsset} secondary onClick={() => console.log(selectedAsset)}>
+            <Button disabled={!selectedAsset} secondary onClick={onView}>
               View Image
             </Button>
             <Button disabled={!selectedAsset} onClick={() => console.log(selectedAsset)}>
