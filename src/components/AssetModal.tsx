@@ -66,12 +66,23 @@ const StyledButtonsContainer = styled.div`
 `;
 
 export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading }: Props) => {
-  const { _createdAt, _id, alt, extension, originalFilename, size, tags, title, url } = asset;
+  const {
+    _createdAt,
+    _id,
+    alt,
+    extension,
+    metadata: {
+      dimensions: { height, width },
+    },
+    originalFilename,
+    size,
+    tags,
+    url,
+  } = asset;
   const [localAlt, setLocalAlt] = useState<string>(alt || '');
   const [localTags, setLocalTags] = useState<string>((tags || []).join(',') || '');
-  const [localTitle, setLocalTitle] = useState<string>(title || '');
 
-  const isChanged = localAlt !== (alt || '') || localTags !== (tags?.join(',') || '') || localTitle !== (title || '');
+  const isChanged = localAlt !== (alt || '') || localTags !== (tags?.join(',') || '');
 
   async function handleSubmit(e: FormEvent) {
     try {
@@ -88,9 +99,8 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
 
       const alt = localAlt;
       const tags = localTags.split(',').map((v) => v.trim());
-      const title = localTitle;
 
-      await client.patch(_id).set({ alt, tags, title }).commit();
+      await client.patch(_id).set({ alt, tags }).commit();
       onSaveComplete();
     } catch (e) {
       console.error(e);
@@ -99,6 +109,8 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
     }
   }
 
+  console.log(asset);
+
   return (
     <Modal onClose={onClose}>
       <StyledFormContainer onSubmit={handleSubmit}>
@@ -106,11 +118,11 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
           <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
           <StyledInfoContainer>
             <strong>{originalFilename}</strong>
-            {_createdAt}
+            {formatDate(_createdAt)}
             <br />
-            3020x2034
+            {width} x {height}
             <br />
-            {extension.toUpperCase()}, {size}
+            {extension.toUpperCase()}, {formatSize(size)}
           </StyledInfoContainer>
         </StyledImageInfoContainer>
 
@@ -120,12 +132,6 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
             onChange={setLocalAlt}
             placeholder={!localAlt ? 'No alt text yet...' : undefined}
             value={localAlt}
-          />
-          <LabelWithInput
-            label="Title"
-            onChange={setLocalTitle}
-            placeholder={!localTitle ? 'No title yet...' : undefined}
-            value={localTitle}
           />
           <LabelWithInput
             label="Tags"
@@ -146,3 +152,16 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
     </Modal>
   );
 };
+
+function formatSize(size: number) {
+  const kb = Math.round(size / 1000);
+  const mb = kb > 1000 ? size / 1000000 : null;
+  const roundedMb = mb ? Math.round(mb * 100) / 100 : null;
+  return roundedMb ? `${roundedMb} mb` : `${kb} kb`;
+}
+
+function formatDate(date: string) {
+  const d = new Date(date);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[d.getMonth() - 1]} ${d.getDate()}, ${d.getFullYear()}`;
+}

@@ -3,10 +3,15 @@ export interface Asset {
   _id: string;
   alt?: string;
   extension: string;
+  metadata: {
+    ['dimensions']: {
+      height: number;
+      width: number;
+    };
+  };
   mimeType: string;
   originalFilename: string;
   size: number;
   tags?: Array<string>;
-  title?: string;
   url: string;
 }
