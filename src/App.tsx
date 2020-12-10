@@ -1,13 +1,20 @@
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
 import { DeleteModal } from './components/DeleteModal';
+import { ErrorNotifications } from './components/ErrorNotifications';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
 import { SortOption } from './types/SortOption';
 import client from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ErrorNotifications } from './components/ErrorNotifications';
+
+type Props = {
+  onClose?: () => void;
+  onSelect?: (assets: Array<any>) => void;
+  selectedAssets: Asset[];
+  tool?: string;
+};
 
 const StyledContainer = styled.div`
   background-color: #000;
@@ -24,7 +31,7 @@ const StyledSidebarGridContainer = styled.div`
   height: 100%;
 `;
 
-export const App = () => {
+export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   const [activeExtensions, setActiveExtensions] = useState<Array<string>>([]);
   const [activeTags, setActiveTags] = useState<Array<string>>([]);
   const [assets, setAssets] = useState<Array<Asset>>([]);
@@ -33,6 +40,7 @@ export const App = () => {
   const [errors, setErrors] = useState<Array<string>>([]);
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
   const [loading, setLoading] = useState<Boolean>(true);
+  const [localSelectedAssets, setLocalSelectedAssets] = useState<Array<Asset>>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sort, setSort] = useState<SortOption>('date');
 
@@ -69,7 +77,22 @@ export const App = () => {
     }
 
     setFilteredAssets(newFilteredAssets);
+
+    // Update selected assets so it does not include assets that are no longer visible
+    const newAssetIds = newFilteredAssets.map(({ _id }) => _id);
+    const newAssetsToSelect = localSelectedAssets.filter(({ _id }) => newAssetIds.indexOf(_id) > -1);
+    setLocalSelectedAssets(newAssetsToSelect);
   }, [assets, activeExtensions, activeTags, sort, searchQuery]);
+
+  useEffect(() => {
+    if (assets.length === 0 || localSelectedAssets.length > 0) {
+      return;
+    }
+
+    const selectedAssetsIds = selectedAssets.map(({ _id }) => _id);
+    const assetsToSelect = [...assets].filter(({ _id }) => selectedAssetsIds.indexOf(_id) > -1);
+    setLocalSelectedAssets(assetsToSelect);
+  }, [assets, selectedAssets]);
 
   useEffect(() => {
     fetchAssets();
@@ -78,8 +101,9 @@ export const App = () => {
   async function fetchAssets() {
     try {
       setLoading(true);
+      const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
       const newAssets: Array<Asset> = await client.fetch(
-        `*[_type in ["sanity.imageAsset", "sanity.fileAsset"]] { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url }`,
+        `*[_type in [${types}]] { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url }`,
         {}
       );
       setAssets(newAssets);
@@ -101,6 +125,13 @@ export const App = () => {
       handleError(e);
     } finally {
       setLoading(false);
+    }
+  }
+
+  function handleSelect() {
+    if (onSelect && localSelectedAssets.length > 0) {
+      const assetsWithDocumentIds = localSelectedAssets.map(({ _id }) => ({ kind: 'assetDocumentId', value: _id }));
+      onSelect(assetsWithDocumentIds);
     }
   }
 
@@ -144,13 +175,17 @@ export const App = () => {
         />
         <MediaLibrary
           assets={filteredAssets}
-          isModal={false}
+          handleSelect={handleSelect}
+          isAssetSource={!tool}
           loading={loading}
+          onClose={onClose}
           onDelete={setAssetsToDelete}
           onEdit={setAssetToEdit}
           onSortChange={setSort}
           searchQuery={searchQuery}
+          selectedAssets={localSelectedAssets}
           setSearchQuery={setSearchQuery}
+          setSelectedAssets={setLocalSelectedAssets}
         />
       </StyledSidebarGridContainer>
       {assetToEdit && (

@@ -1,8 +1,8 @@
+import { AppContainer } from './AppContainer';
 import PackageIcon from 'part:@sanity/base/package-icon';
-import { App } from './App';
 
 export default {
-  component: App,
+  component: AppContainer,
   icon: PackageIcon,
   name: 'media-library',
   title: 'Media Library',

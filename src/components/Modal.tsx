@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   children: ReactNode;
+  full?: Boolean;
   onClose: () => void;
 }
 
@@ -12,7 +13,7 @@ const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 2000;
 `;
 
 const StyledOverlay = styled.div`
@@ -26,22 +27,23 @@ const StyledOverlay = styled.div`
   z-index: 1;
 `;
 
-const StyledModal = styled.div`
+const StyledModal = styled.div<{ full?: Boolean }>`
   background-color: #111;
   box-shadow: 0 2px 10px #000;
+  height: ${({ full }) => (full ? 'calc(100% - 200px)' : 'auto')};
   left: 50%;
-  max-width: 300px;
+  max-width: ${({ full }) => (full ? 'calc(100% - 200px)' : '300px')};
   padding: 40px;
   position: absolute;
-  top: 200px;
-  transform: translateX(-50%);
+  top: ${({ full }) => (full ? '50%' : '200px')};
+  transform: ${({ full }) => (full ? 'translate(-50%, -50%)' : 'translateX(-50%)')};
   width: 100%;
   z-index: 2;
 `;
 
-export const Modal = ({ children, onClose }: Props) => (
+export const Modal = ({ children, full, onClose }: Props) => (
   <StyledContainer>
     <StyledOverlay onClick={onClose} />
-    <StyledModal>{children}</StyledModal>
+    <StyledModal full={full}>{children}</StyledModal>
   </StyledContainer>
 );

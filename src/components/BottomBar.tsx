@@ -5,8 +5,10 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 interface BottomBarProps {
-  isModal: Boolean;
+  handleSelect?: () => void;
+  isAssetSource: Boolean;
   loading: Boolean;
+  onCancel?: () => void;
   onDelete: (value: Array<Asset> | null) => void;
   onEdit: (value: Asset | null) => void;
   selectedAssets: Array<Asset>;
@@ -28,7 +30,15 @@ const StyledItemsContainer = styled.div`
   }
 `;
 
-export const BottomBar = ({ isModal, loading, onDelete, onEdit, selectedAssets }: BottomBarProps) => {
+export const BottomBar = ({
+  handleSelect,
+  isAssetSource,
+  loading,
+  onCancel,
+  onDelete,
+  onEdit,
+  selectedAssets,
+}: BottomBarProps) => {
   const selectedAsset = selectedAssets.length > 0 ? selectedAssets[0] : null;
 
   const onView = () => (selectedAsset ? window.open(selectedAsset.url, '_blank') : null);
@@ -38,13 +48,13 @@ export const BottomBar = ({ isModal, loading, onDelete, onEdit, selectedAssets }
       <div>{loading && <Loader />}</div>
 
       <StyledItemsContainer>
-        {isModal ? (
+        {isAssetSource ? (
           <Fragment>
-            <Button secondary onClick={() => alert(selectedAsset)}>
+            <Button secondary onClick={onCancel ? onCancel : () => {}}>
               Cancel
             </Button>
-            <Button disabled={!selectedAsset} onClick={() => alert(selectedAsset)}>
-              Insert
+            <Button disabled={!selectedAsset} onClick={handleSelect ? handleSelect : () => {}}>
+              Select
             </Button>
           </Fragment>
         ) : (

@@ -3,18 +3,22 @@ import { BottomBar } from './BottomBar';
 import { MediaGrid } from './MediaGrid';
 import { SortOption } from '../types/SortOption';
 import { TopBar } from './TopBar';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
   assets?: Array<Asset>;
-  isModal: Boolean;
+  handleSelect?: () => void;
+  isAssetSource: Boolean;
   loading: Boolean;
+  onClose?: () => void;
   onDelete: (value: Array<Asset> | null) => void;
   onEdit: (value: Asset | null) => void;
   onSortChange: (value: SortOption) => void;
   searchQuery: string;
+  selectedAssets: Array<Asset>;
   setSearchQuery: (value: string) => void;
+  setSelectedAssets: (value: Array<Asset>) => void;
 }
 
 const StyledContainer = styled.div`
@@ -47,20 +51,18 @@ const StyledMediaGridContainer = styled.div`
 
 export const MediaLibrary = ({
   assets = [],
-  isModal,
+  handleSelect,
+  isAssetSource,
   loading,
+  onClose,
   onDelete,
   onEdit,
   onSortChange,
   searchQuery,
+  selectedAssets,
   setSearchQuery,
+  setSelectedAssets,
 }: Props) => {
-  const [selectedAssets, setSelectedAssets] = useState<Array<Asset>>([]);
-
-  useEffect(() => {
-    setSelectedAssets([]);
-  }, [assets]);
-
   function onSelect(asset: Asset) {
     // @TODO: select multiple with shift or control :)
     const index = selectedAssets.indexOf(asset);
@@ -81,8 +83,10 @@ export const MediaLibrary = ({
         </StyledMediaGridContainer>
       </StyledFlexGrowContainer>
       <BottomBar
+        handleSelect={handleSelect}
+        isAssetSource={isAssetSource}
         loading={loading}
-        isModal={isModal}
+        onCancel={onClose}
         onDelete={onDelete}
         onEdit={onEdit}
         selectedAssets={selectedAssets}
