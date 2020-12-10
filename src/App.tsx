@@ -12,7 +12,7 @@ import styled from 'styled-components';
 type Props = {
   onClose?: () => void;
   onSelect?: (assets: Array<any>) => void;
-  selectedAssets: Asset[];
+  selectedAssets?: Asset[];
   tool?: string;
 };
 
@@ -85,11 +85,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   }, [assets, activeExtensions, activeTags, sort, searchQuery]);
 
   useEffect(() => {
-    if (assets.length === 0 || localSelectedAssets.length > 0) {
+    if (assets.length === 0 || localSelectedAssets.length > 0 || selectedAssets?.length === 0) {
       return;
     }
 
-    const selectedAssetsIds = selectedAssets.map(({ _id }) => _id);
+    const selectedAssetsIds = (selectedAssets || []).map(({ _id }) => _id);
     const assetsToSelect = [...assets].filter(({ _id }) => selectedAssetsIds.indexOf(_id) > -1);
     setLocalSelectedAssets(assetsToSelect);
   }, [assets, selectedAssets]);
