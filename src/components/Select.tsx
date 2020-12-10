@@ -1,11 +1,11 @@
 import { Icon } from './Icon';
-import { sortOption } from '../types/sortOption';
+import { SortOption } from '../types/SortOption';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  onSortChange: (value: sortOption) => void;
-  options: Array<{ label: string; value: sortOption }>;
+  onSortChange: (value: SortOption) => void;
+  options: Array<{ label: string; value: SortOption }>;
 }
 
 const StyledContainer = styled.label`
@@ -42,7 +42,7 @@ const StyledSelect = styled.select`
 
 export const Select = ({ onSortChange, options }: Props) => (
   <StyledContainer>
-    <StyledSelect onChange={(e) => onSortChange(e.target.value as sortOption)}>
+    <StyledSelect onChange={(e) => onSortChange(e.target.value as SortOption)}>
       {options.map(({ label, value }) => (
         <option key={value} value={value}>
           {label}

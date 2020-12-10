@@ -1,7 +1,7 @@
 import { Asset } from '../types/Asset';
 import { BottomBar } from './BottomBar';
 import { MediaGrid } from './MediaGrid';
-import { sortOption } from '../types/sortOption';
+import { SortOption } from '../types/SortOption';
 import { TopBar } from './TopBar';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -12,7 +12,7 @@ interface Props {
   loading: Boolean;
   onDelete: (value: Array<Asset> | null) => void;
   onEdit: (value: Asset | null) => void;
-  onSortChange: (value: sortOption) => void;
+  onSortChange: (value: SortOption) => void;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
 }

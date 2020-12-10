@@ -1,12 +1,12 @@
 import { Icon } from './Icon';
 import { SearchBar } from './SearchBar';
 import { Select } from './Select';
-import { sortOption } from '../types/sortOption';
+import { SortOption } from '../types/SortOption';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  onSortChange: (value: sortOption) => void;
+  onSortChange: (value: SortOption) => void;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
 }

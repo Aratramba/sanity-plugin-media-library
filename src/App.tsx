@@ -3,7 +3,7 @@ import { AssetModal } from './components/AssetModal';
 import { DeleteModal } from './components/DeleteModal';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
-import { sortOption } from './types/sortOption';
+import { SortOption } from './types/SortOption';
 import client from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ export const App = () => {
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
   const [loading, setLoading] = useState<Boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [sort, setSort] = useState<sortOption>('date');
+  const [sort, setSort] = useState<SortOption>('date');
 
   useEffect(() => {
     let newFilteredAssets = [...assets];
