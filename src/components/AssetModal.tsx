@@ -1,5 +1,6 @@
 import { Asset } from '../types/Asset';
 import { Button } from './Button';
+import { Icon } from './Icon';
 import { LabelWithInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
@@ -27,12 +28,46 @@ const StyledImageInfoContainer = styled.div`
   display: flex;
 `;
 
-const StyledImage = styled.img`
+const StyledThumbnailContainer = styled.div`
+  border-radius: 2px;
   display: block;
   flex-shrink: 0;
   height: 100px;
   margin: 0 20px 0 0;
+  overflow: hidden;
+  position: relative;
   width: 100px;
+`;
+
+const StyledImage = styled.img`
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 100%;
+`;
+
+const StyledFile = styled.div`
+  align-items: center;
+  background-color: #333;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  line-height: 1.2;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  & svg {
+    fill: #666;
+    height: 24px;
+    width: 24px;
+  }
 `;
 
 const StyledInfoContainer = styled.div`
@@ -66,19 +101,8 @@ const StyledButtonsContainer = styled.div`
 `;
 
 export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading }: Props) => {
-  const {
-    _createdAt,
-    _id,
-    alt,
-    extension,
-    metadata: {
-      dimensions: { height, width },
-    },
-    originalFilename,
-    size,
-    tags,
-    url,
-  } = asset;
+  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url } = asset;
+  const { height, width } = metadata?.dimensions || {};
   const [localAlt, setLocalAlt] = useState<string>(alt || '');
   const [localTags, setLocalTags] = useState<string>((tags || []).join(',') || '');
 
@@ -113,24 +137,37 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
     <Modal onClose={onClose}>
       <StyledFormContainer onSubmit={handleSubmit}>
         <StyledImageInfoContainer>
-          <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
+          <StyledThumbnailContainer>
+            {_type === 'sanity.imageAsset' ? (
+              <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
+            ) : (
+              <StyledFile>
+                <Icon type="file" />
+              </StyledFile>
+            )}
+          </StyledThumbnailContainer>
           <StyledInfoContainer>
             <strong>{originalFilename}</strong>
             {formatDate(_createdAt)}
             <br />
-            {width} x {height}
-            <br />
+            {width && height && (
+              <Fragment>
+                `${width} x ${height}`<br />
+              </Fragment>
+            )}
             {extension.toUpperCase()}, {formatSize(size)}
           </StyledInfoContainer>
         </StyledImageInfoContainer>
 
         <StyledInputsContainer>
-          <LabelWithInput
-            label="Alt text"
-            onChange={setLocalAlt}
-            placeholder={!localAlt ? 'No alt text yet...' : undefined}
-            value={localAlt}
-          />
+          {_type === 'sanity.imageAsset' && (
+            <LabelWithInput
+              label="Alt text"
+              onChange={setLocalAlt}
+              placeholder={!localAlt ? 'No alt text yet...' : undefined}
+              value={localAlt}
+            />
+          )}
           <LabelWithInput
             label="Tags"
             onChange={setLocalTags}

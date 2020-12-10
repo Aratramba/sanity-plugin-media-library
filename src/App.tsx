@@ -76,9 +76,8 @@ export const App = () => {
   async function fetchAssets() {
     try {
       setLoading(true);
-      // @TODO: also fetch files, like pdfs or word docs
       const newAssets: Array<Asset> = await client.fetch(
-        `*[_type == "sanity.imageAsset"] { _createdAt, _id, alt, extension, metadata, originalFilename, size, tags, url }`,
+        `*[_type in ["sanity.imageAsset", "sanity.fileAsset"]] { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url }`,
         {}
       );
       setAssets(newAssets);

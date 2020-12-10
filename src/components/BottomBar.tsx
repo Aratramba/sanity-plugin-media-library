@@ -50,13 +50,13 @@ export const BottomBar = ({ isModal, loading, onDelete, onEdit, selectedAssets }
         ) : (
           <Fragment>
             <Button disabled={selectedAssets.length === 0} secondary onClick={() => onDelete(selectedAssets)}>
-              Delete Image
+              Delete Asset
             </Button>
             <Button disabled={!selectedAsset} secondary onClick={onView}>
-              View Image
+              View Asset
             </Button>
             <Button disabled={!selectedAsset} onClick={() => onEdit(selectedAsset)}>
-              Edit Image
+              Edit Asset
             </Button>
           </Fragment>
         )}
