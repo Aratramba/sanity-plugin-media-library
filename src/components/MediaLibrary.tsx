@@ -3,7 +3,7 @@ import { BottomBar } from './BottomBar';
 import { MediaGrid } from './MediaGrid';
 import { sortOption } from '../types/sortOption';
 import { TopBar } from './TopBar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -54,6 +54,10 @@ export const MediaLibrary = ({
   setSearchQuery,
 }: Props) => {
   const [selectedAssets, setSelectedAssets] = useState<Array<Asset>>([]);
+
+  useEffect(() => {
+    setSelectedAssets([]);
+  }, [assets]);
 
   function onSelect(asset: Asset) {
     // @TODO: select multiple with shift or control :)
