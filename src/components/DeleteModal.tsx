@@ -9,6 +9,7 @@ import styled from 'styled-components';
 interface Props {
   assets: Array<Asset>;
   loading: Boolean;
+  handleError: (error: any) => void;
   onClose: () => void;
   onDeleteComplete: () => void;
   setLoading: (value: Boolean) => void;
@@ -36,7 +37,7 @@ const StyledTitle = styled.h2`
   margin: 0 0 1em;
 `;
 
-export const DeleteModal = ({ assets, loading, onClose, onDeleteComplete, setLoading }: Props) => {
+export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteComplete, setLoading }: Props) => {
   const plural = assets.length > 1;
 
   async function onDelete() {
@@ -49,7 +50,7 @@ export const DeleteModal = ({ assets, loading, onClose, onDeleteComplete, setLoa
       await Promise.all(assets.map(({ _id }) => client.delete(_id)));
       onDeleteComplete();
     } catch (e) {
-      console.error(e);
+      handleError(e);
     } finally {
       setLoading(false);
     }

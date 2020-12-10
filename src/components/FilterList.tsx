@@ -1,10 +1,10 @@
 import { Icon } from './Icon';
-import { iconTypes } from '../types/iconTypes';
+import { IconTypes } from '../types/IconTypes';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  iconType: iconTypes;
+  iconType: IconTypes;
   items?: Array<{ isActive: boolean; value: string }>;
   onItemClick: (value: string) => void;
 }

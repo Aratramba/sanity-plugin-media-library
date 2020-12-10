@@ -7,6 +7,7 @@ import { sortOption } from './types/sortOption';
 import client from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { ErrorNotifications } from './components/ErrorNotifications';
 
 const StyledContainer = styled.div`
   background-color: #000;
@@ -29,6 +30,7 @@ export const App = () => {
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [assetsToDelete, setAssetsToDelete] = useState<Array<Asset> | null>(null);
   const [assetToEdit, setAssetToEdit] = useState<Asset | null>(null);
+  const [errors, setErrors] = useState<Array<string>>([]);
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
   const [loading, setLoading] = useState<Boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -82,7 +84,7 @@ export const App = () => {
       );
       setAssets(newAssets);
     } catch (e) {
-      console.error(e);
+      handleError(e);
     } finally {
       setLoading(false);
     }
@@ -95,11 +97,23 @@ export const App = () => {
         Array.from(files).map((file) => client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file))
       );
       await fetchAssets();
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      handleError(e);
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleError(error: any) {
+    console.error(error);
+    setErrors([...errors, error.toString()]);
+  }
+
+  function onRemoveError(error: string) {
+    const index = errors.indexOf(error);
+    const newErrors = [...errors];
+    newErrors.splice(index, 1);
+    setErrors(newErrors);
   }
 
   const onExtensionClick = (value: string) => onFilterClick(value, activeExtensions, setActiveExtensions);
@@ -142,6 +156,7 @@ export const App = () => {
       {assetToEdit && (
         <AssetModal
           asset={assetToEdit}
+          handleError={handleError}
           loading={loading}
           onClose={() => setAssetToEdit(null)}
           onSaveComplete={() => {
@@ -154,6 +169,7 @@ export const App = () => {
       {assetsToDelete && (
         <DeleteModal
           assets={assetsToDelete}
+          handleError={handleError}
           loading={loading}
           onClose={() => setAssetsToDelete(null)}
           onDeleteComplete={() => {
@@ -163,6 +179,7 @@ export const App = () => {
           setLoading={setLoading}
         />
       )}
+      {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
     </StyledContainer>
   );
 };

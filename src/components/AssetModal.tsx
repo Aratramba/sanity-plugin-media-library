@@ -11,6 +11,7 @@ import styled from 'styled-components';
 interface Props {
   asset: Asset;
   loading: Boolean;
+  handleError: (error: any) => void;
   onClose: () => void;
   onSaveComplete: () => void;
   setLoading: (value: Boolean) => void;
@@ -100,7 +101,7 @@ const StyledButtonsContainer = styled.div`
   }
 `;
 
-export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading }: Props) => {
+export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
   const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url } = asset;
   const { height, width } = metadata?.dimensions || {};
   const [localAlt, setLocalAlt] = useState<string>(alt || '');
@@ -127,7 +128,7 @@ export const AssetModal = ({ asset, loading, onClose, onSaveComplete, setLoading
       await client.patch(_id).set({ alt, tags }).commit();
       onSaveComplete();
     } catch (e) {
-      console.error(e);
+      handleError(e);
     } finally {
       setLoading(false);
     }

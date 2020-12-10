@@ -1,5 +1,5 @@
 import { Icon } from './Icon';
-import { iconTypes } from '../types/iconTypes';
+import { IconTypes } from '../types/IconTypes';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
   disabled?: Boolean;
   grow?: Boolean;
-  icon?: iconTypes;
+  icon?: IconTypes;
   onClick?: (event: React.MouseEvent) => void;
   secondary?: Boolean;
 };
