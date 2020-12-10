@@ -30,18 +30,14 @@ export const MediaLibrary = ({ assets = [], isModal, loading, onSortChange, sear
   const [selectedAssets, setSelectedAssets] = useState<Array<Asset>>([]);
 
   function onSelect(asset: Asset) {
-    setSelectedAssets([asset]);
     // @TODO: select multiple with shift or control :)
-    // const newSelectedAssets = [...selectedAssets];
-    // const index = selectedAssets.indexOf(_id);
+    const index = selectedAssets.indexOf(asset);
 
-    // if (index > -1) {
-    //   newSelectedAssets.splice(index, 1);
-    // } else {
-    //   newSelectedAssets.push(_id);
-    // }
-
-    // setSelectedAssets(newSelectedAssets);
+    if (index > -1) {
+      setSelectedAssets([]);
+    } else {
+      setSelectedAssets([asset]);
+    }
   }
 
   return (
