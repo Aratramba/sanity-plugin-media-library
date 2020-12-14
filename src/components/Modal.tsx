@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -41,9 +41,22 @@ const StyledModal = styled.div<{ full?: Boolean }>`
   z-index: 2;
 `;
 
-export const Modal = ({ children, full, onClose }: Props) => (
-  <StyledContainer>
-    <StyledOverlay onClick={onClose} />
-    <StyledModal full={full}>{children}</StyledModal>
-  </StyledContainer>
-);
+export const Modal = ({ children, full, onClose }: Props) => {
+  useEffect(() => {
+    function onKeyDown(e: any) {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown, false);
+    return () => window.removeEventListener('keydown', onKeyDown, false);
+  }, []);
+
+  return (
+    <StyledContainer>
+      <StyledOverlay onClick={onClose} />
+      <StyledModal full={full}>{children}</StyledModal>
+    </StyledContainer>
+  );
+};
