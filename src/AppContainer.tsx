@@ -10,11 +10,9 @@ type Props = {
   tool?: string;
 };
 
-/* @TODO: als tool als image input, alleen images tonen */
-
 export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props) =>
   tool ? (
-    <App onClose={onClose} onSelect={onSelect} selectedAssets={selectedAssets} tool={tool} />
+    <App tool={tool} />
   ) : (
     <Modal full onClose={onClose ? onClose : () => {}}>
       <App onClose={onClose} onSelect={onSelect} selectedAssets={selectedAssets} tool={tool} />
