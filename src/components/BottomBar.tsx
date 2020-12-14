@@ -60,12 +60,12 @@ export const BottomBar = ({
         ) : (
           <Fragment>
             <Button disabled={selectedAssets.length === 0} secondary onClick={() => onDelete(selectedAssets)}>
-              Delete Asset
+              Delete Asset{selectedAssets.length > 1 ? 's' : ''}
             </Button>
-            <Button disabled={!selectedAsset} secondary onClick={onView}>
+            <Button disabled={!selectedAsset || selectedAssets.length > 1} secondary onClick={onView}>
               View Asset
             </Button>
-            <Button disabled={!selectedAsset} onClick={() => onEdit(selectedAsset)}>
+            <Button disabled={!selectedAsset || selectedAssets.length > 1} onClick={() => onEdit(selectedAsset)}>
               Edit Asset
             </Button>
           </Fragment>
