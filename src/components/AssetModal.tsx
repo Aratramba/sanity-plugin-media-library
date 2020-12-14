@@ -153,7 +153,8 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
             <br />
             {width && height && (
               <Fragment>
-                `${width} x ${height}`<br />
+                {width} x {height}
+                <br />
               </Fragment>
             )}
             {extension.toUpperCase()}, {formatSize(size)}
