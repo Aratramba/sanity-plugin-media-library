@@ -1,4 +1,4 @@
-import { acceptedFileTypes } from '../constants/acceptedFileTypes';
+import { acceptedFileTypes } from '../shared/acceptedFileTypes';
 import { Button } from './Button';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
