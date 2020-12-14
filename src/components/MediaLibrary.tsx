@@ -1,9 +1,11 @@
 import { Asset } from '../types/Asset';
 import { BottomBar } from './BottomBar';
 import { MediaGrid } from './MediaGrid';
+import { MediaList } from './MediaList';
 import { SortOption } from '../types/SortOption';
 import { TopBar } from './TopBar';
-import React, { MouseEvent } from 'react';
+import { ViewTypes } from '../types/ViewTypes';
+import React, { MouseEvent, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -63,6 +65,8 @@ export const MediaLibrary = ({
   setSearchQuery,
   setSelectedAssets,
 }: Props) => {
+  const [viewType, setViewType] = useState<ViewTypes>('grid');
+
   function onMediaItemClick(e: MouseEvent, asset: Asset) {
     const indexInSelectedAssets = selectedAssets.indexOf(asset);
 
@@ -93,16 +97,25 @@ export const MediaLibrary = ({
     }
   }
 
+  const onDoubleClick = (asset: Asset) =>
+    isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset);
+
+  const ViewElement = viewType === 'grid' ? MediaGrid : MediaList;
+
   return (
     <StyledContainer>
-      <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <TopBar
+        onSortChange={onSortChange}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setViewType={setViewType}
+        viewType={viewType}
+      />
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
-          <MediaGrid
+          <ViewElement
             assets={assets}
-            onDoubleClick={(asset: Asset) =>
-              isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset)
-            }
+            onDoubleClick={onDoubleClick}
             onMediaItemClick={onMediaItemClick}
             selectedAssets={selectedAssets}
           />

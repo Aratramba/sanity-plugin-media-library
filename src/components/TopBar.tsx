@@ -2,6 +2,7 @@ import { Icon } from './Icon';
 import { SearchBar } from './SearchBar';
 import { Select } from './Select';
 import { SortOption } from '../types/SortOption';
+import { ViewTypes } from '../types/ViewTypes';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -9,6 +10,8 @@ interface Props {
   onSortChange: (value: SortOption) => void;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
+  setViewType: (type: ViewTypes) => void;
+  viewType: ViewTypes;
 }
 
 const StyledContainer = styled.div`
@@ -43,13 +46,13 @@ const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
   }
 `;
 
-export const TopBar = ({ onSortChange, searchQuery, setSearchQuery }: Props) => (
+export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType, viewType }: Props) => (
   <StyledContainer>
     <StyledItemsContainer>
-      <StyledListGridButton isActive>
+      <StyledListGridButton onClick={() => setViewType('grid')} isActive={viewType === 'grid'}>
         <Icon type="grid" />
       </StyledListGridButton>
-      <StyledListGridButton>
+      <StyledListGridButton onClick={() => setViewType('list')} isActive={viewType === 'list'}>
         <Icon type="list" />
       </StyledListGridButton>
     </StyledItemsContainer>
