@@ -3,7 +3,7 @@ import { BottomBar } from './BottomBar';
 import { MediaGrid } from './MediaGrid';
 import { SortOption } from '../types/SortOption';
 import { TopBar } from './TopBar';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -62,30 +62,61 @@ export const MediaLibrary = ({
   selectedAssets,
   setSearchQuery,
   setSelectedAssets,
-}: Props) => (
-  <StyledContainer>
-    <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-    <StyledFlexGrowContainer>
-      <StyledMediaGridContainer>
-        <MediaGrid
-          assets={assets}
-          canSelectMultipleAssets={!isAssetSource}
-          onDoubleClick={(asset: Asset) =>
-            isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset)
-          }
-          setSelectedAssets={setSelectedAssets}
-          selectedAssets={selectedAssets}
-        />
-      </StyledMediaGridContainer>
-    </StyledFlexGrowContainer>
-    <BottomBar
-      handleSelect={handleSelect}
-      isAssetSource={isAssetSource}
-      loading={loading}
-      onCancel={onClose}
-      onDelete={onDelete}
-      onEdit={onEdit}
-      selectedAssets={selectedAssets}
-    />
-  </StyledContainer>
-);
+}: Props) => {
+  function onMediaItemClick(e: MouseEvent, asset: Asset) {
+    const indexInSelectedAssets = selectedAssets.indexOf(asset);
+
+    if (!isAssetSource && e.shiftKey && selectedAssets.length > 0) {
+      const startIndex = assets.indexOf(asset);
+      const endIndex = assets.indexOf(selectedAssets[0]);
+      const indexes = [startIndex, endIndex].sort((a, b) => (a > b ? 1 : -1));
+
+      const newSelectedAssets = [...assets].slice(indexes[0], indexes[1] + 1);
+      return setSelectedAssets(newSelectedAssets);
+    }
+
+    if (!isAssetSource && (e.ctrlKey, e.metaKey) && selectedAssets.length > 0) {
+      if (indexInSelectedAssets > -1) {
+        const newSelectedAssets = [...selectedAssets];
+        newSelectedAssets.splice(indexInSelectedAssets, 1);
+        return setSelectedAssets(newSelectedAssets);
+      } else {
+        const newSelectedAssets = Array.from(new Set([...selectedAssets, asset]));
+        return setSelectedAssets(newSelectedAssets);
+      }
+    }
+
+    if (indexInSelectedAssets > -1) {
+      setSelectedAssets([]);
+    } else {
+      setSelectedAssets([asset]);
+    }
+  }
+
+  return (
+    <StyledContainer>
+      <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <StyledFlexGrowContainer>
+        <StyledMediaGridContainer>
+          <MediaGrid
+            assets={assets}
+            onDoubleClick={(asset: Asset) =>
+              isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset)
+            }
+            onMediaItemClick={onMediaItemClick}
+            selectedAssets={selectedAssets}
+          />
+        </StyledMediaGridContainer>
+      </StyledFlexGrowContainer>
+      <BottomBar
+        handleSelect={handleSelect}
+        isAssetSource={isAssetSource}
+        loading={loading}
+        onCancel={onClose}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        selectedAssets={selectedAssets}
+      />
+    </StyledContainer>
+  );
+};

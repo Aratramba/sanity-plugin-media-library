@@ -5,10 +5,9 @@ import styled from 'styled-components';
 
 interface Props {
   assets?: Array<Asset>;
-  canSelectMultipleAssets: Boolean;
   onDoubleClick: (asset: Asset) => void;
+  onMediaItemClick: (e: MouseEvent, asset: Asset) => void;
   selectedAssets: Array<Asset>;
-  setSelectedAssets: (value: Array<Asset>) => void;
 }
 
 interface AssetWithSelectedAndOnClick extends Asset {
@@ -63,60 +62,22 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   }
 `;
 
-export const MediaGrid = ({
-  assets = [],
-  canSelectMultipleAssets,
-  onDoubleClick,
-  selectedAssets,
-  setSelectedAssets,
-}: Props) => {
-  function onClick(e: MouseEvent, asset: Asset) {
-    const indexInSelectedAssets = selectedAssets.indexOf(asset);
-
-    if (canSelectMultipleAssets && e.shiftKey && selectedAssets.length > 0) {
-      const startIndex = assets.indexOf(asset);
-      const endIndex = assets.indexOf(selectedAssets[0]);
-      const indexes = [startIndex, endIndex].sort((a, b) => (a > b ? 1 : -1));
-
-      const newSelectedAssets = [...assets].slice(indexes[0], indexes[1] + 1);
-      return setSelectedAssets(newSelectedAssets);
-    }
-
-    if (canSelectMultipleAssets && (e.ctrlKey, e.metaKey) && selectedAssets.length > 0) {
-      if (indexInSelectedAssets > -1) {
-        const newSelectedAssets = [...selectedAssets];
-        newSelectedAssets.splice(indexInSelectedAssets, 1);
-        return setSelectedAssets(newSelectedAssets);
-      } else {
-        const newSelectedAssets = Array.from(new Set([...selectedAssets, asset]));
-        return setSelectedAssets(newSelectedAssets);
-      }
-    }
-
-    if (indexInSelectedAssets > -1) {
-      setSelectedAssets([]);
-    } else {
-      setSelectedAssets([asset]);
-    }
-  }
-
-  return (
-    <StyledContainer>
-      {assets.map((asset) => {
-        const Element = asset._type === 'sanity.imageAsset' ? ImageItem : FileItem;
-        return (
-          <Element
-            key={asset._id}
-            onClick={(e) => onClick(e, asset)}
-            onDoubleClick={() => onDoubleClick(asset)}
-            selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
-            {...asset}
-          />
-        );
-      })}
-    </StyledContainer>
-  );
-};
+export const MediaGrid = ({ assets = [], onDoubleClick, onMediaItemClick, selectedAssets }: Props) => (
+  <StyledContainer>
+    {assets.map((asset) => {
+      const Element = asset._type === 'sanity.imageAsset' ? ImageItem : FileItem;
+      return (
+        <Element
+          key={asset._id}
+          onClick={(e) => onMediaItemClick(e, asset)}
+          onDoubleClick={() => onDoubleClick(asset)}
+          selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
+          {...asset}
+        />
+      );
+    })}
+  </StyledContainer>
+);
 
 const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: AssetWithSelectedAndOnClick) => (
   <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
