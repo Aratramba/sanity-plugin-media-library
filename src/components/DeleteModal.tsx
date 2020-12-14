@@ -48,22 +48,22 @@ export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteCom
 
       setLoading(true);
       await Promise.all(assets.map(({ _id }) => client.delete(_id)));
-      onDeleteComplete();
     } catch (e) {
       handleError(e);
     } finally {
       setLoading(false);
+      onDeleteComplete();
     }
   }
 
   return (
     <Modal onClose={onClose}>
       <StyledContainer>
-        <StyledTitle>Are you sure you want to delete {plural ? 'these files' : 'this file'}?</StyledTitle>
+        <StyledTitle>Are you sure you want to delete {plural ? 'these assets' : 'this asset'}?</StyledTitle>
 
         <StyledButtonsContainer>
           <Button disabled={loading} onClick={onDelete}>
-            Delete file{plural ? 's' : ''}
+            Delete asset{plural ? 's' : ''}
           </Button>
           <Button secondary onClick={() => onClose()}>
             Cancel
