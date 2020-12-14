@@ -1,4 +1,4 @@
-import { acceptedFileTypes } from './constants/acceptedFileTypes';
+import { acceptedFileTypes } from './shared/acceptedFileTypes';
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
 import { DeleteModal } from './components/DeleteModal';
@@ -71,11 +71,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
 
     if (sort === 'az') {
-      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? 1 : -1));
+      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? -1 : 1));
     }
 
     if (sort === 'za') {
-      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? -1 : 1));
+      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? 1 : -1));
     }
 
     setFilteredAssets(newFilteredAssets);
