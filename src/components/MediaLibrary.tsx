@@ -62,42 +62,30 @@ export const MediaLibrary = ({
   selectedAssets,
   setSearchQuery,
   setSelectedAssets,
-}: Props) => {
-  function onSelect(asset: Asset) {
-    // @TODO: select multiple with shift or control :)
-    const index = selectedAssets.indexOf(asset);
-
-    if (index > -1) {
-      setSelectedAssets([]);
-    } else {
-      setSelectedAssets([asset]);
-    }
-  }
-
-  return (
-    <StyledContainer>
-      <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <StyledFlexGrowContainer>
-        <StyledMediaGridContainer>
-          <MediaGrid
-            assets={assets}
-            onDoubleClick={(asset: Asset) =>
-              isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset)
-            }
-            onSelect={onSelect}
-            selectedAssets={selectedAssets}
-          />
-        </StyledMediaGridContainer>
-      </StyledFlexGrowContainer>
-      <BottomBar
-        handleSelect={handleSelect}
-        isAssetSource={isAssetSource}
-        loading={loading}
-        onCancel={onClose}
-        onDelete={onDelete}
-        onEdit={onEdit}
-        selectedAssets={selectedAssets}
-      />
-    </StyledContainer>
-  );
-};
+}: Props) => (
+  <StyledContainer>
+    <TopBar onSortChange={onSortChange} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+    <StyledFlexGrowContainer>
+      <StyledMediaGridContainer>
+        <MediaGrid
+          assets={assets}
+          canSelectMultipleAssets={!isAssetSource}
+          onDoubleClick={(asset: Asset) =>
+            isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset)
+          }
+          setSelectedAssets={setSelectedAssets}
+          selectedAssets={selectedAssets}
+        />
+      </StyledMediaGridContainer>
+    </StyledFlexGrowContainer>
+    <BottomBar
+      handleSelect={handleSelect}
+      isAssetSource={isAssetSource}
+      loading={loading}
+      onCancel={onClose}
+      onDelete={onDelete}
+      onEdit={onEdit}
+      selectedAssets={selectedAssets}
+    />
+  </StyledContainer>
+);
