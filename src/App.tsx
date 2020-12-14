@@ -1,3 +1,4 @@
+import { acceptedFileTypes } from './constants/acceptedFileTypes';
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
 import { DeleteModal } from './components/DeleteModal';
@@ -118,8 +119,23 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   async function onUpload(files: FileList) {
     try {
       setLoading(true);
+
+      const filesWithAllowedFileType: Array<File> = Array.from(files).filter(({ name, type }) =>
+        acceptedFileTypes.some((fileType) => {
+          const isAccepted = new RegExp(fileType, 'gi').test(type);
+
+          if (!isAccepted) {
+            handleError(`File '${name}' will not be uploaded because its filetype is not supported.`);
+          }
+
+          return isAccepted;
+        })
+      );
+
       await Promise.all(
-        Array.from(files).map((file) => client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file))
+        filesWithAllowedFileType.map((file) =>
+          client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file)
+        )
       );
       await fetchAssets();
     } catch (e: any) {

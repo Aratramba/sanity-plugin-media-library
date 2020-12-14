@@ -1,3 +1,4 @@
+import { acceptedFileTypes } from '../constants/acceptedFileTypes';
 import { Button } from './Button';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
@@ -22,7 +23,7 @@ export const UploadButton = ({ disabled, onUpload }: Props) => {
         Upload
       </Button>
       <StyledInput
-        accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,text/plain, application/pdf, image/*"
+        accept={acceptedFileTypes.join(',')}
         multiple
         onChange={(e) => onUpload(e.target.files as FileList)}
         ref={inputRef}
