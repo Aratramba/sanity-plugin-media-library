@@ -19,6 +19,7 @@ interface Props {
   onSortChange: (value: SortOption) => void;
   searchQuery: string;
   selectedAssets: Array<Asset>;
+  setIsDraggingMediaItem: (value: Boolean) => void;
   setSearchQuery: (value: string) => void;
   setSelectedAssets: (value: Array<Asset>) => void;
 }
@@ -62,6 +63,7 @@ export const MediaLibrary = ({
   onSortChange,
   searchQuery,
   selectedAssets,
+  setIsDraggingMediaItem,
   setSearchQuery,
   setSelectedAssets,
 }: Props) => {
@@ -118,6 +120,7 @@ export const MediaLibrary = ({
             onDoubleClick={onDoubleClick}
             onMediaItemClick={onMediaItemClick}
             selectedAssets={selectedAssets}
+            setIsDraggingMediaItem={setIsDraggingMediaItem}
           />
         </StyledMediaGridContainer>
       </StyledFlexGrowContainer>

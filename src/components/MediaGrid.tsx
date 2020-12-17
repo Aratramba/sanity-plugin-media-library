@@ -1,4 +1,5 @@
 import { Asset } from '../types/Asset';
+import { DraggableMediaItem } from './DraggableMediaItem';
 import { Icon } from './Icon';
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
@@ -8,9 +9,10 @@ interface Props {
   onDoubleClick: (asset: Asset) => void;
   onMediaItemClick: (e: MouseEvent, asset: Asset) => void;
   selectedAssets: Array<Asset>;
+  setIsDraggingMediaItem: (value: Boolean) => void;
 }
 
-interface AssetWithSelectedAndOnClick extends Asset {
+interface MediaItemProps extends Asset {
   onClick: (e: MouseEvent) => void;
   onDoubleClick: () => void;
   selected?: Boolean;
@@ -20,6 +22,10 @@ const StyledContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 40px;
+
+  & > * {
+    margin: 0 15px 15px 0;
+  }
 `;
 
 const StyledMediaItem = styled.div<{ selected?: Boolean }>`
@@ -38,7 +44,6 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   height: 150px;
   justify-content: center;
   line-height: 1.2;
-  margin: 0 15px 15px 0;
   overflow: hidden;
   padding: 20px;
   position: relative;
@@ -62,30 +67,42 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   }
 `;
 
-export const MediaGrid = ({ assets = [], onDoubleClick, onMediaItemClick, selectedAssets }: Props) => (
+export const MediaGrid = ({
+  assets = [],
+  onDoubleClick,
+  onMediaItemClick,
+  selectedAssets,
+  setIsDraggingMediaItem,
+}: Props) => (
   <StyledContainer>
     {assets.map((asset) => {
       const Element = asset._type === 'sanity.imageAsset' ? ImageItem : FileItem;
       return (
-        <Element
-          key={asset._id}
-          onClick={(e) => onMediaItemClick(e, asset)}
-          onDoubleClick={() => onDoubleClick(asset)}
-          selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
-          {...asset}
-        />
+        <DraggableMediaItem
+          onDragEnd={() => setIsDraggingMediaItem(false)}
+          onDragStart={() => setIsDraggingMediaItem(true)}
+          selectedAmount={selectedAssets.length}
+        >
+          <Element
+            key={asset._id}
+            onClick={(e) => onMediaItemClick(e, asset)}
+            onDoubleClick={() => onDoubleClick(asset)}
+            selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
+            {...asset}
+          />
+        </DraggableMediaItem>
       );
     })}
   </StyledContainer>
 );
 
-const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: AssetWithSelectedAndOnClick) => (
+const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: MediaItemProps) => (
   <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
     <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
   </StyledMediaItem>
 );
 
-const FileItem = ({ originalFilename, onClick, onDoubleClick, selected }: AssetWithSelectedAndOnClick) => (
+const FileItem = ({ originalFilename, onClick, onDoubleClick, selected }: MediaItemProps) => (
   <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
     <Icon type="file" />
     <div>{originalFilename}</div>

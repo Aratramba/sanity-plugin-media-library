@@ -41,6 +41,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   const [assetToEdit, setAssetToEdit] = useState<Asset | null>(null);
   const [errors, setErrors] = useState<Array<string>>([]);
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
+  const [isDraggingMediaItem, setIsDraggingMediaItem] = useState<Boolean>(false);
   const [loading, setLoading] = useState<Boolean>(true);
   const [localSelectedAssets, setLocalSelectedAssets] = useState<Array<Asset>>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -120,17 +121,14 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     try {
       setLoading(true);
 
-      const filesWithAllowedFileType: Array<File> = Array.from(files).filter(({ name, type }) =>
-        acceptedFileTypes.some((fileType) => {
-          const isAccepted = new RegExp(fileType, 'gi').test(type);
-
-          if (!isAccepted) {
-            handleError(`File '${name}' will not be uploaded because its filetype is not supported.`);
-          }
-
-          return isAccepted;
-        })
+      const filesWithAllowedFileType: Array<File> = Array.from(files).filter(({ type }) =>
+        acceptedFileTypes.some((fileType) => new RegExp(fileType, 'gi').test(type))
       );
+
+      const notAllowedFiles = Array.from(files).filter((file) => filesWithAllowedFileType.indexOf(file) === -1);
+      notAllowedFiles.forEach(({ name }) => {
+        handleError(`File '${name}' will not be uploaded because its filetype is not supported.`);
+      });
 
       await Promise.all(
         filesWithAllowedFileType.map((file) =>
@@ -181,7 +179,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
   return (
     <StyledContainer>
-      <DragArea loading={loading} onUpload={onUpload}>
+      <DragArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
         <StyledSidebarGridContainer>
           <Sidebar
             extensions={extensions}
@@ -202,6 +200,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
             onSortChange={setSort}
             searchQuery={searchQuery}
             selectedAssets={localSelectedAssets}
+            setIsDraggingMediaItem={setIsDraggingMediaItem}
             setSearchQuery={setSearchQuery}
             setSelectedAssets={setLocalSelectedAssets}
           />
