@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 interface Props {
   children: ReactNode;
+  disabled?: Boolean;
   loading: Boolean;
   onUpload: (files: FileList) => void;
 }
@@ -49,20 +50,23 @@ const StyledTitle = styled.h2`
   margin: 0;
 `;
 
-export const DragArea = ({ children, loading, onUpload }: Props) => {
+export const DragArea = ({ children, disabled, loading, onUpload }: Props) => {
   const [isDraggedOn, setIsDraggedOn] = useState<Boolean>(false);
 
   const onDragLeave = (e: DragEvent) => {
+    if (disabled) return;
     e.preventDefault();
     setIsDraggedOn(false);
   };
 
   const onDragOver = (e: DragEvent) => {
+    if (disabled) return;
     e.preventDefault();
     setIsDraggedOn(true);
   };
 
   function onDrop(e: DragEvent) {
+    if (disabled) return;
     e.preventDefault();
     setIsDraggedOn(false);
 
