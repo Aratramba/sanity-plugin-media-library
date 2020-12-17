@@ -49,7 +49,7 @@ const StyledTitle = styled.h2`
   margin: 0;
 `;
 
-export const DragArea = ({ children, disabled, loading, onUpload }: Props) => {
+export const UploadDropArea = ({ children, disabled, loading, onUpload }: Props) => {
   const [isDraggedOn, setIsDraggedOn] = useState<Boolean>(false);
 
   const onDragLeave = (e: DragEvent) => {

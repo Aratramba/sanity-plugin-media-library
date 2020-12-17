@@ -2,11 +2,11 @@ import { acceptedFileTypes } from './shared/acceptedFileTypes';
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
 import { DeleteModal } from './components/DeleteModal';
-import { DragArea } from './components/DragArea';
 import { ErrorNotifications } from './components/ErrorNotifications';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
 import { SortOption } from './types/SortOption';
+import { UploadDropArea } from './components/UploadDropArea';
 import client from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -185,7 +185,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
   return (
     <StyledContainer>
-      <DragArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
+      <UploadDropArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
         <StyledSidebarGridContainer>
           <Sidebar
             extensions={extensions}
@@ -238,7 +238,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
           />
         )}
         {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
-      </DragArea>
+      </UploadDropArea>
     </StyledContainer>
   );
 };
