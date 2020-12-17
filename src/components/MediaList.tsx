@@ -75,7 +75,6 @@ const StyledImage = styled.img`
 const StyledFile = styled.div`
   align-items: center;
   background-color: #333;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100%;

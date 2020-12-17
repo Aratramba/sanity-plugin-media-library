@@ -33,7 +33,6 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   background-color: #333;
   border-radius: 2px;
   border: ${({ selected }) => (selected ? 'solid 4px #FFE900' : '0')};
-  box-sizing: border-box;
   color: #fff;
   cursor: pointer;
   display: flex;

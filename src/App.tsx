@@ -26,6 +26,12 @@ const StyledContainer = styled.div`
   position: absolute;
   top: 0;
   width: 100%;
+
+  & *,
+  & *:before,
+  & *:after {
+    box-sizing: border-box;
+  }
 `;
 
 const StyledSidebarGridContainer = styled.div`

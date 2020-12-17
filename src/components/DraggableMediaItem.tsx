@@ -28,7 +28,6 @@ const StyledMediaDragPreviewContainer = styled.div`
 const StyledMediaDragPreview = styled.div`
   border-radius: 2px;
   border: solid 4px #ffe900;
-  box-sizing: border-box;
   height: 150px;
   overflow: hidden;
   position: relative;

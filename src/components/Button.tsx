@@ -16,7 +16,6 @@ const StyledButton = styled.button<{ disabled?: Boolean; grow?: Boolean; seconda
   background-color: ${({ secondary }) => (secondary ? 'transparent' : '#FFE900')};
   border-radius: 2px;
   border: solid 1px ${({ secondary }) => (secondary ? '#666' : '#FFE900')};
-  box-sizing: border-box;
   cursor: pointer;
   color: ${({ secondary }) => (secondary ? '#666' : '#000')};
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;

@@ -12,7 +12,6 @@ const StyledContainer = styled.div`
 const StyledNotification = styled.div`
   background-color: red;
   border-radius: 2px;
-  box-sizing: border-box;
   color: #fff;
   display: flex;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;

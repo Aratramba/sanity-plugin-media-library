@@ -20,7 +20,6 @@ const StyledContainer = styled.div`
 const StyledContentContainer = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
-  box-sizing: border-box;
   cursor: pointer;
   display: flex;
   flex-direction: column;

@@ -30,7 +30,6 @@ const StyledInput = styled.input`
   background-color: #333;
   border-radius: 2px;
   border: 0;
-  box-sizing: border-box;
   color: #fff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   font-size: 16px;
