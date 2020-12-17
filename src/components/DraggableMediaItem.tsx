@@ -1,16 +1,21 @@
+import { AssetType } from '../types/Asset';
+import { Icon } from './Icon';
 import React, { DragEvent, ReactNode, useRef } from 'react';
 import styled from 'styled-components';
 
 interface Props {
+  _type: AssetType;
   children: ReactNode;
   onDragEnd: () => void;
   onDragStart: () => void;
   selectedAmount?: number;
+  url: string;
 }
 
 interface MediaDragPreviewProps {
-  children: ReactNode;
+  _type: AssetType;
   selectedAmount: number;
+  url: string;
 }
 
 const StyledContainer = styled.div`
@@ -26,6 +31,7 @@ const StyledMediaDragPreviewContainer = styled.div`
 `;
 
 const StyledMediaDragPreview = styled.div`
+  background-color: #000;
   border-radius: 2px;
   border: solid 4px #ffe900;
   height: 150px;
@@ -58,7 +64,24 @@ const StyledSelectedAmount = styled.div`
   z-index: 2;
 `;
 
-export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedAmount }: Props) => {
+const StyledIconContainer = styled.div`
+  align-items: center;
+  background-color: #333;
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  justify-content: center;
+  padding: 20px;
+  width: 150px;
+
+  & svg {
+    fill: #666;
+    height: 75%;
+    width: 75%;
+  }
+`;
+
+export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedAmount, _type, url }: Props) => {
   const mediaDragPreviewRef = useRef<HTMLDivElement>(null);
 
   function onDragStartHandler(e: DragEvent<HTMLDivElement>) {
@@ -78,15 +101,21 @@ export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedA
     <StyledContainer draggable onDragStart={onDragStartHandler} onDragEnd={onDragEndHandler}>
       {children}
       <StyledMediaDragPreviewContainer ref={mediaDragPreviewRef}>
-        <MediaDragPreview selectedAmount={selectedAmount || 1}>{children}</MediaDragPreview>
+        <MediaDragPreview selectedAmount={selectedAmount || 1} _type={_type} url={url} />
       </StyledMediaDragPreviewContainer>
     </StyledContainer>
   );
 };
 
-const MediaDragPreview = ({ children, selectedAmount }: MediaDragPreviewProps) => (
+const MediaDragPreview = ({ selectedAmount, _type, url }: MediaDragPreviewProps) => (
   <StyledMediaDragPreview>
-    {children}
+    {_type === 'sanity.imageAsset' ? (
+      <img src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
+    ) : (
+      <StyledIconContainer>
+        <Icon type="file" />
+      </StyledIconContainer>
+    )}
     <StyledSelectedAmount>{selectedAmount}</StyledSelectedAmount>
   </StyledMediaDragPreview>
 );

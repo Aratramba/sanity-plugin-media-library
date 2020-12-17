@@ -80,12 +80,14 @@ export const MediaGrid = ({
       const Element = asset._type === 'sanity.imageAsset' ? ImageItem : FileItem;
       return (
         <DraggableMediaItem
+          _type={asset._type}
           onDragEnd={() => setIsDraggingMediaItem(false)}
           onDragStart={() => {
             onDragStart(asset);
             setIsDraggingMediaItem(true);
           }}
           selectedAmount={selectedAssets.length}
+          url={asset.url}
         >
           <Element
             key={asset._id}

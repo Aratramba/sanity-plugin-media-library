@@ -1,4 +1,5 @@
 import { Asset } from '../types/Asset';
+import { DraggableMediaItem } from './DraggableMediaItem';
 import { formatDate, formatSize } from '../shared/utils';
 import { Icon } from './Icon';
 import React, { MouseEvent } from 'react';
@@ -7,8 +8,10 @@ import styled from 'styled-components';
 interface Props {
   assets?: Array<Asset>;
   onDoubleClick: (asset: Asset) => void;
+  onDragStart: (asset: Asset) => void;
   onMediaItemClick: (e: MouseEvent, asset: Asset) => void;
   selectedAssets: Array<Asset>;
+  setIsDraggingMediaItem: (value: Boolean) => void;
 }
 
 interface MediaRowProps extends Asset {
@@ -93,17 +96,35 @@ const StyledFile = styled.div`
   }
 `;
 
-export const MediaList = ({ assets = [], onDoubleClick, onMediaItemClick, selectedAssets }: Props) => (
+export const MediaList = ({
+  assets = [],
+  onDoubleClick,
+  onDragStart,
+  onMediaItemClick,
+  selectedAssets,
+  setIsDraggingMediaItem,
+}: Props) => (
   <div>
     <MediaListHeader />
     {assets.map((asset) => (
-      <MediaRow
-        key={asset._id}
-        onClick={(e) => onMediaItemClick(e, asset)}
-        onDoubleClick={() => onDoubleClick(asset)}
-        selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
-        {...asset}
-      />
+      <DraggableMediaItem
+        _type={asset._type}
+        onDragEnd={() => setIsDraggingMediaItem(false)}
+        onDragStart={() => {
+          onDragStart(asset);
+          setIsDraggingMediaItem(true);
+        }}
+        selectedAmount={selectedAssets.length}
+        url={asset.url}
+      >
+        <MediaRow
+          key={asset._id}
+          onClick={(e) => onMediaItemClick(e, asset)}
+          onDoubleClick={() => onDoubleClick(asset)}
+          selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
+          {...asset}
+        />
+      </DraggableMediaItem>
     ))}
   </div>
 );
