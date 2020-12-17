@@ -32,7 +32,7 @@ const StyledModal = styled.div<{ full?: Boolean }>`
   box-shadow: 0 2px 10px #000;
   height: ${({ full }) => (full ? 'calc(100% - 200px)' : 'auto')};
   left: 50%;
-  max-width: ${({ full }) => (full ? 'calc(100% - 200px)' : '500px')};
+  max-width: ${({ full }) => (full ? 'calc(100% - 200px)' : '400px')};
   padding: 40px;
   position: absolute;
   top: ${({ full }) => (full ? '50%' : '200px')};
