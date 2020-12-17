@@ -31,7 +31,7 @@ const StyledButton = styled.button<{ isActive?: Boolean }>`
   font-weight: 500;
   line-height: 1.1;
   outline: 0;
-  padding: 8px 8px 8px 0;
+  padding: 8px 0;
   width: 100%;
 
   & svg {
