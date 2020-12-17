@@ -171,6 +171,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   const onExtensionClick = (value: string) => onFilterClick(value, activeExtensions, setActiveExtensions);
   const onTagClick = (value: string) => onFilterClick(value, activeTags, setActiveTags);
 
+  function onClearFilters() {
+    setActiveExtensions([]);
+    setActiveTags([]);
+  }
+
   async function onTagDrop(tag: string) {
     try {
       if (loading || localSelectedAssets.length === 0) {
@@ -213,6 +218,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
           <Sidebar
             extensions={extensions}
             loading={loading}
+            onClearFilters={onClearFilters}
             onExtensionClick={onExtensionClick}
             onTagClick={onTagClick}
             onTagDrop={onTagDrop}
