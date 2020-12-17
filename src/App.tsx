@@ -171,6 +171,29 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   const onExtensionClick = (value: string) => onFilterClick(value, activeExtensions, setActiveExtensions);
   const onTagClick = (value: string) => onFilterClick(value, activeTags, setActiveTags);
 
+  async function onTagDrop(tag: string) {
+    try {
+      if (loading || localSelectedAssets.length === 0) {
+        return;
+      }
+
+      setLoading(true);
+
+      const idsAndTags = localSelectedAssets.map(({ _id, tags }) => ({ _id, tags }));
+      const idsWithNewTags = idsAndTags.map(({ _id, tags }) => ({
+        _id,
+        tags: tags?.includes(tag) ? tags : [...(tags || []), tag],
+      }));
+
+      await Promise.all(idsWithNewTags.map(({ _id, tags }) => client.patch(_id).set({ tags }).commit()));
+      await fetchAssets();
+    } catch (e) {
+      handleError(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const extensions: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
     assets,
     activeExtensions,
@@ -192,6 +215,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
             loading={loading}
             onExtensionClick={onExtensionClick}
             onTagClick={onTagClick}
+            onTagDrop={onTagDrop}
             onUpload={onUpload}
             tags={tags}
           />

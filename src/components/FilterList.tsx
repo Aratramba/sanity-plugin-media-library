@@ -1,3 +1,4 @@
+import { FilterListDropArea } from './FilterListDropArea';
 import { Icon } from './Icon';
 import { IconTypes } from '../types/IconTypes';
 import React from 'react';
@@ -7,6 +8,7 @@ interface Props {
   iconType: IconTypes;
   items?: Array<{ isActive: boolean; value: string }>;
   onItemClick: (value: string) => void;
+  onItemDrop?: (value: string) => void;
 }
 
 const StyledList = styled.ul`
@@ -41,15 +43,27 @@ const StyledButton = styled.button<{ isActive?: Boolean }>`
   }
 `;
 
-export const FilterList = ({ iconType, items = [], onItemClick }: Props) => (
+export const FilterList = ({ iconType, items = [], onItemClick, onItemDrop }: Props) => (
   <StyledList>
-    {items.map(({ isActive, value }) => (
-      <li key={value}>
+    {items.map(({ isActive, value }) => {
+      const inner = (
         <StyledButton isActive={isActive} onClick={() => onItemClick(value)}>
           <Icon type={iconType} />
           <span>{value}</span>
         </StyledButton>
-      </li>
-    ))}
+      );
+
+      return (
+        <li key={value}>
+          {onItemDrop ? (
+            <FilterListDropArea loading={false} onDrop={() => onItemDrop(value)}>
+              {inner}
+            </FilterListDropArea>
+          ) : (
+            inner
+          )}
+        </li>
+      );
+    })}
   </StyledList>
 );

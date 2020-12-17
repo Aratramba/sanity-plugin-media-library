@@ -8,6 +8,7 @@ interface Props {
   loading: Boolean;
   onExtensionClick: (value: string) => void;
   onTagClick: (value: string) => void;
+  onTagDrop: (value: string) => void;
   onUpload: (files: FileList) => void;
   tags?: Array<{ isActive: boolean; value: string }>;
 }
@@ -53,13 +54,21 @@ const StyledTitle = styled.h2`
   margin: 0 0 1em;
 `;
 
-export const Sidebar = ({ extensions = [], loading, onExtensionClick, onTagClick, onUpload, tags = [] }: Props) => (
+export const Sidebar = ({
+  extensions = [],
+  loading,
+  onExtensionClick,
+  onTagClick,
+  onTagDrop,
+  onUpload,
+  tags = [],
+}: Props) => (
   <StyledContainer>
     <StyledFlexGrowContainer>
       <StyledFilterContainer>
         <StyledTitle>Filters</StyledTitle>
         <FilterList items={extensions} iconType="file" onItemClick={onExtensionClick} />
-        <FilterList items={tags} iconType="tag" onItemClick={onTagClick} />
+        <FilterList items={tags} iconType="tag" onItemClick={onTagClick} onItemDrop={onTagDrop} />
       </StyledFilterContainer>
     </StyledFlexGrowContainer>
     <StyledPartContainer>

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 interface Props {
   assets?: Array<Asset>;
   onDoubleClick: (asset: Asset) => void;
+  onDragStart: (asset: Asset) => void;
   onMediaItemClick: (e: MouseEvent, asset: Asset) => void;
   selectedAssets: Array<Asset>;
   setIsDraggingMediaItem: (value: Boolean) => void;
@@ -69,6 +70,7 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
 export const MediaGrid = ({
   assets = [],
   onDoubleClick,
+  onDragStart,
   onMediaItemClick,
   selectedAssets,
   setIsDraggingMediaItem,
@@ -79,7 +81,10 @@ export const MediaGrid = ({
       return (
         <DraggableMediaItem
           onDragEnd={() => setIsDraggingMediaItem(false)}
-          onDragStart={() => setIsDraggingMediaItem(true)}
+          onDragStart={() => {
+            onDragStart(asset);
+            setIsDraggingMediaItem(true);
+          }}
           selectedAmount={selectedAssets.length}
         >
           <Element

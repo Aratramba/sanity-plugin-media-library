@@ -99,6 +99,12 @@ export const MediaLibrary = ({
     }
   }
 
+  function onDragStart(asset: Asset) {
+    if (!selectedAssets.includes(asset)) {
+      setSelectedAssets([...selectedAssets, asset]);
+    }
+  }
+
   const onDoubleClick = (asset: Asset) =>
     isAssetSource ? (handleSelect ? handleSelect([asset]) : () => {}) : onEdit(asset);
 
@@ -118,6 +124,7 @@ export const MediaLibrary = ({
           <ViewElement
             assets={assets}
             onDoubleClick={onDoubleClick}
+            onDragStart={onDragStart}
             onMediaItemClick={onMediaItemClick}
             selectedAssets={selectedAssets}
             setIsDraggingMediaItem={setIsDraggingMediaItem}

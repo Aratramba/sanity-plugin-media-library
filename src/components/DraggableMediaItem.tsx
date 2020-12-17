@@ -10,7 +10,7 @@ interface Props {
 
 interface MediaDragPreviewProps {
   children: ReactNode;
-  selectedAmount?: number;
+  selectedAmount: number;
 }
 
 const StyledContainer = styled.div`
@@ -78,13 +78,13 @@ export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedA
     <StyledContainer draggable onDragStart={onDragStartHandler} onDragEnd={onDragEndHandler}>
       {children}
       <StyledMediaDragPreviewContainer ref={mediaDragPreviewRef}>
-        <MediaDragPreview selectedAmount={selectedAmount}>{children}</MediaDragPreview>
+        <MediaDragPreview selectedAmount={selectedAmount || 1}>{children}</MediaDragPreview>
       </StyledMediaDragPreviewContainer>
     </StyledContainer>
   );
 };
 
-const MediaDragPreview = ({ children, selectedAmount = 1 }: MediaDragPreviewProps) => (
+const MediaDragPreview = ({ children, selectedAmount }: MediaDragPreviewProps) => (
   <StyledMediaDragPreview>
     {children}
     <StyledSelectedAmount>{selectedAmount}</StyledSelectedAmount>
