@@ -7,11 +7,10 @@
     "sanity.json"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib/ && tsc",
     "dev": "tsc -w"
   },
   "dependencies": {
-    "@sanity/base": "^2.1.2",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
