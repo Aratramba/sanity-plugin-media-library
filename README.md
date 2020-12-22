@@ -80,7 +80,7 @@ export default [AssetSource];
 
 Done, you're ready to go!
 
-## Configuration
+## Configuration / Theming
 After installing the plugin, a config file is automatically created at `config/media-library.json`.
 
 In this file you can set the theme to `light` or `dark` and optionally add themeChanges. For a list of available options see the keys in [/src/themes/darkTheme.ts](/src/themes/darkTheme.ts).
