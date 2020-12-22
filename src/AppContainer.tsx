@@ -1,6 +1,7 @@
 import { App } from './App';
 import { Asset } from './types/Asset';
 import { darkTheme } from './themes/darkTheme';
+import { lightTheme } from './themes/lightTheme';
 import { Modal } from './components/Modal';
 import { ThemeProvider } from 'styled-components';
 import config from 'part:sanity-plugin-media-library/config';
@@ -13,7 +14,7 @@ type Props = {
   tool?: string;
 };
 
-type ThemeOptions = 'dark';
+type ThemeOptions = 'dark' | 'light';
 
 export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props) => (
   <ThemeProvider theme={getTheme()}>
@@ -30,10 +31,11 @@ export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props)
 function getTheme() {
   const themes = {
     dark: darkTheme,
+    light: lightTheme,
   };
 
   if (config.defaultTheme && typeof config.defaultTheme !== 'string') {
-    throw Error(`Default Theme should be one of 'dark'`);
+    throw Error(`Default Theme should be one of ${Object.keys(themes).join(', ')}`);
   }
 
   if (typeof config.theme === 'object') {
