@@ -28,23 +28,21 @@ export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props)
 );
 
 function getTheme() {
-  const defaultTheme = config.defaultTheme || darkTheme;
+  const themes = {
+    dark: darkTheme,
+  };
+
+  if (config.defaultTheme && typeof config.defaultTheme !== 'string') {
+    throw Error(`Default Theme should be one of 'dark'`);
+  }
 
   if (typeof config.theme === 'object') {
+    const defaultTheme = themes[config.defaultTheme as ThemeOptions] || darkTheme;
     return { ...defaultTheme, ...config.theme };
   }
 
   if (typeof config.theme === 'string') {
-    const themes = {
-      dark: darkTheme,
-    };
-
-    if (config.theme in Object.keys(themes)) {
-      const key: ThemeOptions = config.theme;
-      return themes[key];
-    }
-
-    return darkTheme;
+    return themes[config.theme as ThemeOptions] || darkTheme;
   }
 
   return darkTheme;
