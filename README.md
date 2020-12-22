@@ -1,8 +1,6 @@
 # Media Library for Sanity
 
-The missing media library for Sanity.
-With support for filters per tag and mimeType.
-And it's fully themeable.
+The missing media library for Sanity. With support for filters per tag and extension. And it's fully themeable! 🔥
 
 ![Media library in dark theme](https://user-images.githubusercontent.com/2776959/102903827-c528b900-4468-11eb-8aa1-c4f687c6a16f.png)
 
