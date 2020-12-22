@@ -5,10 +5,6 @@
   "license": "MIT",
   "author": "Dennis Passway",
   "main": "lib/index.js",
-  "files": [
-    "lib/",
-    "sanity.json"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/dennispassway/sanity-plugin-media-library.git"
@@ -31,7 +27,8 @@
   ],
   "scripts": {
     "build": "rimraf lib && tsc",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "styled-components": "^5.2.1"
