@@ -8,10 +8,6 @@
       "name": "part:sanity-plugin-media-library/asset-source",
       "implements": "part:@sanity/form-builder/input/image/asset-source",
       "path": "./lib/index.js"
-    },
-    {
-      "name": "part:sanity-plugin-media-library/config",
-      "path": "./lib/config.js"
     }
   ]
 }

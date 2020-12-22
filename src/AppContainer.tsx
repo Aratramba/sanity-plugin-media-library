@@ -3,8 +3,8 @@ import { Asset } from './types/Asset';
 import { darkTheme } from './themes/darkTheme';
 import { lightTheme } from './themes/lightTheme';
 import { Modal } from './components/Modal';
+import { theme, themeChanges } from './config';
 import { ThemeProvider } from 'styled-components';
-import config from 'part:sanity-plugin-media-library/config';
 import React from 'react';
 
 type Props = {
@@ -34,18 +34,11 @@ function getTheme() {
     light: lightTheme,
   };
 
-  if (config.defaultTheme && typeof config.defaultTheme !== 'string') {
-    throw Error(`Default Theme should be one of ${Object.keys(themes).join(', ')}`);
-  }
+  const themeToUse = themes[theme as ThemeOptions];
 
-  if (typeof config.theme === 'object') {
-    const defaultTheme = themes[config.defaultTheme as ThemeOptions] || darkTheme;
-    return { ...defaultTheme, ...config.theme };
+  if (themeChanges && Object.keys(themeChanges).length) {
+    return { ...themeToUse, ...themeChanges };
+  } else {
+    return themeToUse;
   }
-
-  if (typeof config.theme === 'string') {
-    return themes[config.theme as ThemeOptions] || darkTheme;
-  }
-
-  return darkTheme;
 }
