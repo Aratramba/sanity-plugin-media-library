@@ -33,6 +33,52 @@ The missing media library for Sanity. With support for filters per tag and exten
   - Comes with a dark and light theme, both are fully customizable.
 
 ## Installation
+In your projects directory run :
+
+```
+yarn add sanity-plugin-media-library
+```
+
+or
+
+```
+npm install --save sanity-plugin-media-library
+```
+
+### Adding the library
+In your `sanity.json` add it to the list of plugins:
+
+```json
+{
+  "plugins": [
+    "@sanity/base",
+    "@sanity/components",
+    "@sanity/default-layout",
+    "@sanity/default-login",
+    "@sanity/desk-tool",
+    "sanity-plugin-media-library"
+  ]
+}
+```
+
+### Adding the asset source
+In your `sanity.json` add the following to the `parts` array:
+
+```json
+{
+  "implements": "part:@sanity/form-builder/input/image/asset-source",
+  "path": "./assetSource.js"
+}
+```
+
+And in `assetSource.js` add:
+
+```javascript
+import AssetSource from "part:sanity-plugin-media-library/asset-source";
+export default [AssetSource];
+```
+
+Done, you're ready to go!
 
 ## Configuration
 After installing the plugin, a config file is automatically created at `config/media-library.json`.
