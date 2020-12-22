@@ -56,7 +56,7 @@ In your `sanity.json` add it to the list of plugins:
     "@sanity/default-layout",
     "@sanity/default-login",
     "@sanity/desk-tool",
-    "sanity-plugin-media-library"
+    "media-library"
   ]
 }
 ```
