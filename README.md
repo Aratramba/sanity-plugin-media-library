@@ -4,6 +4,10 @@ The missing media library for Sanity.
 With support for filters per tag and mimeType.
 And it's fully themeable.
 
+![Media library in dark theme](https://user-images.githubusercontent.com/2776959/102903827-c528b900-4468-11eb-8aa1-c4f687c6a16f.png)
+
+![Media library in light theme](https://user-images.githubusercontent.com/2776959/102904010-0751fa80-4469-11eb-9980-eb45282c6f2a.png)
+
 ## Features
 - Media library appears in CMS navigation
 - Support for images and files
