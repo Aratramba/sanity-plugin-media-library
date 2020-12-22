@@ -17,7 +17,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledOverlay = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.modalOverlayBackgroundColor};
   cursor: pointer;
   height: 100%;
   left: 0;
@@ -28,8 +28,8 @@ const StyledOverlay = styled.div`
 `;
 
 const StyledModal = styled.div<{ full?: Boolean }>`
-  background-color: #111;
-  box-shadow: 0 2px 10px #000;
+  background-color: ${({ theme }) => theme.modalBackgroundColor};
+  box-shadow: 0 2px 10px ${({ theme }) => theme.modalBoxShadowColor};
   height: ${({ full }) => (full ? 'calc(100% - 200px)' : 'auto')};
   left: 50%;
   max-width: ${({ full }) => (full ? 'calc(100% - 200px)' : '400px')};

@@ -16,9 +16,9 @@ const StyledContainer = styled.label`
 `;
 
 const StyledLabel = styled.span`
-  color: #fff;
+  color: ${({ theme }) => theme.inputLabelColor};
   display: block;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 16px;
   font-weight: 500;
   line-height: 1.1;
@@ -27,11 +27,11 @@ const StyledLabel = styled.span`
 `;
 
 const StyledInput = styled.input`
-  background-color: #333;
-  border-radius: 2px;
+  background-color: ${({ theme }) => theme.inputBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
   border: 0;
-  color: #fff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: ${({ theme }) => theme.inputTextColor};
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 16px;
   line-height: 1.1;
   outline: 0;

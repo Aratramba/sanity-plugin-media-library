@@ -18,7 +18,7 @@ const StyledContainer = styled.div`
   width: 20px;
 
   & svg {
-    fill: #fff;
+    fill: ${({ theme }) => theme.loaderColor};
     height: 20px;
     width: 20px;
   }

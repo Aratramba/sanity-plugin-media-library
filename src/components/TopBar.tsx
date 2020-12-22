@@ -16,7 +16,7 @@ interface Props {
 
 const StyledContainer = styled.div`
   align-items: center;
-  border-bottom: solid 1px #222;
+  border-bottom: solid 1px ${({ theme }) => theme.topBarBorderColor};
   display: flex;
   justify-content: space-between;
   padding: 40px;
@@ -40,7 +40,7 @@ const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
   width: 20px;
 
   & svg {
-    fill: ${({ isActive }) => (isActive ? '#fff' : '#666')};
+    fill: ${({ isActive, theme }) => (isActive ? theme.topBarButtonActiveColor : theme.topBarButtonInactiveColor)};
     height: 20px;
     width: 20px;
   }

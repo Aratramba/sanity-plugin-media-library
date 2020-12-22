@@ -9,13 +9,13 @@ interface Props {
 
 const StyledContainer = styled.label`
   align-items: center;
-  background-color: #333;
-  border-radius: 2px;
+  background-color: ${({ theme }) => theme.inputBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
   display: flex;
   padding: 8px;
 
   & svg {
-    fill: #666;
+    fill: ${({ theme }) => theme.inputIconColor};
     height: 20px;
     margin-right: 10px;
     width: 20px;
@@ -25,8 +25,8 @@ const StyledContainer = styled.label`
 const StyledInput = styled.input`
   background-color: transparent;
   border: 0;
-  color: #fff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: ${({ theme }) => theme.inputTextColor};
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   line-height: 1.1;
   outline: 0;

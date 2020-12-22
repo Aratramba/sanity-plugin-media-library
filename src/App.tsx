@@ -19,8 +19,8 @@ type Props = {
 };
 
 const StyledContainer = styled.div`
-  background-color: #000;
-  color: #ffffff;
+  background-color: ${({ theme }) => theme.appBackgroundColor};
+  color: ${({ theme }) => theme.appTextColor};
   height: 100%;
   left: 0;
   position: absolute;

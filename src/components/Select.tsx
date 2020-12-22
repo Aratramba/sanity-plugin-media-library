@@ -10,14 +10,14 @@ interface Props {
 
 const StyledContainer = styled.label`
   align-items: center;
-  background-color: #333;
-  border-radius: 2px;
+  background-color: ${({ theme }) => theme.inputBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
   cursor: pointer;
   display: flex;
   position: relative;
 
   & svg {
-    fill: #666;
+    fill: ${({ theme }) => theme.inputIconColor};
     height: 20px;
     pointer-events: none;
     position: absolute;
@@ -32,8 +32,8 @@ const StyledSelect = styled.select`
   appearance: none;
   background-color: transparent;
   border: 0;
-  color: #fff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: ${({ theme }) => theme.inputTextColor};
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   line-height: 1.1;
   outline: 0;

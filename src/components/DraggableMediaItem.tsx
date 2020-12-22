@@ -31,9 +31,9 @@ const StyledMediaDragPreviewContainer = styled.div`
 `;
 
 const StyledMediaDragPreview = styled.div`
-  background-color: #000;
-  border-radius: 2px;
-  border: solid 4px #ffe900;
+  background-color: ${({ theme }) => theme.draggableMediaItemBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  border: solid 4px ${({ theme }) => theme.draggableMediaItemBorderColor};
   height: 150px;
   overflow: hidden;
   position: relative;
@@ -46,11 +46,11 @@ const StyledMediaDragPreview = styled.div`
 
 const StyledSelectedAmount = styled.div`
   align-items: center;
-  background-color: #ffe900;
+  background-color: ${({ theme }) => theme.draggableMediaItemAmountBackgroundColor};
   border-radius: 50%;
-  color: #000;
+  color: ${({ theme }) => theme.draggableMediaItemAmountColor};
   display: flex;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 16px;
   font-weight: 600;
   height: 50px;
@@ -66,7 +66,7 @@ const StyledSelectedAmount = styled.div`
 
 const StyledIconContainer = styled.div`
   align-items: center;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
   display: flex;
   flex-direction: column;
   height: 150px;
@@ -75,7 +75,7 @@ const StyledIconContainer = styled.div`
   width: 150px;
 
   & svg {
-    fill: #666;
+    fill: ${({ theme }) => theme.mediaItemIconColor}
     height: 75%;
     width: 75%;
   }

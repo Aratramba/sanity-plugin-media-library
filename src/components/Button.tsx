@@ -13,12 +13,14 @@ type Props = {
 };
 
 const StyledButton = styled.button<{ disabled?: Boolean; grow?: Boolean; secondary?: Boolean }>`
-  background-color: ${({ secondary }) => (secondary ? 'transparent' : '#FFE900')};
-  border-radius: 2px;
-  border: solid 1px ${({ secondary }) => (secondary ? '#666' : '#FFE900')};
+  background-color: ${({ secondary, theme }) =>
+    secondary ? theme.buttonSecondaryBackgroundColor : theme.buttonPrimaryBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  border: solid 1px
+    ${({ secondary, theme }) => (secondary ? theme.buttonSecondaryBorderColor : theme.buttonPrimaryBorderColor)};
   cursor: pointer;
-  color: ${({ secondary }) => (secondary ? '#666' : '#000')};
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: ${({ secondary, theme }) => (secondary ? theme.buttonSecondaryColor : theme.buttonPrimaryColor)};
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 16px;
   font-weight: 500;
   line-height: 1.1;

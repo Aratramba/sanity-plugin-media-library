@@ -22,9 +22,9 @@ interface MediaRowProps extends Asset {
 
 const StyledHeader = styled.header`
   align-items: center;
-  border-bottom: solid 1px #222;
+  border-bottom: solid 1px ${({ theme }) => theme.mediaListBorderColor};
   display: grid;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   font-weight: 500;
   grid-gap: 15px;
@@ -35,10 +35,10 @@ const StyledHeader = styled.header`
 
 const StyledRow = styled.div<{ selected?: Boolean }>`
   align-items: center;
-  border-left: ${({ selected }) => (selected ? 'solid 2px #FFE900' : '0')};
+  border-left: ${({ selected, theme }) => (selected ? `solid 2px ${theme.mediaListSelectedBorderColor}` : '0')};
   cursor: pointer;
   display: grid;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   font-weight: 400;
   grid-gap: 15px;
@@ -47,7 +47,7 @@ const StyledRow = styled.div<{ selected?: Boolean }>`
   padding: 20px 40px;
 
   &:not(:last-child) {
-    border-bottom: solid 1px #222;
+    border-bottom: solid 1px ${({ theme }) => theme.mediaListBorderColor};
   }
 
   & > :nth-child(2) {
@@ -56,7 +56,7 @@ const StyledRow = styled.div<{ selected?: Boolean }>`
 `;
 
 const StyledThumbnailContainer = styled.div`
-  border-radius: 2px;
+  border-radius: ${({ theme }) => theme.appBorderRadius};
   display: block;
   flex-shrink: 0;
   height: 100px;
@@ -77,7 +77,7 @@ const StyledImage = styled.img`
 
 const StyledFile = styled.div`
   align-items: center;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -90,7 +90,7 @@ const StyledFile = styled.div`
   width: 100%;
 
   & svg {
-    fill: #666;
+    fill: ${({ theme }) => theme.mediaItemIconColor};
     height: 24px;
     width: 24px;
   }

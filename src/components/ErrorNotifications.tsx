@@ -10,11 +10,11 @@ const StyledContainer = styled.div`
 `;
 
 const StyledNotification = styled.div`
-  background-color: red;
-  border-radius: 2px;
-  color: #fff;
+  background-color: ${({ theme }) => theme.errorNotificationBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  color: ${({ theme }) => theme.errorNotifcationTextColor};
   display: flex;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   font-weight: 400;
   line-height: 1.4;
@@ -38,7 +38,7 @@ const Closebutton = styled.button`
   width: 20px;
 
   & svg {
-    fill: #fff;
+    fill: ${({ theme }) => theme.errorNotificationCloseColor};
     height: 20px;
     width: 20px;
   }

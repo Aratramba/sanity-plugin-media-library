@@ -20,7 +20,7 @@ interface Props {
 
 const StyledFormContainer = styled.form`
   & > :not(:last-child) {
-    border-bottom: solid 1px #222;
+    border-bottom: solid 1px ${({ theme }) => theme.assetModalBorderColor};
     margin: 0 0 20px;
     padding: 0 0 20px;
   }
@@ -31,7 +31,7 @@ const StyledImageInfoContainer = styled.div`
 `;
 
 const StyledThumbnailContainer = styled.div`
-  border-radius: 2px;
+  border-radius: ${({ theme }) => theme.appBorderRadius};
   display: block;
   flex-shrink: 0;
   height: 100px;
@@ -52,7 +52,7 @@ const StyledImage = styled.img`
 
 const StyledFile = styled.div`
   align-items: center;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -65,21 +65,21 @@ const StyledFile = styled.div`
   width: 100%;
 
   & svg {
-    fill: #666;
+    fill: ${({ theme }) => theme.mediaItemIconColor};
     height: 24px;
     width: 24px;
   }
 `;
 
 const StyledInfoContainer = styled.div`
-  color: #aaa;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: ${({ theme }) => theme.assetModalInfoTextColor};
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   font-weight: 400;
   line-height: 1.4;
 
   & strong {
-    color: #fff;
+    color: ${({ theme }) => theme.assetModalInfoTitleColor};
     display: block;
     font-weight: 500;
     margin: 0 0 1em;

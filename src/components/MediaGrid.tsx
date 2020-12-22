@@ -31,14 +31,14 @@ const StyledContainer = styled.div`
 
 const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   align-items: center;
-  background-color: #333;
-  border-radius: 2px;
-  border: ${({ selected }) => (selected ? 'solid 4px #FFE900' : '0')};
-  color: #fff;
+  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  border: ${({ selected, theme }) => (selected ? `solid 4px ${theme.mediaGridSelectedBorderColor}` : '0')};
+  color: ${({ theme }) => theme.mediaItemTextColor};
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   font-weight: 500;
   height: 150px;
@@ -60,7 +60,7 @@ const StyledMediaItem = styled.div<{ selected?: Boolean }>`
   }
 
   & svg {
-    fill: #666;
+    fill: ${({ theme }) => theme.mediaItemIconColor};
     height: 24px;
     margin: 0 0 8px;
     width: 24px;

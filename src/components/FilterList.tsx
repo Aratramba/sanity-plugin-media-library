@@ -25,10 +25,10 @@ const StyledButton = styled.button<{ isActive?: Boolean }>`
   align-items: center;
   background-color: transparent;
   border: 0;
-  color: ${({ isActive }) => (isActive ? '#fff' : '#666')};
+  color: ${({ isActive, theme }) => (isActive ? theme.filterListActiveColor : theme.filterListInactiveColor)};
   cursor: pointer;
   display: flex;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 14px;
   font-weight: 500;
   line-height: 1.1;

@@ -16,7 +16,7 @@ interface Props {
 }
 
 const StyledContainer = styled.div`
-  background-color: #000;
+  background-color: ${({ theme }) => theme.sidebarBackgroundColor};
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -35,11 +35,11 @@ const StyledFilterContainer = styled.div`
   height: 100%;
   left: 0;
   overflow-y: scroll;
+  padding: 40px;
   position: absolute;
   scrollbar-width: none; /* Firefox */
   top: 0;
   width: 100%;
-  padding: 40px;
 
   &::-webkit-scrollbar {
     display: none;

@@ -19,7 +19,7 @@ const StyledContainer = styled.div`
 
 const StyledContentContainer = styled.div`
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: ${({ theme }) => theme.uploadDropAreaBackgroundColor};
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@ const StyledContentContainer = styled.div`
   z-index: 2000;
 
   & svg {
-    fill: #fff;
+    fill: ${({ theme }) => theme.uploadDropAreaIconColor};
     height: 56px;
     margin: 0 0 16px;
     width: 56px;

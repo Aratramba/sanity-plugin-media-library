@@ -16,7 +16,7 @@ interface BottomBarProps {
 
 const StyledContainer = styled.div`
   align-items: center;
-  border-top: solid 1px #222;
+  border-top: solid 1px ${({ theme }) => theme.bottomBarBorderColor};
   display: flex;
   justify-content: space-between;
   padding: 40px;
