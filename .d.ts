@@ -1,2 +1,2 @@
 declare module 'part:@sanity/*';
-declare module 'part:sanity-plugin-media-library/config';
+declare module 'part:sanity-plugin-media-library/*';
