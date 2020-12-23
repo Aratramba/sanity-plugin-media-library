@@ -53,7 +53,7 @@ or
 npm install --save sanity-plugin-media-library
 ```
 
-### Adding the library
+#### Adding the library
 In your `sanity.json` add it to the list of plugins:
 
 ```json
