@@ -33,7 +33,15 @@ The missing media library for Sanity. With support for filters per tag and exten
   - Comes with a dark and light theme, both are fully customizable.
 
 ## Installation
-In your projects directory run :
+
+### Automagically
+In your Sanity project's directory run :
+
+```
+sanity install media-library
+```
+
+### Manually
 
 ```
 yarn add sanity-plugin-media-library
@@ -61,7 +69,8 @@ In your `sanity.json` add it to the list of plugins:
 }
 ```
 
-### Adding the asset source
+## Installing as asset source
+Using the media library as an asset source requires a little more configuration.
 In your `sanity.json` add the following to the `parts` array:
 
 ```json
