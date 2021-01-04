@@ -1,6 +1,6 @@
 import React from 'react';
+import { Geopoint } from 'src/types/Asset';
 import styled from 'styled-components';
-
 interface Props {
   label: string;
   onChange: (value: string) => void;
@@ -13,6 +13,22 @@ const StyledContainer = styled.label`
   cursor: pointer;
   display: block;
   width: 100%;
+`;
+
+const StyledWrapper = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+
+  > ${styled.span} {
+    font-size: 14px;
+    margin: 0;
+  }
+  > ${styled.input} {
+    margin-left: 16px;
+  }
 `;
 
 const StyledLabel = styled.span`
@@ -45,3 +61,36 @@ export const LabelWithInput = ({ label, onChange, placeholder, value = '', type 
     <StyledInput onChange={(e) => onChange(e.target.value)} placeholder={placeholder} value={value} type={type} />
   </StyledContainer>
 );
+
+interface LocationProps {
+  label: string;
+  onChange: (value: (Geopoint | ((prevState: Geopoint) => Geopoint))) => void
+  value?: Geopoint | undefined;
+}
+
+export const LabelWithLocationInput = ({ label, onChange, value = { lat: undefined, lng: undefined, alt: undefined } }: LocationProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    onChange(prevState => ({
+        ...prevState,
+        [name]: parseFloat(value)
+    }))
+  }
+  return (
+    <StyledContainer>
+      <StyledLabel>{label}</StyledLabel>
+      <StyledWrapper>
+        <StyledLabel>Latitude</StyledLabel>
+        <StyledInput name="lat" onChange={handleChange} value={value.lat || ''} type="number" step="any" />
+      </StyledWrapper>
+      <StyledWrapper>
+        <StyledLabel>Longitude</StyledLabel>
+        <StyledInput name="lng" onChange={handleChange} value={value.lng || ''} type="number" step="any" />
+      </StyledWrapper>
+      <StyledWrapper>
+        <StyledLabel>Altitude</StyledLabel>
+        <StyledInput name="alt" onChange={handleChange} value={value.alt || ''} type="number" step="any" />
+      </StyledWrapper>
+    </StyledContainer>
+  )
+};
