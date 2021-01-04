@@ -108,6 +108,7 @@ export const MediaList = ({
     <MediaListHeader />
     {assets.map((asset) => (
       <DraggableMediaItem
+        key={asset._id}
         _type={asset._type}
         onDragEnd={() => setIsDraggingMediaItem(false)}
         onDragStart={() => {
