@@ -87,6 +87,10 @@ const StyledInfoContainer = styled.div`
 `;
 
 const StyledInputsContainer = styled.div`
+  padding-right: 8px !important;
+  max-height: 300px;
+  overflow: hidden scroll;
+
   & > :not(:last-child) {
     margin: 0 0 20px;
   }

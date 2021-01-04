@@ -22,11 +22,12 @@ const StyledWrapper = styled.div`
   width: 100%;
   margin-bottom: 8px;
 
-  > ${styled.span} {
+  & > span {
     font-size: 14px;
     margin: 0;
+    opacity: 0.8;
   }
-  > ${styled.input} {
+  & > input {
     margin-left: 16px;
   }
 `;
