@@ -5,6 +5,7 @@ import { Icon } from './Icon';
 import { LabelWithInput, LabelWithLocationInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
+import { assetFields } from '../config';
 import client from 'part:@sanity/base/client';
 import React, { Fragment, FormEvent, useState } from 'react';
 import styled from 'styled-components';
@@ -77,7 +78,7 @@ const StyledInfoContainer = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 1.4;
-
+˝
   & strong {
     color: ${({ theme }) => theme.assetModalInfoTitleColor};
     display: block;
@@ -106,13 +107,15 @@ const StyledButtonsContainer = styled.div`
 `;
 
 export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
-  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url, location } = asset;
+  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, title, size, tags, url, location, attribution } = asset;
   const { height, width } = metadata?.dimensions || {};
+  const [localTitle, setLocalTitle] = useState<string>(title || originalFilename);
   const [localAlt, setLocalAlt] = useState<string>(alt || '');
+  const [localAttribution, setLocalAttribution] = useState<string>(attribution || '');
   const [localLocation, setLocalLocation] = useState<Geopoint>(location || {});
   const [localTags, setLocalTags] = useState<string>((tags || []).join(',') || '');
 
-  const isChanged = localAlt !== (alt || '') || localLocation !== (location || {}) || localTags !== (tags?.join(',') || '');
+  const isChanged = localTitle !== (title || '') || localAlt !== (alt || '') || localLocation !== (location || {}) || localAttribution !== (attribution || '') || localTags !== (tags?.join(',') || '');
 
   async function handleSubmit(e: FormEvent) {
     try {
@@ -127,11 +130,13 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
         return onClose();
       }
 
+      const title = localTitle
       const alt = localAlt;
       const location = localLocation;
+      const attribution = localAttribution;
       const tags = localTags.split(',').map((v) => v.trim());
 
-      await client.patch(_id).set({ alt, location, tags }).commit();
+      await client.patch(_id).set({ title, alt, location, attribution, tags }).commit();
       onSaveComplete();
     } catch (e) {
       handleError(e);
@@ -154,8 +159,8 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
             )}
           </StyledThumbnailContainer>
           <StyledInfoContainer>
-            <strong>{originalFilename}</strong>
-            {formatDate(_createdAt)}
+            <strong>{localTitle || originalFilename}</strong>
+            <br />{formatDate(_createdAt)}
             <br />
             {width && height && (
               <Fragment>
@@ -168,7 +173,15 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
         </StyledImageInfoContainer>
 
         <StyledInputsContainer>
-          {_type === 'sanity.imageAsset' && (
+          {assetFields.title && (
+            <LabelWithInput
+            label="Title"
+            onChange={setLocalTitle}
+            placeholder={!localTitle ? 'No title yet...' : undefined}
+            value={localTitle}
+            />
+          )}
+          {_type === 'sanity.imageAsset' && assetFields.alt && (
             <LabelWithInput
               label="Alt text"
               onChange={setLocalAlt}
@@ -176,17 +189,29 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
               value={localAlt}
             />
           )}
-          <LabelWithLocationInput
-            label="Location"
-            onChange={setLocalLocation}
-            value={localLocation}
-          />
-          <LabelWithInput
-            label="Tags"
-            onChange={setLocalTags}
-            placeholder={!localTags ? 'No tags yet...' : undefined}
-            value={localTags}
-          />
+          {assetFields.attribution && (
+            <LabelWithInput
+              label="Attribution"
+              onChange={setLocalAttribution}
+              placeholder={!localTitle ? 'No attribution yet...' : undefined}
+              value={localAttribution}
+            />
+          )}
+          {assetFields.location && (
+            <LabelWithLocationInput
+              label="Location"
+              onChange={setLocalLocation}
+              value={localLocation}
+            />
+          )}
+          {assetFields.location && (
+            <LabelWithInput
+              label="Tags"
+              onChange={setLocalTags}
+              placeholder={!localTags ? 'No tags yet...' : undefined}
+              value={localTags}
+            />
+          )}
         </StyledInputsContainer>
 
         <StyledButtonsContainer>

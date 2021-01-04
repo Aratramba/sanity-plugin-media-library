@@ -96,6 +96,7 @@ export const MediaGrid = ({
             onDoubleClick={() => onDoubleClick(asset)}
             selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
             {...asset}
+            title={asset.title || asset.originalFilename}
           />
         </DraggableMediaItem>
       );
@@ -109,9 +110,9 @@ const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: MediaItemProp
   </StyledMediaItem>
 );
 
-const FileItem = ({ originalFilename, onClick, onDoubleClick, selected }: MediaItemProps) => (
+const FileItem = ({ title, onClick, onDoubleClick, selected }: MediaItemProps) => (
   <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
     <Icon type="file" />
-    <div>{originalFilename}</div>
+    <div>{title}</div>
   </StyledMediaItem>
 );

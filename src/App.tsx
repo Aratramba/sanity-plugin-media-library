@@ -58,9 +58,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
     if (searchQuery && searchQuery !== '') {
       newFilteredAssets = newFilteredAssets.filter(
-        ({ alt, originalFilename, tags }) =>
+        ({ alt, originalFilename, title, attribution, tags }) =>
           originalFilename.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
+          (title || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
           (alt || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
+          (attribution || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
           (tags?.join(',') || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
       );
     }
@@ -78,11 +80,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
 
     if (sort === 'az') {
-      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? -1 : 1));
+      newFilteredAssets.sort((a, b) => ((a.title || a.originalFilename).localeCompare((b.title || b.originalFilename)) ? -1 : 1));
     }
 
     if (sort === 'za') {
-      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? 1 : -1));
+      newFilteredAssets.sort((a, b) => ((a.title || a.originalFilename).localeCompare((b.title || b.originalFilename)) ? 1 : -1));
     }
 
     setFilteredAssets(newFilteredAssets);
@@ -112,7 +114,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
       setLoading(true);
       const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
       const newAssets: Array<Asset> = await client.fetch(
-        `*[_type in [${types}]] { _createdAt, _id, _type, alt, location, extension, metadata, originalFilename, size, tags, url }`,
+        `*[_type in [${types}]] { _createdAt, _id, _type, alt, location, attribution, extension, metadata, originalFilename, title, size, tags, url }`,
         {}
       );
       setAssets(newAssets);

@@ -38,7 +38,7 @@ export const SearchBar = ({ searchQuery, setSearchQuery }: Props) => (
     <StyledInput
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
-      placeholder="Search by alt, tags or filename"
+      placeholder="Search by title, alt, attribution, tags or filename"
       type="search"
     />
   </StyledContainer>
