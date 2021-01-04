@@ -1,5 +1,10 @@
 export type AssetType = 'sanity.imageAsset' | 'sanity.fileAsset';
 
+export type Geopoint = {
+  lat?: number
+  lng?: number
+  alt?: number
+}
 export interface Asset {
   _createdAt: string;
   _id: string;
@@ -14,6 +19,7 @@ export interface Asset {
   };
   originalFilename: string;
   size: number;
+  location?: Geopoint;
   tags?: Array<string>;
   url: string;
 }

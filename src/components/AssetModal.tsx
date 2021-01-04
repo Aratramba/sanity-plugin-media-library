@@ -1,8 +1,8 @@
-import { Asset } from '../types/Asset';
+import { Asset, Geopoint } from '../types/Asset';
 import { Button } from './Button';
 import { formatDate, formatSize } from '../shared/utils';
 import { Icon } from './Icon';
-import { LabelWithInput } from './LabelWithInput';
+import { LabelWithInput, LabelWithLocationInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
 import client from 'part:@sanity/base/client';
@@ -102,12 +102,13 @@ const StyledButtonsContainer = styled.div`
 `;
 
 export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
-  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url } = asset;
+  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url, location } = asset;
   const { height, width } = metadata?.dimensions || {};
   const [localAlt, setLocalAlt] = useState<string>(alt || '');
+  const [localLocation, setLocalLocation] = useState<Geopoint>(location || {});
   const [localTags, setLocalTags] = useState<string>((tags || []).join(',') || '');
 
-  const isChanged = localAlt !== (alt || '') || localTags !== (tags?.join(',') || '');
+  const isChanged = localAlt !== (alt || '') || localLocation !== (location || {}) || localTags !== (tags?.join(',') || '');
 
   async function handleSubmit(e: FormEvent) {
     try {
@@ -123,9 +124,10 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
       }
 
       const alt = localAlt;
+      const location = localLocation;
       const tags = localTags.split(',').map((v) => v.trim());
 
-      await client.patch(_id).set({ alt, tags }).commit();
+      await client.patch(_id).set({ alt, location, tags }).commit();
       onSaveComplete();
     } catch (e) {
       handleError(e);
@@ -170,6 +172,11 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
               value={localAlt}
             />
           )}
+          <LabelWithLocationInput
+            label="Location"
+            onChange={setLocalLocation}
+            value={localLocation}
+          />
           <LabelWithInput
             label="Tags"
             onChange={setLocalTags}
