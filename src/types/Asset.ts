@@ -18,8 +18,10 @@ export interface Asset {
     };
   };
   originalFilename: string;
+  title?: string;
   size: number;
   location?: Geopoint;
+  attribution?: string;
   tags?: Array<string>;
   url: string;
 }

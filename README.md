@@ -12,6 +12,7 @@ The missing media library for Sanity. With support for filters per tag and exten
 - View/Edit your assets in once single place:
   - View asset details
   - Add alt tags to your image in a central place
+  - Add location and attribution information, change title
 - Grid view and list view (with more details):
   - Sort by latest or alphabetically
   - Search by alt, tag, or file name
@@ -31,6 +32,8 @@ The missing media library for Sanity. With support for filters per tag and exten
 - Quick action: Double click an asset to trigger it's primary action
 - Customizable theme:
   - Comes with a dark and light theme, both are fully customizable.
+- Customizable interface
+  - Hide unused asset fields
 
 ## Installation
 
