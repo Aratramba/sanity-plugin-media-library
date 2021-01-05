@@ -114,7 +114,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
       setLoading(true);
       const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
       const newAssets: Array<Asset> = await client.fetch(
-        `*[_type in [${types}]] { _createdAt, _id, _type, alt, location, attribution, extension, metadata, originalFilename, title, size, tags, url }`,
+        `*[_type in [${types}]] { _createdAt, _id, _type, alt, location, attribution, extension, metadata, originalFilename, title, size, tags, url, attributes }`,
         {}
       );
       setAssets(newAssets);

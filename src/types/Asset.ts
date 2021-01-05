@@ -5,6 +5,10 @@ export type Geopoint = {
   lng?: number
   alt?: number
 }
+
+export type Attributes = {
+  [_id: string]: string | boolean | number | undefined
+}
 export interface Asset {
   _createdAt: string;
   _id: string;
@@ -24,4 +28,5 @@ export interface Asset {
   attribution?: string;
   tags?: Array<string>;
   url: string;
+  attributes: Attributes
 }

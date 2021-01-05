@@ -1,13 +1,30 @@
 import React from 'react';
 import { Geopoint } from 'src/types/Asset';
 import styled from 'styled-components';
+
 interface Props {
   label: string;
-  onChange: (value: string) => void;
   placeholder?: string;
-  type?: 'text';
-  value?: string | number | readonly string[] | undefined;
+  onChange: (value: any) => void;
+  value?: string | number | boolean | readonly string[] | undefined;
 }
+interface PropsText extends Props {
+  type?: 'text' | 'textarea';
+  onChange: (value: string) => void;
+  value?: string | readonly string[] | undefined;
+}
+interface PropsNumber extends Props {
+  onChange: (value: number) => void;
+  value?: number;
+    max?: number;
+    min?: number;
+    step?: number | 'any';
+}
+interface PropsCheckbox extends Props {
+  onChange: (value: boolean) => void;
+  value?: boolean | undefined;
+}
+
 
 const StyledContainer = styled.label`
   cursor: pointer;
@@ -15,20 +32,22 @@ const StyledContainer = styled.label`
   width: 100%;
 `;
 
-const StyledWrapper = styled.div`
-  cursor: pointer;
+const StyledContainerRow = styled(StyledContainer)`
   display: flex;
   align-items: center;
-  width: 100%;
+
+  & > input {
+    margin-left: 16px;
+  }
+`;
+
+const StyledWrapper = styled(StyledContainerRow)`
   margin-bottom: 8px;
 
   & > span {
     font-size: 14px;
     margin: 0;
     opacity: 0.8;
-  }
-  & > input {
-    margin-left: 16px;
   }
 `;
 
@@ -56,11 +75,39 @@ const StyledInput = styled.input`
   width: 100%;
 `;
 
-export const LabelWithInput = ({ label, onChange, placeholder, value = '', type = 'text' }: Props) => (
+const StyledTextarea = styled.textarea`
+  background-color: ${({ theme }) => theme.inputBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  border: 0;
+  color: ${({ theme }) => theme.inputTextColor};
+  font-family: ${({ theme }) => theme.appFontFamily};
+  font-size: 16px;
+  line-height: 1.1;
+  outline: 0;
+  padding: 16px;
+  width: 100%;
+`;
+
+export const LabelWithInput = ({ label, onChange, placeholder, value = '', type = 'text'}: PropsText) => (
   <StyledContainer>
     <StyledLabel>{label}</StyledLabel>
-    <StyledInput onChange={(e) => onChange(e.target.value)} placeholder={placeholder} value={value} type={type} />
+    {type === 'textarea'
+      ? <StyledTextarea onChange={(e) => onChange(e.target.value)} value={value} placeholder={placeholder} />
+      : <StyledInput onChange={(e) => onChange(e.target.value)} placeholder={placeholder} value={value} type={type} />
+    }
   </StyledContainer>
+);
+export const LabelWithNumericalInput = ({ label, onChange, placeholder, value,  min, max, step}: PropsNumber) => (
+  <StyledContainer>
+    <StyledLabel>{label}</StyledLabel>
+    <StyledInput onChange={(e) => onChange(parseFloat(e.target.value))} placeholder={placeholder} value={value} type='number' min={min} max={max} step={step}/>
+  </StyledContainer>
+);
+export const LabelWithCheckbox = ({ label, onChange, value = undefined }: PropsCheckbox) => (
+  <StyledContainerRow>
+    <StyledLabel>{label}</StyledLabel>
+    <input onChange={(e) => onChange(e.target.checked)} checked={value} type='checkbox' />
+  </StyledContainerRow>
 );
 
 interface LocationProps {
@@ -78,7 +125,7 @@ export const LabelWithLocationInput = ({ label, onChange, value = { lat: undefin
     }))
   }
   return (
-    <StyledContainer>
+    <StyledContainer as="div">
       <StyledLabel>{label}</StyledLabel>
       <StyledWrapper>
         <StyledLabel>Latitude</StyledLabel>
