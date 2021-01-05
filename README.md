@@ -33,6 +33,7 @@ The missing media library for Sanity. With support for filters per tag and exten
 - Customizable theme:
   - Comes with a dark and light theme, both are fully customizable.
 - Customizable interface
+  - Define custom fields (text, number, checkbox, textarea are currently supported)
   - Hide unused asset fields
 
 ## Installation
@@ -112,6 +113,41 @@ Example with themeChanges:
     "bottomBarBorderColor": "hotpink",
     "buttonPrimaryBorderColor": "hotpink"
   }
+}
+```
+
+Example with asset fields listed and custom fields added:
+```json
+{
+  "theme": "dark",
+  "themeChanges": {},
+  "assetFields": {
+    title: true,
+    alt: true,
+    location: true,
+    attribution: true,
+    tags: true
+  },
+  "customAssetFields": [
+    {
+      "name": "description",
+      "label": "Additional description",
+      "type": "textarea"
+    },
+    {
+      "name": "decade",
+      "label": "Decade when photo captured",
+      "type": "number",
+      "min": 1800,
+      "max": 2200,
+      "step": 10
+    },
+    {
+      "name": "premiumPhoto",
+      "label": "Is a premium photo",
+      "type": "checkbox"
+    }
+  ]
 }
 ```
 
