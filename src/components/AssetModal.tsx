@@ -160,7 +160,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
   function renderAttributes(attribute: CustomAssetField) {
     const handleChange = (value: any) => setLocalAttributes(prevState => ({
       ...prevState,
-      [attribute.name]: attribute.type === 'number' && value ? parseFloat(value) : value
+      [attribute.name]: value
     }))
     switch(attribute.type) {
       case 'checkbox':
