@@ -204,7 +204,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
               value={localLocation}
             />
           )}
-          {assetFields.location && (
+          {assetFields.tags && (
             <LabelWithInput
               label="Tags"
               onChange={setLocalTags}
