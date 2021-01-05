@@ -214,6 +214,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
               onChange={setLocalAlt}
               placeholder={!localAlt ? 'No alt text yet...' : undefined}
               value={localAlt}
+              type="textarea"
             />
           )}
           {assetFields.attribution && (
