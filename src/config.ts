@@ -9,5 +9,6 @@ export const {
     location: true,
     attribution: true,
     tags: true
-  }
+  },
+  customAssetFields = []
 } = config;

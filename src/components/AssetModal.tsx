@@ -1,11 +1,11 @@
-import { Asset, Geopoint } from '../types/Asset';
+import { Asset, Geopoint, Attributes } from '../types/Asset';
 import { Button } from './Button';
 import { formatDate, formatSize } from '../shared/utils';
 import { Icon } from './Icon';
-import { LabelWithInput, LabelWithLocationInput } from './LabelWithInput';
+import { LabelWithInput, LabelWithLocationInput, LabelWithCheckbox, LabelWithNumericalInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
-import { assetFields } from '../config';
+import { assetFields, customAssetFields } from '../config';
 import client from 'part:@sanity/base/client';
 import React, { Fragment, FormEvent, useState } from 'react';
 import styled from 'styled-components';
@@ -17,6 +17,16 @@ interface Props {
   onClose: () => void;
   onSaveComplete: () => void;
   setLoading: (value: Boolean) => void;
+}
+
+type CustomAssetField = {
+  name: string
+  label: string
+  placeholder?: string
+  type: 'text' | 'checkbox' | 'number' | 'textarea';
+  min?: number
+  max?: number
+  step?: number | 'any'
 }
 
 const StyledFormContainer = styled.form`
@@ -107,15 +117,16 @@ const StyledButtonsContainer = styled.div`
 `;
 
 export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
-  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, title, size, tags, url, location, attribution } = asset;
+  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, title, size, tags, url, location, attribution, attributes } = asset;
   const { height, width } = metadata?.dimensions || {};
   const [localTitle, setLocalTitle] = useState<string>(title || originalFilename);
   const [localAlt, setLocalAlt] = useState<string>(alt || '');
   const [localAttribution, setLocalAttribution] = useState<string>(attribution || '');
   const [localLocation, setLocalLocation] = useState<Geopoint>(location || {});
   const [localTags, setLocalTags] = useState<string>((tags || []).join(',') || '');
+  const [localAttributes, setLocalAttributes] = useState<Attributes>(attributes || {});
 
-  const isChanged = localTitle !== (title || '') || localAlt !== (alt || '') || localLocation !== (location || {}) || localAttribution !== (attribution || '') || localTags !== (tags?.join(',') || '');
+  const isChanged = localTitle !== (title || '') || localAlt !== (alt || '') || localLocation !== (location || {}) || localAttribution !== (attribution || '') || localTags !== (tags?.join(',') || '') || localAttributes !== (attributes || {});
 
   async function handleSubmit(e: FormEvent) {
     try {
@@ -134,14 +145,30 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
       const alt = localAlt;
       const location = localLocation;
       const attribution = localAttribution;
+      const attributes = localAttributes;
       const tags = localTags.split(',').map((v) => v.trim());
 
-      await client.patch(_id).set({ title, alt, location, attribution, tags }).commit();
+      await client.patch(_id).set({ title, alt, location, attribution, tags, attributes }).commit();
       onSaveComplete();
     } catch (e) {
       handleError(e);
     } finally {
       setLoading(false);
+    }
+  }
+
+  function renderAttributes(attribute: CustomAssetField) {
+    const handleChange = (value: any) => setLocalAttributes(prevState => ({
+      ...prevState,
+      [attribute.name]: attribute.type === 'number' && value ? parseFloat(value) : value
+    }))
+    switch(attribute.type) {
+      case 'checkbox':
+        return <LabelWithCheckbox key={attribute.name} label={attribute.label} onChange={handleChange} value={localAttributes[attribute.name] as string & boolean | undefined} />;
+      case 'number':
+        return <LabelWithNumericalInput key={attribute.name} label={attribute.label} onChange={handleChange} value={localAttributes[attribute.name] as number | undefined } min={attribute.min} max={attribute.max} step={attribute.step}/>;
+      default:
+        return <LabelWithInput key={attribute.name} label={attribute.label} onChange={handleChange} placeholder={attribute.placeholder} value={localAttributes[attribute.name] as string | readonly string[]} type={attribute.type} />;
     }
   }
 
@@ -212,6 +239,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
               value={localTags}
             />
           )}
+          {customAssetFields.map((field: CustomAssetField) => renderAttributes(field))}
         </StyledInputsContainer>
 
         <StyledButtonsContainer>
