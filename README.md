@@ -113,7 +113,7 @@ Example with themeChanges:
 ```
 
 ## Roadmap
-- Improve the tag input in AssetModal
+Find the roadmap in [Github Projects](/projects/1).
 
 ## Contributing
 To contribute a theme, add it in `themes/[themename].ts`.
