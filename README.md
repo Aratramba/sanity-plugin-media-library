@@ -113,7 +113,7 @@ Example with themeChanges:
 ```
 
 ## Roadmap
-Find the roadmap in [Github Projects](/projects/1).
+Find the roadmap in [Github Projects](https://github.com/dennispassway/sanity-plugin-media-library/projects/1).
 
 ## Contributing
 To contribute a theme, add it in `themes/[themename].ts`.
