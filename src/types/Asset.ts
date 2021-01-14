@@ -1,14 +1,7 @@
 export type AssetType = 'sanity.imageAsset' | 'sanity.fileAsset';
 
-export type Geopoint = {
-  lat?: number
-  lng?: number
-  alt?: number
-}
+export type Geopoint = { alt?: number; lat?: number; lng?: number };
 
-export type Attributes = {
-  [_id: string]: string | boolean | number | undefined
-}
 export interface Asset {
   _createdAt: string;
   _id: string;
@@ -28,5 +21,5 @@ export interface Asset {
   attribution?: string;
   tags?: Array<string>;
   url: string;
-  attributes: Attributes
+  [key: string]: any;
 }
