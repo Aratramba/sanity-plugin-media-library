@@ -124,7 +124,6 @@ export const MediaList = ({
           onDoubleClick={() => onDoubleClick(asset)}
           selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
           {...asset}
-          title={asset.title || asset.originalFilename}
         />
       </DraggableMediaItem>
     ))}
@@ -152,10 +151,11 @@ const MediaRow = ({
   metadata,
   onClick,
   onDoubleClick,
-  title,
+  originalFilename,
   selected,
   size,
   tags = [],
+  title,
   url,
 }: MediaRowProps) => {
   const { height, width } = metadata?.dimensions || {};
@@ -173,7 +173,7 @@ const MediaRow = ({
           )}
         </StyledThumbnailContainer>
       </div>
-      <div>{title}</div>
+      <div>{title || originalFilename}</div>
       <div>{alt}</div>
       <div>{tags.join(', ')}</div>
       <div>{width && height && `${width} x ${height}`}</div>
