@@ -1,11 +1,11 @@
-import { Asset, Geopoint, Attributes } from '../types/Asset';
+import { Asset } from '../types/Asset';
 import { Button } from './Button';
+import { customFields } from '../config';
 import { formatDate, formatSize } from '../shared/utils';
 import { Icon } from './Icon';
-import { LabelWithInput, LabelWithLocationInput, LabelWithCheckbox, LabelWithNumericalInput } from './LabelWithInput';
+import { LabelWithInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
-import { assetFields, customAssetFields } from '../config';
 import client from 'part:@sanity/base/client';
 import React, { Fragment, FormEvent, useState } from 'react';
 import styled from 'styled-components';
@@ -17,16 +17,6 @@ interface Props {
   onClose: () => void;
   onSaveComplete: () => void;
   setLoading: (value: Boolean) => void;
-}
-
-type CustomAssetField = {
-  name: string
-  label: string
-  placeholder?: string
-  type: 'text' | 'checkbox' | 'number' | 'textarea';
-  min?: number
-  max?: number
-  step?: number | 'any'
 }
 
 const StyledFormContainer = styled.form`
@@ -117,58 +107,55 @@ const StyledButtonsContainer = styled.div`
 `;
 
 export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
-  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, title, size, tags, url, location, attribution, attributes } = asset;
+  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, title, url } = asset;
   const { height, width } = metadata?.dimensions || {};
-  const [localTitle, setLocalTitle] = useState<string>(title || originalFilename);
-  const [localAlt, setLocalAlt] = useState<string>(alt || '');
-  const [localAttribution, setLocalAttribution] = useState<string>(attribution || '');
-  const [localLocation, setLocalLocation] = useState<Geopoint>(location || {});
-  const [localTags, setLocalTags] = useState<string>((tags || []).join(',') || '');
-  const [localAttributes, setLocalAttributes] = useState<Attributes>(attributes || {});
+  const [localValues, setLocalValues] = useState<{ [key: string]: any }>({
+    alt,
+    tags: tags?.join(','),
+    title,
+  });
 
-  const isChanged = localTitle !== (title || '') || localAlt !== (alt || '') || localLocation !== (location || {}) || localAttribution !== (attribution || '') || localTags !== (tags?.join(',') || '') || localAttributes !== (attributes || {});
+  const inputFields = [
+    { name: 'title', label: 'Title', placeholder: 'No title yet' },
+    { name: 'alt', label: 'Alt text', placeholder: 'No alt text yet' },
+    { name: 'tags', label: 'Tags', placeholder: 'No tags yet' },
+    ...customFields,
+  ];
+
+  const isChanged = Object.entries(localValues).some(([key, newValue]) => {
+    const currentValue = asset[key];
+
+    if (newValue === '' && typeof currentValue === 'undefined') {
+      return false;
+    }
+
+    return newValue !== currentValue;
+  });
 
   async function handleSubmit(e: FormEvent) {
     try {
+      e.preventDefault();
+
       if (loading) {
         return;
       }
 
       setLoading(true);
-      e.preventDefault();
 
       if (!isChanged) {
         return onClose();
       }
 
-      const title = localTitle
-      const alt = localAlt;
-      const location = localLocation;
-      const attribution = localAttribution;
-      const attributes = localAttributes;
-      const tags = localTags.split(',').map((v) => v.trim());
-
-      await client.patch(_id).set({ title, alt, location, attribution, tags, attributes }).commit();
+      const tags = localValues.tags?.split(',').map((v: string) => v.trim());
+      await client
+        .patch(_id)
+        .set({ ...localValues, tags })
+        .commit();
       onSaveComplete();
     } catch (e) {
       handleError(e);
     } finally {
       setLoading(false);
-    }
-  }
-
-  function renderAttributes(attribute: CustomAssetField) {
-    const handleChange = (value: any) => setLocalAttributes(prevState => ({
-      ...prevState,
-      [attribute.name]: value
-    }))
-    switch(attribute.type) {
-      case 'checkbox':
-        return <LabelWithCheckbox key={attribute.name} label={attribute.label} onChange={handleChange} value={localAttributes[attribute.name] as string & boolean | undefined} />;
-      case 'number':
-        return <LabelWithNumericalInput key={attribute.name} label={attribute.label} onChange={handleChange} value={localAttributes[attribute.name] as number | undefined } min={attribute.min} max={attribute.max} step={attribute.step}/>;
-      default:
-        return <LabelWithInput key={attribute.name} label={attribute.label} onChange={handleChange} placeholder={attribute.placeholder} value={localAttributes[attribute.name] as string | readonly string[]} type={attribute.type} />;
     }
   }
 
@@ -186,8 +173,9 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
             )}
           </StyledThumbnailContainer>
           <StyledInfoContainer>
-            <strong>{localTitle || originalFilename}</strong>
-            <br />{formatDate(_createdAt)}
+            <strong>{localValues.title || originalFilename}</strong>
+            <br />
+            {formatDate(_createdAt)}
             <br />
             {width && height && (
               <Fragment>
@@ -200,47 +188,14 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
         </StyledImageInfoContainer>
 
         <StyledInputsContainer>
-          {assetFields.title && (
+          {inputFields.map(({ name, ...rest }) => (
             <LabelWithInput
-            label="Title"
-            onChange={setLocalTitle}
-            placeholder={!localTitle ? 'No title yet...' : undefined}
-            value={localTitle}
+              key={name}
+              onChange={(value: any) => setLocalValues({ ...localValues, [name]: value })}
+              value={localValues[name]}
+              {...rest}
             />
-          )}
-          {_type === 'sanity.imageAsset' && assetFields.alt && (
-            <LabelWithInput
-              label="Alt text"
-              onChange={setLocalAlt}
-              placeholder={!localAlt ? 'No alt text yet...' : undefined}
-              value={localAlt}
-              type="textarea"
-            />
-          )}
-          {assetFields.attribution && (
-            <LabelWithInput
-              label="Attribution"
-              onChange={setLocalAttribution}
-              placeholder={!localTitle ? 'No attribution yet...' : undefined}
-              value={localAttribution}
-            />
-          )}
-          {assetFields.location && (
-            <LabelWithLocationInput
-              label="Location"
-              onChange={setLocalLocation}
-              value={localLocation}
-            />
-          )}
-          {assetFields.tags && (
-            <LabelWithInput
-              label="Tags"
-              onChange={setLocalTags}
-              placeholder={!localTags ? 'No tags yet...' : undefined}
-              value={localTags}
-            />
-          )}
-          {customAssetFields.map((field: CustomAssetField) => renderAttributes(field))}
+          ))}
         </StyledInputsContainer>
 
         <StyledButtonsContainer>

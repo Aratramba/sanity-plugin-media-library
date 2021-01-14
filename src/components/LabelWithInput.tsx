@@ -1,30 +1,25 @@
-import React from 'react';
-import { Geopoint } from 'src/types/Asset';
+import { Geopoint } from '../types/Asset';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
 interface Props {
   label: string;
-  placeholder?: string;
   onChange: (value: any) => void;
+  placeholder?: string;
+  type?:
+    | 'checkbox'
+    | 'color'
+    | 'date'
+    | 'datetime-local'
+    | 'email'
+    | 'location'
+    | 'number'
+    | 'tel'
+    | 'text'
+    | 'time'
+    | 'url';
   value?: string | number | boolean | readonly string[] | undefined;
 }
-interface PropsText extends Props {
-  type?: 'text' | 'textarea';
-  onChange: (value: string) => void;
-  value?: string | readonly string[] | undefined;
-}
-interface PropsNumber extends Props {
-  onChange: (value: number) => void;
-  value?: number;
-    max?: number;
-    min?: number;
-    step?: number | 'any';
-}
-interface PropsCheckbox extends Props {
-  onChange: (value: boolean) => void;
-  value?: boolean | undefined;
-}
-
 
 const StyledContainer = styled.label`
   cursor: pointer;
@@ -32,17 +27,16 @@ const StyledContainer = styled.label`
   width: 100%;
 `;
 
-const StyledContainerRow = styled(StyledContainer)`
-  display: flex;
+const StyledWrapper = styled.div`
   align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 8px;
+  width: 100%;
 
   & > input {
     margin-left: 16px;
   }
-`;
-
-const StyledWrapper = styled(StyledContainerRow)`
-  margin-bottom: 8px;
 
   & > span {
     font-size: 14px;
@@ -75,7 +69,7 @@ const StyledInput = styled.input`
   width: 100%;
 `;
 
-const StyledTextarea = styled.textarea`
+const StyledTextArea = styled.textarea`
   background-color: ${({ theme }) => theme.inputBackgroundColor};
   border-radius: ${({ theme }) => theme.appBorderRadius};
   border: 0;
@@ -85,60 +79,65 @@ const StyledTextarea = styled.textarea`
   line-height: 1.1;
   outline: 0;
   padding: 16px;
+  resize: vertical;
+  rows: 2;
   width: 100%;
 `;
 
-export const LabelWithInput = ({ label, onChange, placeholder, value = '', type = 'text'}: PropsText) => (
-  <StyledContainer>
-    <StyledLabel>{label}</StyledLabel>
-    {type === 'textarea'
-      ? <StyledTextarea onChange={(e) => onChange(e.target.value)} value={value} placeholder={placeholder} />
-      : <StyledInput onChange={(e) => onChange(e.target.value)} placeholder={placeholder} value={value} type={type} />
-    }
-  </StyledContainer>
-);
-export const LabelWithNumericalInput = ({ label, onChange, placeholder, value,  min, max, step}: PropsNumber) => (
-  <StyledContainer>
-    <StyledLabel>{label}</StyledLabel>
-    <StyledInput onChange={(e) => onChange(parseFloat(e.target.value))} placeholder={placeholder} value={value} type='number' min={min} max={max} step={step}/>
-  </StyledContainer>
-);
-export const LabelWithCheckbox = ({ label, onChange, value = undefined }: PropsCheckbox) => (
-  <StyledContainerRow>
-    <StyledLabel>{label}</StyledLabel>
-    <input onChange={(e) => onChange(e.target.checked)} checked={value} type='checkbox' />
-  </StyledContainerRow>
-);
+export const LabelWithInput = ({ label, onChange, type = 'text', ...rest }: Props) => {
+  const elementsMap: { [key: string]: any } = {
+    checkbox: Checkbox,
+    location: Location,
+    textArea: StyledTextArea,
+  };
 
-interface LocationProps {
-  label: string;
-  onChange: (value: (Geopoint | ((prevState: Geopoint) => Geopoint))) => void
-  value?: Geopoint | undefined;
-}
+  const onChangeMap: { [key: string]: (e: any) => void } = {
+    checkbox: (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.checked),
+    location: (value: Geopoint | undefined) => onChange(value),
+    number: (e: ChangeEvent<HTMLInputElement>) => onChange(parseFloat(e.target.value)),
+  };
 
-export const LabelWithLocationInput = ({ label, onChange, value = { lat: undefined, lng: undefined, alt: undefined } }: LocationProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    onChange(prevState => ({
-        ...prevState,
-        [name]: parseFloat(value)
-    }))
-  }
+  const defaultOnChange = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value);
+  const handleOnChange = onChangeMap[type] || defaultOnChange;
+  const Element = elementsMap[type] || StyledInput;
+
   return (
-    <StyledContainer as="div">
+    <StyledContainer>
       <StyledLabel>{label}</StyledLabel>
-      <StyledWrapper>
-        <StyledLabel>Latitude</StyledLabel>
-        <StyledInput name="lat" onChange={handleChange} value={value.lat || ''} type="number" step="any" />
-      </StyledWrapper>
-      <StyledWrapper>
-        <StyledLabel>Longitude</StyledLabel>
-        <StyledInput name="lng" onChange={handleChange} value={value.lng || ''} type="number" step="any" />
-      </StyledWrapper>
-      <StyledWrapper>
-        <StyledLabel>Altitude</StyledLabel>
-        <StyledInput name="alt" onChange={handleChange} value={value.alt || ''} type="number" step="any" />
-      </StyledWrapper>
+      <Element onChange={handleOnChange} type={type} {...rest} />
     </StyledContainer>
-  )
+  );
+};
+
+const Checkbox = ({ value, ...rest }: { value: boolean | undefined }) => <input checked={!!value} {...rest} />;
+
+const Location = ({
+  onChange,
+  value = {},
+  ...rest
+}: {
+  onChange: (value: Geopoint | ((prevState: Geopoint) => Geopoint)) => void;
+  value?: Geopoint | undefined;
+}) => {
+  const fields: Array<{ label: string; name: keyof Geopoint; type: string; step: string }> = [
+    { label: 'Latitude', name: 'lat', type: 'number', step: 'any' },
+    { label: 'Longitude', name: 'lng', type: 'number', step: 'any' },
+    { label: 'Altitude', name: 'alt', type: 'number', step: 'any' },
+  ];
+
+  const handleInputchange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(value, e.target.name, e.target.value);
+    onChange({ ...(value || {}), [e.target.name]: parseFloat(e.target.value) });
+  };
+
+  return (
+    <StyledContainer as="div" {...rest}>
+      {fields.map(({ label, name, ...rest }: { label: string; name: keyof Geopoint }) => (
+        <StyledWrapper key={name}>
+          <StyledLabel>{label}</StyledLabel>
+          <StyledInput onChange={handleInputchange} name={name} value={value[name]} {...rest} />
+        </StyledWrapper>
+      ))}
+    </StyledContainer>
+  );
 };
