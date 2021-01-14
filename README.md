@@ -12,7 +12,7 @@ The missing media library for Sanity. With support for filters per tag and exten
 - View/Edit your assets in once single place:
   - View asset details
   - Add alt tags to your image in a central place
-  - Add location and attribution information, change title
+  - Easily add custom fields to your assets (like location and attribution)
 - Grid view and list view (with more details):
   - Sort by latest or alphabetically
   - Search by alt, tag, or file name
@@ -30,11 +30,10 @@ The missing media library for Sanity. With support for filters per tag and exten
 - Asset source:
   - Use it where it's useful: select images with the media library in your documents
 - Quick action: Double click an asset to trigger it's primary action
+- Customizable fields
+  - Define custom fields for your assets (text, number, checkbox, textarea)
 - Customizable theme:
   - Comes with a dark and light theme, both are fully customizable.
-- Customizable interface
-  - Define custom fields (text, number, checkbox, textarea are currently supported)
-  - Hide unused asset fields
 
 ## Installation
 
@@ -121,38 +120,40 @@ Example with asset fields listed and custom fields added:
 {
   "theme": "dark",
   "themeChanges": {},
-  "assetFields": {
-    title: true,
-    alt: true,
-    location: true,
-    attribution: true,
-    tags: true
-  },
-  "customAssetFields": [
+  "customFields": [
     {
-      "name": "description",
       "label": "Additional description",
+      "name": "description",
+      "placeholder": "No description yet...",
       "type": "textarea"
     },
     {
-      "name": "decade",
       "label": "Decade when photo captured",
-      "type": "number",
-      "min": 1800,
       "max": 2200,
-      "step": 10
+      "min": 1800,
+      "name": "decade",
+      "placeholder": "Between 1800 and 2200",
+      "step": 10,
+      "type": "number"
     },
     {
-      "name": "premiumPhoto",
       "label": "Is a premium photo",
+      "name": "premiumPhoto",
       "type": "checkbox"
+    },
+    {
+      "label": "Attribution",
+      "name": "attribution",
+      "placeholder": "No attribution yet"
+    },
+    {
+      "name": "location",
+      "label": "Location",
+      "type": "location"
     }
-  ]
+  ],
 }
 ```
-
-## Roadmap
-- Improve the tag input in AssetModal
 
 ## Contributing
 To contribute a theme, add it in `themes/[themename].ts`.
