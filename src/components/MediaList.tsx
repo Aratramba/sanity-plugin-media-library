@@ -133,7 +133,7 @@ export const MediaList = ({
 const MediaListHeader = () => (
   <StyledHeader>
     <div />
-    <div>Title / Filename</div>
+    <div>Title</div>
     <div>Alt</div>
     <div>Tags</div>
     <div>Dimensions</div>
