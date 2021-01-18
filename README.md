@@ -32,6 +32,8 @@ The missing media library for Sanity. With support for filters per tag and exten
 - Customizable theme:
   - Comes with a dark and light theme, both are fully customizable.
 
+---
+
 ## Installation
 
 ### Automagically
@@ -68,6 +70,8 @@ In your `sanity.json` add it to the list of plugins:
   ]
 }
 ```
+
+---
 
 ### Using the Media Library
 
@@ -113,6 +117,7 @@ export default {
 
 See [Sanity Custom Asset Sources](https://www.sanity.io/docs/custom-asset-sources) for more options.
 
+---
 
 ## Configuration / Theming
 After installing the plugin, a config file is automatically created at `config/media-library.json`.
