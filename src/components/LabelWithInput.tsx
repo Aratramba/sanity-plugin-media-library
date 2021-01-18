@@ -126,7 +126,6 @@ const Location = ({
   ];
 
   const handleInputchange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(value, e.target.name, e.target.value);
     onChange({ ...(value || {}), [e.target.name]: parseFloat(e.target.value) });
   };
 
