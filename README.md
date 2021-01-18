@@ -35,6 +35,8 @@ The missing media library for Sanity. With support for filters per tag and exten
 - Customizable theme:
   - Comes with a dark and light theme, both are fully customizable.
 
+---
+
 ## Installation
 
 ### Automagically
@@ -72,25 +74,53 @@ In your `sanity.json` add it to the list of plugins:
 }
 ```
 
-## Installing as asset source
-Using the media library as an asset source requires a little more configuration.
-In your `sanity.json` add the following to the `parts` array:
+---
+
+### Using the Media Library
+
+#### Setting Globally
+
+By default the media library will be added to all image fields, next to any other asset sources you might have. You can customise this behaviour in your `sanity.json` by adding the following to the `parts` array:
 
 ```json
 {
-  "implements": "part:@sanity/form-builder/input/image/asset-source",
-  "path": "./assetSource.js"
+  "implements": "part:@sanity/form-builder/input/image/asset-sources",
+  "path": "./assetSources.js"
 }
 ```
 
-And in `assetSource.js` add:
+In `assetSources.js`:
 
 ```javascript
 import AssetSource from "part:sanity-plugin-media-library/asset-source";
 export default [AssetSource];
 ```
 
-Done, you're ready to go!
+#### Setting per field
+If you want to define the media library for specific fields, you can set the sources option on your field:
+
+```js
+import AssetSource from "part:sanity-plugin-media-library/asset-source";
+
+export default {
+  name: "mySchema",
+  type: "document",
+  title: "My Schema",
+  fields: [
+    {
+      name: "image",
+      type: "image",
+      title: "Image",
+      options: { sources: [AssetSource] },
+    },
+  ],
+};
+
+````
+
+See [Sanity Custom Asset Sources](https://www.sanity.io/docs/custom-asset-sources) for more options.
+
+---
 
 ## Configuration / Theming
 After installing the plugin, a config file is automatically created at `config/media-library.json`.
