@@ -131,9 +131,6 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
       ];
 
       const newAssets: Array<Asset> = await client.fetch(`*[_type in [${types}]] { ${includedFields.join(',')} }`, {});
-
-      console.log(newAssets);
-
       setAssets(newAssets);
     } catch (e) {
       handleError(e);
