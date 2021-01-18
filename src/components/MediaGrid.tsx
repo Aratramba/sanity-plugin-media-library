@@ -80,6 +80,7 @@ export const MediaGrid = ({
       const Element = asset._type === 'sanity.imageAsset' ? ImageItem : FileItem;
       return (
         <DraggableMediaItem
+          key={asset._id}
           _type={asset._type}
           onDragEnd={() => setIsDraggingMediaItem(false)}
           onDragStart={() => {
@@ -108,9 +109,9 @@ const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: MediaItemProp
   </StyledMediaItem>
 );
 
-const FileItem = ({ originalFilename, onClick, onDoubleClick, selected }: MediaItemProps) => (
+const FileItem = ({ title, originalFilename, onClick, onDoubleClick, selected }: MediaItemProps) => (
   <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
     <Icon type="file" />
-    <div>{originalFilename}</div>
+    <div>{title || originalFilename}</div>
   </StyledMediaItem>
 );

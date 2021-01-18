@@ -1,6 +1,7 @@
 import { acceptedFileTypes } from './shared/acceptedFileTypes';
 import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
+import { customFields } from './config';
 import { DeleteModal } from './components/DeleteModal';
 import { ErrorNotifications } from './components/ErrorNotifications';
 import { MediaLibrary } from './components/MediaLibrary';
@@ -57,11 +58,10 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     let newFilteredAssets = [...assets];
 
     if (searchQuery && searchQuery !== '') {
-      newFilteredAssets = newFilteredAssets.filter(
-        ({ alt, originalFilename, tags }) =>
-          originalFilename.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
-          (alt || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1 ||
-          (tags?.join(',') || '').toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
+      newFilteredAssets = newFilteredAssets.filter(({ alt = '', originalFilename = '', title = '', tags = [] }) =>
+        [originalFilename, title, alt, tags.join('')].some(
+          (value) => value.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
+        )
       );
     }
 
@@ -78,11 +78,15 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
 
     if (sort === 'az') {
-      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? -1 : 1));
+      newFilteredAssets.sort((a, b) =>
+        (a.title || a.originalFilename).localeCompare(b.title || b.originalFilename) ? -1 : 1
+      );
     }
 
     if (sort === 'za') {
-      newFilteredAssets.sort((a, b) => (a.originalFilename.localeCompare(b.originalFilename) ? 1 : -1));
+      newFilteredAssets.sort((a, b) =>
+        (a.title || a.originalFilename).localeCompare(b.title || b.originalFilename) ? 1 : -1
+      );
     }
 
     setFilteredAssets(newFilteredAssets);
@@ -111,10 +115,22 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     try {
       setLoading(true);
       const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
-      const newAssets: Array<Asset> = await client.fetch(
-        `*[_type in [${types}]] { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, url }`,
-        {}
-      );
+      const includedFields = [
+        '_createdAt',
+        '_id',
+        '_type',
+        'alt',
+        'extension',
+        'metadata',
+        'originalFilename',
+        'title',
+        'size',
+        'tags',
+        'url',
+        ...customFields.map(({ name }: { name: string }) => name),
+      ];
+
+      const newAssets: Array<Asset> = await client.fetch(`*[_type in [${types}]] { ${includedFields.join(',')} }`, {});
       setAssets(newAssets);
     } catch (e) {
       handleError(e);
