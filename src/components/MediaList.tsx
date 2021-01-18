@@ -108,6 +108,7 @@ export const MediaList = ({
     <MediaListHeader />
     {assets.map((asset) => (
       <DraggableMediaItem
+        key={asset._id}
         _type={asset._type}
         onDragEnd={() => setIsDraggingMediaItem(false)}
         onDragStart={() => {
@@ -132,7 +133,7 @@ export const MediaList = ({
 const MediaListHeader = () => (
   <StyledHeader>
     <div />
-    <div>Filename</div>
+    <div>Title</div>
     <div>Alt</div>
     <div>Tags</div>
     <div>Dimensions</div>
@@ -154,6 +155,7 @@ const MediaRow = ({
   selected,
   size,
   tags = [],
+  title,
   url,
 }: MediaRowProps) => {
   const { height, width } = metadata?.dimensions || {};
@@ -171,7 +173,7 @@ const MediaRow = ({
           )}
         </StyledThumbnailContainer>
       </div>
-      <div>{originalFilename}</div>
+      <div>{title || originalFilename}</div>
       <div>{alt}</div>
       <div>{tags.join(', ')}</div>
       <div>{width && height && `${width} x ${height}`}</div>
