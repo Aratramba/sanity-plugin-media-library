@@ -54,6 +54,24 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sort, setSort] = useState<SortOption>('date');
 
+  const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
+  const includedFields = [
+    '_createdAt',
+    '_id',
+    '_type',
+    'alt',
+    'extension',
+    'metadata',
+    'originalFilename',
+    'title',
+    'size',
+    'tags',
+    'url',
+    ...customFields.map(({ name }: { name: string }) => name),
+  ];
+
+  const query = `*[_type in [${types}]] { ${includedFields.join(',')} }`;
+
   useEffect(() => {
     let newFilteredAssets = [...assets];
 
@@ -107,6 +125,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     setLocalSelectedAssets(assetsToSelect);
   }, [assets, selectedAssets]);
 
+  useEffect(subscribeToAssetChanges, []);
   useEffect(() => {
     fetchAssets();
   }, []);
@@ -114,29 +133,43 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
   async function fetchAssets() {
     try {
       setLoading(true);
-      const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
-      const includedFields = [
-        '_createdAt',
-        '_id',
-        '_type',
-        'alt',
-        'extension',
-        'metadata',
-        'originalFilename',
-        'title',
-        'size',
-        'tags',
-        'url',
-        ...customFields.map(({ name }: { name: string }) => name),
-      ];
-
-      const newAssets: Array<Asset> = await client.fetch(`*[_type in [${types}]] { ${includedFields.join(',')} }`, {});
+      const newAssets: Array<Asset> = await client.fetch(query, {});
       setAssets(newAssets);
     } catch (e) {
       handleError(e);
     } finally {
       setLoading(false);
     }
+  }
+
+  function subscribeToAssetChanges() {
+    const subscription = client
+      .listen(query)
+      .subscribe(
+        ({
+          documentId,
+          result,
+          transition,
+        }: {
+          documentId: string;
+          result: Asset;
+          transition: 'disappear' | 'update' | 'appear';
+        }) => {
+          if (transition === 'disappear') {
+            return setAssets((assets) => [...assets].filter(({ _id }) => _id !== documentId));
+          }
+
+          if (transition === 'update') {
+            return setAssets((assets) => [...assets].map((asset) => (asset._id === documentId ? result : asset)));
+          }
+
+          if (transition === 'appear') {
+            return setAssets((assets) => [...assets, result]);
+          }
+        }
+      );
+
+    return () => subscription.unsubscribe();
   }
 
   async function onUpload(files: FileList) {
@@ -157,7 +190,6 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
           client.assets.upload(file.type.indexOf('image') > -1 ? 'image' : 'file', file)
         )
       );
-      await fetchAssets();
     } catch (e: any) {
       handleError(e);
     } finally {
@@ -207,7 +239,6 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
       }));
 
       await Promise.all(idsWithNewTags.map(({ _id, tags }) => client.patch(_id).set({ tags }).commit()));
-      await fetchAssets();
     } catch (e) {
       handleError(e);
     } finally {
@@ -265,7 +296,6 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
             onClose={() => setAssetToEdit(null)}
             onSaveComplete={() => {
               setAssetToEdit(null);
-              fetchAssets();
             }}
             setLoading={setLoading}
           />
@@ -278,7 +308,6 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
             onClose={() => setAssetsToDelete(null)}
             onDeleteComplete={() => {
               setAssetsToDelete(null);
-              fetchAssets();
             }}
             setLoading={setLoading}
           />
