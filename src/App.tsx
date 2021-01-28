@@ -125,6 +125,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     setLocalSelectedAssets(assetsToSelect);
   }, [assets, selectedAssets]);
 
+  useEffect(subscribeToAssetChanges, []);
   useEffect(() => {
     fetchAssets();
   }, []);
@@ -141,32 +142,35 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
   }
 
-  useEffect(() => {
+  function subscribeToAssetChanges() {
     const subscription = client
       .listen(query)
-      .subscribe(({ transition, documentId, result }: { transition: string; documentId: string; result: Asset }) => {
-        if (transition === 'disappear') {
-          setAssets((assets) => [...assets].filter(({ _id }) => _id !== documentId));
-          return;
-        }
+      .subscribe(
+        ({
+          documentId,
+          result,
+          transition,
+        }: {
+          documentId: string;
+          result: Asset;
+          transition: 'disappear' | 'update' | 'appear';
+        }) => {
+          if (transition === 'disappear') {
+            return setAssets((assets) => [...assets].filter(({ _id }) => _id !== documentId));
+          }
 
-        if (transition === 'update') {
-          setAssets((assets) => {
-            return [...assets].map((asset) => {
-              return asset._id === documentId ? result : asset;
-            });
-          });
-          return;
-        }
+          if (transition === 'update') {
+            return setAssets((assets) => [...assets].map((asset) => (asset._id === documentId ? result : asset)));
+          }
 
-        if (transition === 'appear') {
-          setAssets((assets) => [...assets, result]);
-          return;
+          if (transition === 'appear') {
+            return setAssets((assets) => [...assets, result]);
+          }
         }
-      });
+      );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }
 
   async function onUpload(files: FileList) {
     try {
