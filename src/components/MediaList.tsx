@@ -165,7 +165,7 @@ const MediaRow = ({
       <div>
         <StyledThumbnailContainer>
           {_type === 'sanity.imageAsset' ? (
-            <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
+            <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} loading="lazy" />
           ) : (
             <StyledFile>
               <Icon type="file" />

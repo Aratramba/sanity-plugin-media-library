@@ -105,7 +105,7 @@ export const MediaGrid = ({
 
 const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: MediaItemProps) => (
   <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
-    <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
+    <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} loading="lazy" />
   </StyledMediaItem>
 );
 
