@@ -180,7 +180,18 @@ Example with asset fields listed and custom fields added:
       "name": "location",
       "label": "Location",
       "type": "location"
-    }
+    },
+    {
+      "label": "Copyright",
+      "name": "copyright",
+      "placeholder": "pick one…",
+      "type": "select",
+      "options": [
+        { "title": "Copyright", "value": "copyright" },
+        { "title": "Public Domain", "value": "public-domain" },
+        { "title": "Creative Commons", "value": "creative-commons" }
+      ]
+    },
   ],
 }
 ```

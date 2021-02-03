@@ -7,7 +7,7 @@ import { LabelWithInput } from './LabelWithInput';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
 import client from 'part:@sanity/base/client';
-import React, { Fragment, FormEvent, useState } from 'react';
+import React, { Fragment, FormEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -114,6 +114,10 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
     tags: tags?.join(','),
     title,
   });
+
+  useEffect(() => {
+    customFields.map((field: any) => setLocalValues((values) => ({ ...values, [field.name]: asset[field.name] })));
+  }, []);
 
   const inputFields = [
     { name: 'title', label: 'Title', placeholder: 'No title yet' },
