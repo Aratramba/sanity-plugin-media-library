@@ -1,7 +1,7 @@
 {
   "name": "sanity-plugin-media-library",
   "description": "The missing media library for Sanity. With filters per tag and filtetype. And it's fully themeable.",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "license": "MIT",
   "author": "Dennis Passway",
   "main": "lib/index.js",
