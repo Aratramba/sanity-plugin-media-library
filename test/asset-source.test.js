@@ -5,6 +5,8 @@ const fs = require('fs');
 // Needs to be higher than the default Playwright timeout
 jest.setTimeout(40 * 1000);
 
+const DOMAIN = 'http://localhost:3000';
+
 const IMAGES = [
   'alejandro-contreras-wTPp323zAEw-unsplash.jpg',
   'boris-smokrovic-lyvCvA8sKGc-unsplash.jpg',
@@ -26,12 +28,12 @@ describe('Media library', () => {
       },
     ]);
 
-    await page.goto('http://localhost:3000/desk');
+    await page.goto(`${DOMAIN}/desk`);
     await expect(page).toHaveText('h1', 'Media Library');
   });
 
   it('should open the media library', async () => {
-    await page.goto('http://localhost:3000/media-library');
+    await page.goto(`${DOMAIN}/media-library`);
     await expect(page).toHaveText('h2', 'Filters');
   });
 
@@ -111,28 +113,13 @@ describe('Media library', () => {
     await expect(page).toHaveText('No files yet');
   });
 
-  // it('should open the image asset desk', async () => {
-  //   await page.goto(
-  //     'http://localhost:3000/desk/imageAsset%2Ctemplate%3DimageAsset;0b947db4-a12c-4d91-86d1-be430f783008%2Ctemplate%3DimageAsset'
-  //   );
-  //   await expect(page).toHaveText('h3', 'No documents of this type found');
-  //   await page.click('text=Select');
-  // });
-
-  // it('should create a new item', async () => {
-  //   await expect(page).toHaveSelectorCount('img', 42);
-  //   await page.fill('[placeholder="Search by filename, title, alt or tag"]', 'nature');
-
-  //   await expect(page).toHaveSelectorCount('img', 18);
-  //   await page.fill('[placeholder="Search by filename, title, alt or tag"]', '');
-
-  //   await page.click('text=png');
-  //   await expect(page).toHaveSelectorCount('img', 4);
-
-  //   await page.click('text=png');
-  //   await page.click('text=nature');
-  //   await expect(page).toHaveSelectorCount('img', 18);
-  // });
+  it('should open the asset modal', async () => {
+    await page.goto(
+      `${DOMAIN}/desk/imageAsset%2Ctemplate%3DimageAsset;0b947db4-a12c-4d91-86d1-be430f783008%2Ctemplate%3DimageAsset`
+    );
+    await expect(page).toHaveText('h3', 'No documents of this type found');
+    await page.click('text=Select');
+    await expect(page).toHaveText('[role="dialog"]', 'Filters');
+    await page.click('text=Cancel');
+  });
 });
-
-// https://playwright.dev/docs/api/class-page#pagesetinputfilesselector-files-options
