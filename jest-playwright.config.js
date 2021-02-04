@@ -5,7 +5,7 @@ module.exports = {
   launchOptions: {
     headless: false,
   },
-  // serverOptions: {
-  //   command: 'yarn test-studio',
-  // },
+  serverOptions: {
+    command: 'yarn test-studio',
+  },
 };
