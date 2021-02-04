@@ -35,6 +35,16 @@ describe('Media library', () => {
     await expect(page).toHaveText('h2', 'Filters');
   });
 
+  it('should upload images', async () => {
+    await page.setInputFiles(
+      'input[type="file"]',
+      IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
+      {}
+    );
+    await page.waitForTimeout(2000);
+    await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
+  });
+
   it('should show list view', async () => {
     await page.click('button[aria-label="list"]');
     await expect(page).toHaveText('header', 'Title');
@@ -46,21 +56,11 @@ describe('Media library', () => {
     await expect(page).toHaveText('header', 'Created at');
   });
 
-  it('should upload images', async () => {
-    await page.setInputFiles(
-      'input[type="file"]',
-      IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
-      {}
-    );
-    await page.waitForTimeout(2000);
-    await expect(page).toHaveSelectorCount('img', IMAGES.length * 2);
-  });
-
   it('should search for images', async () => {
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', 'ricky');
-    await expect(page).toHaveSelectorCount('img', 2);
+    await expect(page).toHaveSelectorCount('[draggable]', 1);
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', '');
-    await expect(page).toHaveSelectorCount('img', IMAGES.length * 2);
+    await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
   });
 
   it('should open edit dialog', async () => {
@@ -84,7 +84,7 @@ describe('Media library', () => {
     await expect(page).toHaveSelectorCount('[draggable]', 4);
     await page.click('text=TEST_TAG1');
     await expect(page).toHaveSelectorCount('[draggable]', 1);
-    await page.click('text=TEST_TAG1');
+    await page.click('text=Clear all filters');
     await expect(page).toHaveSelectorCount('[draggable]', 4);
   });
 
