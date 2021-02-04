@@ -90,7 +90,75 @@ describe('Media library', () => {
     await expect(page).toHaveSelectorCount('[draggable]', 4);
   });
 
+  it('should sort the assets', async () => {
+    await page.dblclick(`[draggable]:nth-of-type(1)`);
+    await page.fill('[role="dialog"] input[type="text"]', 'TITLE_A');
+    await page.click('text=Save changes');
+
+    await page.dblclick(`[draggable]:nth-of-type(2)`);
+    await page.fill('[role="dialog"] input[type="text"]', 'TITLE_B');
+    await page.click('text=Save changes');
+
+    await page.dblclick(`[draggable]:nth-of-type(3)`);
+    await page.fill('[role="dialog"] input[type="text"]', 'TITLE_C');
+    await page.click('text=Save changes');
+
+    await page.dblclick(`[draggable]:nth-of-type(4)`);
+    await page.fill('[role="dialog"] input[type="text"]', 'TITLE_D');
+    await page.click('text=Save changes');
+
+    await page.click('button[aria-label="list"]');
+    await page.selectOption('select', 'az');
+    await expect(page).toHaveText('[draggable]', 'TITLE_A');
+
+    await page.selectOption('select', 'za');
+    await expect(page).toHaveText('[draggable]', 'TITLE_D');
+  });
+
+  it('should show custom fields', async () => {
+    await page.dblclick('[draggable]');
+    await expect(page).toHaveText('[role="dialog"]', 'Title');
+    await expect(page).toHaveText('[role="dialog"]', 'Alt text');
+    await expect(page).toHaveText('[role="dialog"]', 'Tags');
+    await expect(page).toHaveText('[role="dialog"]', 'Additional description');
+    await expect(page).toHaveText('[role="dialog"]', 'Decade when photo captured');
+    await expect(page).toHaveText('[role="dialog"]', 'Is a premium photo');
+    await expect(page).toHaveText('[role="dialog"]', 'Attribution');
+    await expect(page).toHaveText('[role="dialog"]', 'Location');
+    await expect(page).toHaveText('[role="dialog"]', 'Latitude');
+    await expect(page).toHaveText('[role="dialog"]', 'Altitude');
+    await expect(page).toHaveText('[role="dialog"]', 'Copyright');
+  });
+
+  it('should store custom fields', async () => {
+    await page.fill('[role="dialog"] [placeholder="No alt text yet"]', 'TEST_ALT');
+    await page.fill('[role="dialog"] [placeholder="No tags yet"]', 'TEST_TAG');
+    await page.fill('[role="dialog"] [placeholder="No description yet"]', 'TEST_DESCRIPTION');
+    await page.fill('[role="dialog"] [placeholder="Between 1800 and 2200"]', '1800');
+    await page.check('[role="dialog"] [type="checkbox"]');
+    await page.fill('[role="dialog"] [placeholder="No attribution yet"]', 'MY_ATTRIBUTION');
+    await page.fill('[role="dialog"] [name="lat"]', '-34.397');
+    await page.fill('[role="dialog"] [name="lng"]', '150.644');
+    await page.fill('[role="dialog"] [name="alt"]', '10');
+    await page.selectOption('[role="dialog"] select', 'public-domain');
+    await page.click('text=Save changes');
+
+    await page.dblclick('[draggable]');
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="TEST_ALT"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="TEST_TAG"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="TEST_DESCRIPTION"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="1800"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [type="checkbox"]:checked', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="MY_ATTRIBUTION"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="-34.397"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="150.644"]', 1);
+    await expect(page).toHaveSelectorCount('[role="dialog"] [value="10"]', 1);
+    await expect(page).toEqualValue('[role="dialog"] select', 'public-domain', 1);
+    await page.click('text=Cancel');
+  });
+
   it('should remove files', async () => {
+    await page.click('button[aria-label="grid"]');
     await page.click(`[draggable]`, { modifiers: ['Shift'] });
     await page.click('text=Delete Asset');
     await expect(page).toHaveText('[role="dialog"]', 'Are you sure you want to delete this asset?');
