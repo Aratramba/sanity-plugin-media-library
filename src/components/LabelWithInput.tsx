@@ -14,6 +14,7 @@ interface Props {
     | 'email'
     | 'location'
     | 'number'
+    | 'select'
     | 'tel'
     | 'text'
     | 'time'
@@ -84,17 +85,51 @@ const StyledTextArea = styled.textarea`
   width: 100%;
 `;
 
+const StyledSelectWrapper = styled.div`
+  position: relative;
+`;
+
+const StyledSelectArrow = styled.span`
+  background-color: ${({ theme }) => theme.inputTextColor};
+  bottom: 0;
+  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+  content: '';
+  height: 0.5em;
+  pointer-events: none;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.8em;
+`;
+
+const StyledSelect = styled.select`
+  appearance: none;
+  background-color: ${({ theme }) => theme.inputBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  border: 0;
+  color: ${({ theme }) => theme.inputTextColor};
+  font-family: ${({ theme }) => theme.appFontFamily};
+  font-size: 16px 16px 34px 16px;
+  line-height: 1.1;
+  outline: 0;
+  padding: 16px;
+  width: 100%;
+`;
+
 export const LabelWithInput = ({ label, onChange, type = 'text', ...rest }: Props) => {
   const elementsMap: { [key: string]: any } = {
     checkbox: Checkbox,
     location: Location,
     textArea: StyledTextArea,
+    select: Select,
   };
 
   const onChangeMap: { [key: string]: (e: any) => void } = {
     checkbox: (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.checked),
     location: (value: Geopoint | undefined) => onChange(value),
     number: (e: ChangeEvent<HTMLInputElement>) => onChange(parseFloat(e.target.value)),
+    select: (e: ChangeEvent<HTMLSelectElement>) => onChange(e.target.value),
   };
 
   const defaultOnChange = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value);
@@ -138,5 +173,35 @@ const Location = ({
         </StyledWrapper>
       ))}
     </StyledContainer>
+  );
+};
+
+type SelectOption = {
+  title: string;
+  value: string;
+};
+
+const Select = ({
+  options,
+  placeholder,
+  value,
+  ...rest
+}: {
+  options: Array<SelectOption>;
+  placeholder: string | undefined;
+  value: string | undefined;
+}) => {
+  return (
+    <StyledSelectWrapper>
+      <StyledSelect {...rest}>
+        <option value="">{placeholder}</option>
+        {options?.map((option: SelectOption) => (
+          <option key={option.value} value={option.value} selected={option.value === value}>
+            {option.title}
+          </option>
+        ))}
+      </StyledSelect>
+      <StyledSelectArrow />
+    </StyledSelectWrapper>
   );
 };
