@@ -54,7 +54,7 @@ export const Modal = ({ children, full, onClose }: Props) => {
   }, []);
 
   return (
-    <StyledContainer>
+    <StyledContainer role="dialog">
       <StyledOverlay onClick={onClose} />
       <StyledModal full={full}>{children}</StyledModal>
     </StyledContainer>

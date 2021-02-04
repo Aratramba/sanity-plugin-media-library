@@ -52,6 +52,10 @@ const StyledMediaGridContainer = styled.div`
   }
 `;
 
+const StyledMessage = styled.div`
+  padding: 40px;
+`;
+
 export const MediaLibrary = ({
   assets = [],
   handleSelect,
@@ -121,14 +125,18 @@ export const MediaLibrary = ({
       />
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
-          <ViewElement
-            assets={assets}
-            onDoubleClick={onDoubleClick}
-            onDragStart={onDragStart}
-            onMediaItemClick={onMediaItemClick}
-            selectedAssets={selectedAssets}
-            setIsDraggingMediaItem={setIsDraggingMediaItem}
-          />
+          {!Boolean(assets.length) ? (
+            <StyledMessage>No files yet</StyledMessage>
+          ) : (
+            <ViewElement
+              assets={assets}
+              onDoubleClick={onDoubleClick}
+              onDragStart={onDragStart}
+              onMediaItemClick={onMediaItemClick}
+              selectedAssets={selectedAssets}
+              setIsDraggingMediaItem={setIsDraggingMediaItem}
+            />
+          )}
         </StyledMediaGridContainer>
       </StyledFlexGrowContainer>
       <BottomBar
