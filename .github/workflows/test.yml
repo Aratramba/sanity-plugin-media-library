@@ -19,6 +19,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
+        yarn build
         cd studio/plugins
         ln -s $PWD
     - run: yarn install
