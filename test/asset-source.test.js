@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Needs to be higher than the default Playwright timeout
-jest.setTimeout(40 * 1000);
+jest.setTimeout(60 * 1000);
 
 const DOMAIN = 'http://localhost:3000';
 
