@@ -96,15 +96,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
 
     if (sort === 'az') {
-      newFilteredAssets.sort((a, b) =>
-        (a.title || a.originalFilename).localeCompare(b.title || b.originalFilename) ? -1 : 1
-      );
+      newFilteredAssets.sort((a, b) => (a.title || a.originalFilename).localeCompare(b.title || b.originalFilename));
     }
 
     if (sort === 'za') {
-      newFilteredAssets.sort((a, b) =>
-        (a.title || a.originalFilename).localeCompare(b.title || b.originalFilename) ? 1 : -1
-      );
+      newFilteredAssets.sort((a, b) => (b.title || b.originalFilename).localeCompare(a.title || a.originalFilename));
     }
 
     setFilteredAssets(newFilteredAssets);
