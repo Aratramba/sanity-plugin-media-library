@@ -6,7 +6,7 @@ module.exports = {
     headless: true,
   },
   serverOptions: {
-    launchTimeout: 30000,
+    launchTimeout: 60000,
     command: 'yarn test-studio',
   },
 };
