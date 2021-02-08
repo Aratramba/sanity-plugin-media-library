@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Needs to be higher than the default Playwright timeout
-jest.setTimeout(60 * 1000);
+jest.setTimeout(40 * 1000);
 
 const DOMAIN = 'http://localhost:3000';
 
@@ -43,7 +43,7 @@ describe('Media library', () => {
       IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
       {}
     );
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(5000);
     await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
   });
 
