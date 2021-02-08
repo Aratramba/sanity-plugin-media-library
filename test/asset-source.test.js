@@ -48,6 +48,7 @@ describe('Media library', () => {
   });
 
   it('should show list view', async () => {
+    await page.goto(`${DOMAIN}/media-library`);
     await page.waitForTimeout(5000);
     await page.click('button[aria-label="list"]');
     await expect(page).toHaveText('header', 'Title');
