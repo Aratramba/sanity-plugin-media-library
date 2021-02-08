@@ -71,7 +71,7 @@ export const MediaLibrary = ({
   setSearchQuery,
   setSelectedAssets,
 }: Props) => {
-  const [viewType, setViewType] = useState<ViewTypes>('list');
+  const [viewType, setViewType] = useState<ViewTypes>('grid');
 
   function onMediaItemClick(e: MouseEvent, asset: Asset) {
     const indexInSelectedAssets = selectedAssets.indexOf(asset);

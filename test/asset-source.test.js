@@ -43,13 +43,11 @@ describe('Media library', () => {
       IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
       {}
     );
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(2000);
     await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
   });
 
   it('should show list view', async () => {
-    await page.goto(`${DOMAIN}/media-library`);
-    await page.waitForTimeout(5000);
     await page.click('button[aria-label="list"]');
     await expect(page).toHaveText('header', 'Title');
     await expect(page).toHaveText('header', 'Alt');
