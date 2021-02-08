@@ -9,10 +9,10 @@ module.exports = {
     {
       name: 'test',
       viewport: {
-        width: 1400,
-        height: 1400,
+        width: 2000,
+        height: 2000,
       },
-      userAgent: 'firefox',
+      userAgent: 'chromium',
       deviceScaleFactor: 1,
       isMobile: false,
       hasTouch: false,
