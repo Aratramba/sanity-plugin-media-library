@@ -43,7 +43,7 @@ describe('Media library', () => {
       IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
       {}
     );
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(5000);
     await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
   });
 
