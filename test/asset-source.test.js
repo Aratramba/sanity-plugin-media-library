@@ -48,7 +48,8 @@ describe('Media library', () => {
   });
 
   it('should show list view', async () => {
-    await page.click('text=LIST');
+    await page.waitForTimeout(5000);
+    await page.click('button[aria-label="list"]');
     await expect(page).toHaveText('header', 'Title');
     await expect(page).toHaveText('header', 'Alt');
     await expect(page).toHaveText('header', 'Tags');
@@ -107,7 +108,7 @@ describe('Media library', () => {
     await page.fill('[role="dialog"] input[type="text"]', 'TITLE_D');
     await page.click('text=Save changes');
 
-    await page.click('text=LIST');
+    await page.click('button[aria-label="list"]');
     await page.selectOption('select', 'az');
     await expect(page).toHaveText('[draggable]', 'TITLE_A');
 
@@ -158,7 +159,7 @@ describe('Media library', () => {
   });
 
   it('should remove files', async () => {
-    await page.click('text=GRID');
+    await page.click('button[aria-label="grid"]');
     await page.click(`[draggable]`, { modifiers: ['Shift'] });
     await page.click('text=Delete Asset');
     await expect(page).toHaveText('[role="dialog"]', 'Are you sure you want to delete this asset?');

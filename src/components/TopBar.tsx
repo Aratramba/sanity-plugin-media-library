@@ -51,11 +51,9 @@ export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType,
     <StyledItemsContainer>
       <StyledListGridButton onClick={() => setViewType('grid')} isActive={viewType === 'grid'} aria-label="grid">
         <Icon type="grid" />
-        GRID
       </StyledListGridButton>
       <StyledListGridButton onClick={() => setViewType('list')} isActive={viewType === 'list'} aria-label="list">
         <Icon type="list" />
-        LIST
       </StyledListGridButton>
     </StyledItemsContainer>
     <StyledItemsContainer>
