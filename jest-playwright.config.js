@@ -12,7 +12,7 @@ module.exports = {
         width: 1400,
         height: 1400,
       },
-      userAgent: 'chromium',
+      userAgent: 'firefox',
       deviceScaleFactor: 1,
       isMobile: false,
       hasTouch: false,
