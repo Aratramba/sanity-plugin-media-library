@@ -1,6 +1,7 @@
 require('regenerator-runtime/runtime');
 const path = require('path');
-const fs = require('fs');
+
+import { formatDate, formatSize } from '../src/shared/utils';
 
 // Needs to be higher than the default Playwright timeout
 jest.setTimeout(40 * 1000);
@@ -58,6 +59,14 @@ describe('Media library', () => {
     await expect(page).toHaveText('header', 'Created at');
   });
 
+  it('should show image data in list', async () => {
+    await expect(page).toHaveText('[draggable]', '-unsplash.jpg');
+    await expect(page).toHaveText('[draggable]', '640 x 424');
+    await expect(page).toHaveText('[draggable]', 'JPG');
+    await expect(page).toHaveText('[draggable]', formatSize(24000));
+    await expect(page).toHaveText('[draggable]', formatDate(new Date()));
+  });
+
   it('should search for images', async () => {
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', 'ricky');
     await expect(page).toHaveSelectorCount('[draggable]', 1);
@@ -107,6 +116,14 @@ describe('Media library', () => {
     await page.click('text=Clear all filters');
     await expect(page).toHaveSelectorCount('[draggable]', 4);
   });
+
+  // it('should remove unused tag', async () => {
+  //   await page.dblclick(`img`);
+  //   await expect(page).toHaveSelectorCount('[role="dialog"]', 1);
+  //   await page.fill('[value="TEST_TAG1"]', '');
+  //   await page.click('text=Save changes');
+  //   await expect(page).not.toHaveText('TEST_TAG1');
+  // });
 
   it('should sort the assets', async () => {
     await page.dblclick(`[draggable]:nth-of-type(1)`);
@@ -173,14 +190,6 @@ describe('Media library', () => {
     await expect(page).toHaveSelectorCount('[role="dialog"] [value="10"]', 1);
     await expect(page).toEqualValue('[role="dialog"] select', 'public-domain', 1);
     await page.click('text=Cancel');
-  });
-
-  it('should remove tag', async () => {
-    await page.dblclick(`img`);
-    await expect(page).toHaveText('[role="dialog"]', 'TEST_TITLE');
-    await page.fill('[value="TEST_TAG"]', '');
-    await page.click('text=Save changes');
-    await expect(page).not.toHaveText('TEST_TAG');
   });
 
   it('should remove files', async () => {
