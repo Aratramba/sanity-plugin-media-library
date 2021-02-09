@@ -3,5 +3,5 @@
 lib
 logs
 node_modules
-studio/plugins/sanity-plugin-media-library
+test/studio/plugins/sanity-plugin-media-library
 .env
