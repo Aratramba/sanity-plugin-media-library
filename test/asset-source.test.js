@@ -65,12 +65,30 @@ describe('Media library', () => {
     await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
   });
 
-  it('should open edit dialog', async () => {
+  it('should open edit dialog by double click', async () => {
     await page.dblclick(`text=${IMAGES[0]}`);
     await expect(page).toHaveText('[role="dialog"]', IMAGES[0]);
   });
 
+  it('should close edit dialog by escape', async () => {
+    await page.keyboard.press('Escape');
+    await expect(page).not.toHaveText('[role="dialog"]', IMAGES[0]);
+  });
+
+  it('should open edit dialog by edit asset button', async () => {
+    await page.click(`text=${IMAGES[0]}`);
+    await page.click('text=Edit asset');
+    await expect(page).toHaveText('[role="dialog"]', IMAGES[0]);
+  });
+
+  it('should close edit dialog by cancel button', async () => {
+    await page.click('text=Cancel');
+    await expect(page).not.toHaveText('[role="dialog"]', IMAGES[0]);
+  });
+
   it('should add title to image and search for it', async () => {
+    await page.dblclick(`text=${IMAGES[0]}`);
+    await expect(page).toHaveText('[role="dialog"]', IMAGES[0]);
     await page.fill('[placeholder="No title yet"]', 'TEST_TITLE');
     await page.click('text=Save changes');
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', 'TEST_TITLE');
@@ -155,6 +173,14 @@ describe('Media library', () => {
     await expect(page).toHaveSelectorCount('[role="dialog"] [value="10"]', 1);
     await expect(page).toEqualValue('[role="dialog"] select', 'public-domain', 1);
     await page.click('text=Cancel');
+  });
+
+  it('should remove tag', async () => {
+    await page.dblclick(`img`);
+    await expect(page).toHaveText('[role="dialog"]', 'TEST_TITLE');
+    await page.fill('[value="TEST_TAG"]', '');
+    await page.click('text=Save changes');
+    await expect(page).not.toHaveText('TEST_TAG');
   });
 
   it('should remove files', async () => {
