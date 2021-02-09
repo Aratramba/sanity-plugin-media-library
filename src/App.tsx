@@ -132,10 +132,6 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     fetchAssets();
   }, []);
 
-  useEffect(() => {
-    console.log(assets);
-  }, [assets]);
-
   async function fetchAssets() {
     try {
       setLoading(true);
