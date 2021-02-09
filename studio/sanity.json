@@ -1,5 +1,9 @@
 {
   "root": true,
+  "api": {
+    "projectId": "q74m7lt8",
+    "dataset": "production"
+  },
   "project": {
     "name": "Media Library"
   },
