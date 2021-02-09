@@ -54,6 +54,6 @@ export const darkTheme = {
   unusedLabelTextColor: colorWhite,
   uploadDropAreaBackgroundColor: 'rgba(0, 0, 0, 0.8)',
   uploadDropAreaIconColor: colorWhite,
-  usedLabelBackgroundColor: colorWhite,
+  usedLabelBackgroundColor: colorBlack,
   usedLabelTextColor: colorGray,
 };
