@@ -197,7 +197,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
               <StyledUsageLabelUnused>unused</StyledUsageLabelUnused>
             ) : (
               <StyledUsageLabel>
-                Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}{' '}
+                Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}
               </StyledUsageLabel>
             )}
             <br />
