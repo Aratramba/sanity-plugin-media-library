@@ -3,8 +3,7 @@ const path = require('path');
 
 import { formatDate, formatSize } from '../src/shared/utils';
 
-// Needs to be higher than the default Playwright timeout
-jest.setTimeout(40 * 1000);
+jest.setTimeout(40);
 
 const DOMAIN = 'http://localhost:3000';
 
@@ -44,7 +43,6 @@ describe('Media library', () => {
       IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
       {}
     );
-    await page.waitForTimeout(2000);
     await expect(page).toHaveSelectorCount('[draggable]', IMAGES.length);
   });
 
@@ -209,11 +207,11 @@ describe('Media library', () => {
     await page.click(`[draggable]`, { modifiers: ['Shift'] });
     await page.click(`[draggable]:nth-of-type(2)`, { modifiers: ['Shift'] });
     await page.click('text=Delete Asset');
-    await expect(page).toHaveText('[role="dialog"]', 'Are you sure you want to delete these 2 assets?');
+    await expect(page).toHaveText('[role="dialog"]', 'Are you sure you want to delete 2 assets?');
     await page.click('[role="dialog"] button');
     await page.waitForTimeout(2000);
 
-    await expect(page).toHaveText('No files yet');
+    await expect(page).toHaveText('No assets yet');
   });
 
   it('should open the asset modal', async () => {

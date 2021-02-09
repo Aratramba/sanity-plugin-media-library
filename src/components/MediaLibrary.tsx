@@ -126,7 +126,7 @@ export const MediaLibrary = ({
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
           {!Boolean(assets.length) && !loading ? (
-            <StyledMessage>No files yet</StyledMessage>
+            <StyledMessage>No assets yet</StyledMessage>
           ) : (
             <ViewElement
               assets={assets}
