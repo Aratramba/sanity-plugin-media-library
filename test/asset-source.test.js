@@ -27,7 +27,7 @@ describe('Media library', () => {
       },
     ]);
 
-    await page.goto(`${DOMAIN}/desk`);
+    await page.goto(`${DOMAIN}/desk`, { timeout: 60000 });
     await expect(page).toHaveText('h1', 'Media Library');
   });
 
