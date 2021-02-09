@@ -28,7 +28,7 @@
   "scripts": {
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
-    "prepublish": "npm run test && npm run build",
+    "prepublish": "npm run build",
     "test-studio": "cd studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
     "test": "DEBUG=pw:api jest --detectOpenHandles --runInBand"
   },
