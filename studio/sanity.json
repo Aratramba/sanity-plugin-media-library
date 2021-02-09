@@ -3,10 +3,6 @@
   "project": {
     "name": "Media Library"
   },
-  "api": {
-    "projectId": "q74m7lt8",
-    "dataset": "production"
-  },
   "plugins": [
     "@sanity/base",
     "@sanity/components",
