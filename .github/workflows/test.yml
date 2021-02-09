@@ -18,10 +18,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: ln -s $PWD ./studio/plugins
+    - run: ln -s $PWD ./test/studio/plugins
     - run: yarn
     - run: yarn build
-    - run: yarn test
+    - run: cd test/ && yarn
+    - run: cd .. && yarn test
       env:
         SANITY_PROJECT_ID: ${{secrets.SANITY_PROJECT_ID}}
         SANITY_PLAYWRIGHT_TEST_TOKEN: ${{secrets.SANITY_PLAYWRIGHT_TEST_TOKEN}}

@@ -1,9 +1,0 @@
-{
-  "name": "medialibrary",
-  "private": true,
-  "version": "1.0.0",
-  "description": "The missing media library for Sanity. With support for filters per tag and extension. And it's fully themeable! 🔥",
-  "main": "package.json",
-  "author": "Arjen <aratramba@gmail.com>",
-  "license": "UNLICENSED"
-}

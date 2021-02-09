@@ -1,0 +1,8 @@
+{
+  "name": "medialibrary-studio",
+  "private": true,
+  "version": "1.0.0",
+  "main": "package.json",
+  "author": "Arjen <aratramba@gmail.com>",
+  "license": "UNLICENSED"
+}

@@ -7,6 +7,6 @@ module.exports = {
   },
   serverOptions: {
     launchTimeout: 60000,
-    command: 'yarn test-studio',
+    command: 'cd ./studio/ && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000',
   },
 };
