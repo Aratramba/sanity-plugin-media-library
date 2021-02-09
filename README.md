@@ -206,7 +206,7 @@ To test the studio while developing, make a symlink inside the /studio/plugins t
 Run `yarn dev` in the root folder to make changes.
 
 ## Testing
-Create a Sanity bot token with write access at manage.sanity.io. Add a dataset named 'testing'. Then make a .env file  inside the root folder:
+Create a Sanity bot token with write access at [manage.sanity.io](manage.sanity.io). Add a dataset named 'testing'. Then make a .env file  inside the root folder:
 
 ```
 SANITY_PLAYWRIGHT_TEST_TOKEN=<SANITY_WRITE_API_TOKEN>
