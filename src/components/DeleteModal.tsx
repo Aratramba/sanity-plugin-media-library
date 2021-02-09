@@ -3,7 +3,7 @@ import { Button } from './Button';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
 import client from 'part:@sanity/base/client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -39,6 +39,7 @@ const StyledTitle = styled.h2`
 
 export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteComplete, setLoading }: Props) => {
   const plural = assets.length > 1;
+  const [usedBy, setUsedBy] = useState(0);
 
   async function onDelete() {
     try {
@@ -56,10 +57,18 @@ export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteCom
     }
   }
 
+  useEffect(() => {
+    setUsedBy(assets.reduce((prev, cur) => (prev += cur.usedBy.length), 0));
+  }, [assets]);
+
   return (
     <Modal onClose={onClose}>
       <StyledContainer>
         <StyledTitle>Are you sure you want to delete {plural ? 'these assets' : 'this asset'}?</StyledTitle>
+
+        <p>
+          Used by {usedBy} document{usedBy === 1 ? '' : 's'}.
+        </p>
 
         <StyledButtonsContainer>
           <Button disabled={loading} onClick={onDelete}>
