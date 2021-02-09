@@ -22,7 +22,7 @@ jobs:
     - run: yarn
     - run: yarn build
     - run: cd test/ && yarn
-    - run: cd .. && yarn test
+    - run: yarn test
       env:
         SANITY_PROJECT_ID: ${{secrets.SANITY_PROJECT_ID}}
         SANITY_PLAYWRIGHT_TEST_TOKEN: ${{secrets.SANITY_PLAYWRIGHT_TEST_TOKEN}}
