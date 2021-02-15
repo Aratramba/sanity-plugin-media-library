@@ -19,6 +19,7 @@ The missing media library for Sanity. With support for filters per tag and exten
   - View asset details in a list view
 - Asset organizing:
   - Add tags to your assets to create structure in your media library
+  - See which assets are unused
   - Select 1 or multiple assets with cmd/ctrl or shift
   - Delete 1 or multiple asset(s) at a time
   - Filter by (multiple) file extension(s) or tag(s)
