@@ -67,6 +67,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     'size',
     'tags',
     'url',
+    '"usedBy": *[references(^._id)] { _id, _type }',
     ...customFields.map(({ name }: { name: string }) => name),
   ];
 
@@ -88,7 +89,12 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     }
 
     if (activeTags.length > 0) {
-      newFilteredAssets = newFilteredAssets.filter(({ tags }) => tags?.some((tag) => activeTags.indexOf(tag) > -1));
+      newFilteredAssets = newFilteredAssets.filter(
+        ({ tags, usedBy }) =>
+          tags?.some((tag) => activeTags.indexOf(tag) > -1) ||
+          (activeTags.indexOf('used') > -1 && usedBy.length) ||
+          (activeTags.indexOf('unused') > -1 && !usedBy.length)
+      );
     }
 
     if (sort === 'date') {
@@ -248,11 +254,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
     (acc, { extension }) => [...acc, extension]
   );
 
-  const tags: Array<{ isActive: boolean; value: string }> = getUniqueFiltersWithActive(
-    assets,
-    activeTags,
-    (acc, { tags }) => (tags ? [...acc, ...tags] : acc)
-  );
+  const tags: Array<{ isActive: boolean; value: string }> = [
+    { isActive: activeTags.indexOf('used') > -1, value: 'used' },
+    { isActive: activeTags.indexOf('unused') > -1, value: 'unused' },
+    ...getUniqueFiltersWithActive(assets, activeTags, (acc, { tags }) => (tags ? [...acc, ...tags] : acc)),
+  ];
 
   return (
     <StyledContainer>

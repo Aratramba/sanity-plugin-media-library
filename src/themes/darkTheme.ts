@@ -50,6 +50,10 @@ export const darkTheme = {
   topBarBorderColor: colorBorder,
   topBarButtonActiveColor: colorWhite,
   topBarButtonInactiveColor: colorGray,
+  unusedLabelBackgroundColor: colorError,
+  unusedLabelTextColor: colorWhite,
   uploadDropAreaBackgroundColor: 'rgba(0, 0, 0, 0.8)',
   uploadDropAreaIconColor: colorWhite,
+  usedLabelBackgroundColor: colorBlack,
+  usedLabelTextColor: colorGray,
 };

@@ -83,7 +83,7 @@ const StyledInfoContainer = styled.div`
     color: ${({ theme }) => theme.assetModalInfoTitleColor};
     display: block;
     font-weight: 500;
-    margin: 0 0 1em;
+    margin: 0 0 0.5em;
   }
 `;
 
@@ -106,8 +106,23 @@ const StyledButtonsContainer = styled.div`
   }
 `;
 
+const StyledUsageLabel = styled.span`
+  background-color: ${({ theme }) => theme.usedLabelBackgroundColor};
+  border-radius: ${({ theme }) => theme.appBorderRadius};
+  color: ${({ theme }) => theme.usedLabelTextColor};
+  display: inline-block;
+  font-weight: 500;
+  line-height: 1;
+`;
+
+const StyledUsageLabelUnused = styled(StyledUsageLabel)`
+  background-color: ${({ theme }) => theme.unusedLabelBackgroundColor};
+  color: ${({ theme }) => theme.unusedLabelTextColor};
+  padding: 3px 5px;
+`;
+
 export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
-  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, title, url } = asset;
+  const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, title, url, usedBy } = asset;
   const { height, width } = metadata?.dimensions || {};
   const [localValues, setLocalValues] = useState<{ [key: string]: any }>({
     alt,
@@ -178,6 +193,13 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
           </StyledThumbnailContainer>
           <StyledInfoContainer>
             <strong>{localValues.title || originalFilename}</strong>
+            {usedBy.length === 0 ? (
+              <StyledUsageLabelUnused>unused</StyledUsageLabelUnused>
+            ) : (
+              <StyledUsageLabel>
+                Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}
+              </StyledUsageLabel>
+            )}
             <br />
             {formatDate(_createdAt)}
             <br />
