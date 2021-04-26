@@ -1,7 +1,7 @@
 {
   "root": true,
   "api": {
-    "projectId": "q74m7lt8",
+    "projectId": null,
     "dataset": "production"
   },
   "project": {
@@ -15,13 +15,6 @@
     "@sanity/desk-tool",
     "media-library"
   ],
-  "env": {
-    "development": {
-      "plugins": [
-        "@sanity/vision"
-      ]
-    }
-  },
   "parts": [
     {
       "name": "part:@sanity/base/schema",

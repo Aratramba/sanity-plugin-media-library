@@ -29,7 +29,7 @@
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
     "prepublishOnly": "npm run build && npm run test",
-    "test-studio": "cd test/studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
+    "test-studio": "cd test/studio && SANITY_STUDIO_API_PROJECT_ID=q74m7lt8 SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
     "test": "cd test/ && npm test"
   },
   "dependencies": {

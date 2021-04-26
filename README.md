@@ -203,7 +203,7 @@ If you run into problems or have feature requests, please create an issue or pul
 ## Development
 Run `yarn dev` in the root folder to make changes.
 
-To test the studio while developing, make a symlink inside the `/test/studio/plugins` folder that links to the root directory. Then run `sanity start` in `test/studio`. 
+Optional: To use the included studio while developing, make a symlink inside the `/test/studio/plugins` folder that links to the root directory. Then run `sanity start` in `test/studio`. You can also add the plugin to the plugins directory in a Sanity studio of your own.
 
 
 ## Testing
