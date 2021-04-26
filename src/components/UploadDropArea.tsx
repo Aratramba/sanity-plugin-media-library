@@ -32,7 +32,7 @@ const StyledContentContainer = styled.div`
   text-align: center;
   top: 0;
   width: 100%;
-  z-index: 2000;
+  z-index: 999999;
 
   & svg {
     fill: ${({ theme }) => theme.uploadDropAreaIconColor};

@@ -13,7 +13,7 @@ const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 2000;
+  z-index: 999999;
 `;
 
 const StyledOverlay = styled.div`
