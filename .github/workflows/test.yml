@@ -1,0 +1,32 @@
+name: Headless test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: yarn
+    - run: yarn build
+    - run: |
+        mkdir test/studio/plugins
+        ln -s $PWD ./test/studio/plugins
+        cd test/
+        yarn
+        cd ../
+        yarn test
+      env:
+        SANITY_PROJECT_ID: ${{secrets.SANITY_PROJECT_ID}}
+        SANITY_PLAYWRIGHT_TEST_TOKEN: ${{secrets.SANITY_PLAYWRIGHT_TEST_TOKEN}}

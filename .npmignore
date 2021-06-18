@@ -1,3 +1,5 @@
 .gitignore
 .prettierrc
 .vscode
+studio/
+test/

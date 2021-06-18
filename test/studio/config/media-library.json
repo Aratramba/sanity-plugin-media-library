@@ -1,0 +1,46 @@
+{
+  "theme": "light",
+  "customFields": [
+    {
+      "label": "Additional description",
+      "name": "description",
+      "placeholder": "No description yet",
+      "type": "textarea"
+    },
+    {
+      "label": "Decade when photo captured",
+      "max": 2200,
+      "min": 1800,
+      "name": "decade",
+      "placeholder": "Between 1800 and 2200",
+      "step": 10,
+      "type": "number"
+    },
+    {
+      "label": "Is a premium photo",
+      "name": "premiumPhoto",
+      "type": "checkbox"
+    },
+    {
+      "label": "Attribution",
+      "name": "attribution",
+      "placeholder": "No attribution yet"
+    },
+    {
+      "name": "location",
+      "label": "Location",
+      "type": "location"
+    },
+    {
+      "label": "Copyright",
+      "name": "copyright",
+      "placeholder": "pick one…",
+      "type": "select",
+      "options": [
+        { "title": "Copyright", "value": "copyright" },
+        { "title": "Public Domain", "value": "public-domain" },
+        { "title": "Creative Commons", "value": "creative-commons" }
+      ]
+    }
+  ]
+}

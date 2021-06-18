@@ -200,3 +200,17 @@ Example with asset fields listed and custom fields added:
 ## Contributing
 To contribute a theme, add it in `themes/[themename].ts`.
 If you run into problems or have feature requests, please create an issue or pull request and I'll look into it as soon as I can.
+
+## Development
+Run `yarn dev` in the root folder to make changes.
+
+Optional: To use the included studio while developing, make a symlink inside the `/test/studio/plugins` folder that links to the root directory. Then run `sanity start` in `test/studio`. You can also add the plugin to the plugins directory in a Sanity studio of your own.
+
+
+## Testing
+Create a Sanity bot token with write access at [manage.sanity.io](manage.sanity.io). Add a dataset named 'testing'. Then make a .env file  inside the `/test` folder:
+
+```
+SANITY_PLAYWRIGHT_TEST_TOKEN=<SANITY_WRITE_API_TOKEN>
+SANITY_PROJECT_ID=<PROJECT_ID>
+```

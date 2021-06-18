@@ -64,7 +64,7 @@ export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteCom
   return (
     <Modal onClose={onClose}>
       <StyledContainer>
-        <StyledTitle>Are you sure you want to delete {plural ? 'these assets' : 'this asset'}?</StyledTitle>
+        <StyledTitle>Are you sure you want to delete {plural ? `${assets.length} assets` : 'this asset'}?</StyledTitle>
 
         <p>
           Used by {usedBy} document{usedBy === 1 ? '' : 's'}.

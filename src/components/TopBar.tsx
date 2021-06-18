@@ -49,10 +49,10 @@ const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
 export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType, viewType }: Props) => (
   <StyledContainer>
     <StyledItemsContainer>
-      <StyledListGridButton onClick={() => setViewType('grid')} isActive={viewType === 'grid'}>
+      <StyledListGridButton onClick={() => setViewType('grid')} isActive={viewType === 'grid'} aria-label="grid">
         <Icon type="grid" />
       </StyledListGridButton>
-      <StyledListGridButton onClick={() => setViewType('list')} isActive={viewType === 'list'}>
+      <StyledListGridButton onClick={() => setViewType('list')} isActive={viewType === 'list'} aria-label="list">
         <Icon type="list" />
       </StyledListGridButton>
     </StyledItemsContainer>
