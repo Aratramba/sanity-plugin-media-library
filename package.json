@@ -29,8 +29,7 @@
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
     "prepublishOnly": "npm run build && npm run test",
-    "test-studio": "cd test/studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
-    "test": "start-server-and-test \"yarn test-studio\" http-get://localhost:3000 \"cd test && yarn test\""
+    "test": "start-server-and-test \"cd test && yarn start-studio && yarn start\" http-get://localhost:3000 \"cd test && yarn test\""
   },
   "dependencies": {
     "styled-components": "^5.2.1"
