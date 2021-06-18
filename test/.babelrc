@@ -1,7 +1,0 @@
-{
-    "presets": ["@babel/preset-typescript", "@babel/preset-env", "@babel/preset-react"],
-    "plugins": [
-      [ "babel-plugin-styled-components", { "ssr": false } ],
-      "@babel/plugin-proposal-object-rest-spread"],
-    "ignore": ["**/*.d.ts", "**/types.ts"]
-  }
