@@ -28,8 +28,8 @@
   "scripts": {
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
-    "prepublishOnly": "npm run build && npm run test",
-    "test": "start-server-and-test \"cd test && yarn start-studio && yarn start\" http-get://localhost:3000 \"cd test && yarn test\""
+    "prepublishOnly": "yarn build && yarn test",
+    "test": "start-server-and-test \"cd test && yarn start-studio\" http-get://localhost:3000 \"cd test && yarn test\""
   },
   "dependencies": {
     "styled-components": "^5.2.1"
