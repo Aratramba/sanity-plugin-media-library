@@ -1,8 +1,8 @@
 import { Asset } from '../types/Asset';
-import { Button } from './Button';
-import { Loader } from './Loader';
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
+import { Spinner, Button } from '@sanity/ui';
+import { ArrowTopRightIcon, EditIcon, RemoveIcon } from '@sanity/icons';
 
 interface BottomBarProps {
   handleSelect?: (selectedAssets: Array<Asset>) => void;
@@ -45,29 +45,46 @@ export const BottomBar = ({
 
   return (
     <StyledContainer>
-      <div>{loading && <Loader />}</div>
+      <div>{loading && <Spinner />}</div>
 
       <StyledItemsContainer>
         {isAssetSource ? (
           <Fragment>
-            <Button secondary onClick={onCancel ? onCancel : () => {}}>
-              Cancel
-            </Button>
-            <Button disabled={!selectedAsset} onClick={() => (handleSelect ? handleSelect(selectedAssets) : null)}>
-              Select
-            </Button>
+            <Button mode="ghost" onClick={onCancel ? onCancel : () => {}} text="Cancel" />
+            <Button
+              tone="primary"
+              disabled={!selectedAsset}
+              onClick={() => (handleSelect ? handleSelect(selectedAssets) : null)}
+              text="Select"
+            />
           </Fragment>
         ) : (
           <Fragment>
-            <Button disabled={selectedAssets.length === 0} secondary onClick={() => onDelete(selectedAssets)}>
-              Delete Asset{selectedAssets.length > 1 ? 's' : ''}
-            </Button>
-            <Button disabled={!selectedAsset || selectedAssets.length > 1} secondary onClick={onView}>
-              View Asset
-            </Button>
-            <Button disabled={!selectedAsset || selectedAssets.length > 1} onClick={() => onEdit(selectedAsset)}>
-              Edit Asset
-            </Button>
+            <Button
+              tone="primary"
+              disabled={!selectedAsset || selectedAssets.length > 1}
+              onClick={() => onEdit(selectedAsset)}
+              text="Edit Asset"
+              icon={EditIcon}
+              padding={[3, 3, 4]}
+            />
+            <Button
+              icon={ArrowTopRightIcon}
+              tone="primary"
+              mode="ghost"
+              disabled={!selectedAsset || selectedAssets.length > 1}
+              onClick={onView}
+              text="View asset"
+              padding={[3, 3, 4]}
+            />
+            <Button
+              disabled={selectedAssets.length === 0}
+              tone="critical"
+              icon={RemoveIcon}
+              onClick={() => onDelete(selectedAssets)}
+              text={`Delete Asset${selectedAssets.length > 1 ? 's' : ''}`}
+              padding={[3, 3, 4]}
+            />
           </Fragment>
         )}
       </StyledItemsContainer>

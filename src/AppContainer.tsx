@@ -1,10 +1,7 @@
 import { App } from './App';
 import { Asset } from './types/Asset';
-import { darkTheme } from './themes/darkTheme';
-import { lightTheme } from './themes/lightTheme';
 import { Modal } from './components/Modal';
-import { theme, themeChanges } from './config';
-import { ThemeProvider } from 'styled-components';
+import { studioTheme, ThemeProvider } from '@sanity/ui';
 import React from 'react';
 
 type Props = {
@@ -14,10 +11,8 @@ type Props = {
   tool?: string;
 };
 
-type ThemeOptions = 'dark' | 'light';
-
 export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props) => (
-  <ThemeProvider theme={getTheme()}>
+  <ThemeProvider theme={studioTheme}>
     {tool ? (
       <App tool={tool} />
     ) : (
@@ -27,18 +22,3 @@ export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props)
     )}
   </ThemeProvider>
 );
-
-function getTheme() {
-  const themes = {
-    dark: darkTheme,
-    light: lightTheme,
-  };
-
-  const themeToUse = themes[theme as ThemeOptions];
-
-  if (themeChanges && Object.keys(themeChanges).length) {
-    return { ...themeToUse, ...themeChanges };
-  } else {
-    return themeToUse;
-  }
-}

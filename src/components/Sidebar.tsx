@@ -1,8 +1,9 @@
-import { Button } from './Button';
 import { FilterList } from './FilterList';
 import { UploadButton } from './UploadButton';
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from '@sanity/ui';
+import { CloseIcon } from '@sanity/icons';
 
 interface Props {
   extensions?: Array<{ isActive: boolean; value: string }>;
@@ -81,14 +82,15 @@ export const Sidebar = ({
     </StyledFlexGrowContainer>
     <StyledButtonContainer>
       <Button
-        disabled={loading || [...extensions, ...tags].filter(({ isActive }) => isActive).length === 0}
-        grow
-        icon="close"
+        disabled={Boolean(loading) || [...extensions, ...tags].filter(({ isActive }) => isActive).length === 0}
         onClick={onClearFilters}
-        secondary
-      >
-        Clear all filters
-      </Button>
+        fontSize={[2]}
+        icon={CloseIcon}
+        mode="ghost"
+        padding={[3, 3, 4]}
+        text="Clear all filters"
+      />
+
       <UploadButton disabled={loading} onUpload={onUpload} />
     </StyledButtonContainer>
   </StyledContainer>

@@ -1,7 +1,8 @@
 import { acceptedFileTypes } from '../shared/acceptedFileTypes';
-import { Button } from './Button';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { Button } from '@sanity/ui';
+import { UploadIcon } from '@sanity/icons';
 
 const StyledInput = styled.input`
   left: -9999999999px;
@@ -19,9 +20,15 @@ export const UploadButton = ({ disabled, onUpload }: Props) => {
 
   return (
     <div>
-      <Button disabled={disabled} grow onClick={() => inputRef?.current?.click()} icon="upload">
-        Upload
-      </Button>
+      <Button
+        fontSize={[2]}
+        icon={UploadIcon}
+        padding={[3, 3, 4]}
+        text="Upload"
+        tone="primary"
+        disabled={Boolean(disabled)}
+        onClick={() => inputRef?.current?.click()}
+      />
       <StyledInput
         accept={acceptedFileTypes.join(',')}
         multiple

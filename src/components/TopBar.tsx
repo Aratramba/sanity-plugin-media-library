@@ -1,10 +1,10 @@
 import { Icon } from './Icon';
-import { SearchBar } from './SearchBar';
-import { Select } from './Select';
 import { SortOption } from '../types/SortOption';
 import { ViewTypes } from '../types/ViewTypes';
 import React from 'react';
 import styled from 'styled-components';
+import { TextInput, Inline, Select } from '@sanity/ui';
+import { SearchIcon } from '@sanity/icons';
 
 interface Props {
   onSortChange: (value: SortOption) => void;
@@ -56,16 +56,26 @@ export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType,
         <Icon type="list" />
       </StyledListGridButton>
     </StyledItemsContainer>
-    <StyledItemsContainer>
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <Select
-        onSortChange={onSortChange}
-        options={[
-          { label: 'Latest First', value: 'date' },
-          { label: 'Filename A - Z', value: 'az' },
-          { label: 'Filename Z - A', value: 'za' },
-        ]}
+    <Inline space={3}>
+      <SearchIcon />
+      <TextInput
+        fontSize={[2]}
+        padding={[3]}
+        placeholder="Search by filename, title, alt or tag"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.currentTarget.value)}
       />
-    </StyledItemsContainer>
+
+      <Select
+        fontSize={[2]}
+        padding={[3]}
+        space={[3, 3, 4]}
+        onChange={(e) => onSortChange(e.currentTarget.value as SortOption)}
+      >
+        <option value="date">Latest first</option>
+        <option value="az">Filename A - Z</option>
+        <option value="za">Filename Z - A</option>
+      </Select>
+    </Inline>
   </StyledContainer>
 );

@@ -29,9 +29,12 @@
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
     "prepublishOnly": "yarn build && yarn test",
+    "test-studio": "cd test && yarn start-studio",
     "test": "start-server-and-test \"cd test && yarn start-studio\" http-get://localhost:3000 \"cd test && yarn test\""
   },
   "dependencies": {
+    "@sanity/icons": "^1.1.2",
+    "@sanity/ui": "^0.34.4",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
