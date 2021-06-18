@@ -50,7 +50,6 @@ test.describe('Media library', () => {
   });
 
   test('login', async ({ page }) => {
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT); // TODO: is this needed for the Github action to succeed?
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
@@ -182,7 +181,7 @@ test.describe('Media library', () => {
     expect(await page.textContent('[role="dialog"]')).toContain('Copyright');
   });
 
-  test('store custom fields', async ({ page }) => {
+  test('change custom fields', async ({ page }) => {
     await page.click('button[aria-label="list"]');
     await page.dblclick('[draggable]');
     await page.fill('[role="dialog"] [placeholder="No alt text yet"]', 'TEST_ALT');
@@ -197,7 +196,9 @@ test.describe('Media library', () => {
     await page.selectOption('[role="dialog"] select', 'public-domain');
     await page.click('text=Save changes');
     await dialogHidden(page);
+  });
 
+  test('check custom fields', async ({ page }) => {
     await page.dblclick('[draggable]');
     expect(await countSelector(page, '[role="dialog"] [value="TEST_ALT"]')).toBe(1);
     expect(await countSelector(page, '[role="dialog"] [value="TEST_TAG"]')).toBe(1);
