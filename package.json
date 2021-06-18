@@ -3,15 +3,15 @@
   "description": "The missing media library for Sanity. With filters per tag and filtetype. And it's fully themeable.",
   "version": "1.0.5",
   "license": "MIT",
-  "author": "Dennis Passway",
+  "author": "Dennis Passway / Arjen Scherff-de Water",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dennispassway/sanity-plugin-media-library.git"
+    "url": "https://github.com/aratramba/sanity-plugin-media-library.git"
   },
-  "homepage": "https://github.com/dennispassway/sanity-plugin-media-library#readme",
+  "homepage": "https://github.com/aratramba/sanity-plugin-media-library#readme",
   "bugs": {
-    "url": "https://github.com/dennispassway/sanity-plugin-media-library/issues"
+    "url": "https://github.com/aratramba/sanity-plugin-media-library/issues"
   },
   "keywords": [
     "cms",
@@ -29,8 +29,9 @@
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
     "prepublishOnly": "npm run build && npm run test",
-    "test-studio": "cd test/studio && SANITY_STUDIO_API_PROJECT_ID=q74m7lt8 SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
-    "test": "cd test/ && npm test"
+    "test-studio": "cd test/studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
+    "test": "cd test/ && npm test",
+    "test2": "DEBUG=pw:api playwright test test/media-library.spec.ts --headed"
   },
   "dependencies": {
     "styled-components": "^5.2.1"
@@ -42,9 +43,11 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "7.12.10",
     "@babel/preset-typescript": "7.12.7",
+    "@playwright/test": "^1.12.2",
     "@types/react": "17.0.0",
     "@types/styled-components": "^5.1.7",
     "babel-plugin-styled-components": "^1.12.0",
+    "playwright": "^1.12.2",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "typescript": "4.1.3"
