@@ -50,6 +50,7 @@ test.describe('Media library', () => {
   });
 
   test('login', async ({ page }) => {
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT); // TODO: is this needed for the Github action to succeed?
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
