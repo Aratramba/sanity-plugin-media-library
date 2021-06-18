@@ -1,9 +1,7 @@
-import { Icon } from './Icon';
 import { SortOption } from '../types/SortOption';
 import { ViewTypes } from '../types/ViewTypes';
 import React from 'react';
-import styled from 'styled-components';
-import { TextInput, Inline, Select } from '@sanity/ui';
+import { TextInput, Inline, Select, Flex, Switch, Label } from '@sanity/ui';
 import { SearchIcon } from '@sanity/icons';
 
 interface Props {
@@ -14,48 +12,8 @@ interface Props {
   viewType: ViewTypes;
 }
 
-const StyledContainer = styled.div`
-  align-items: center;
-  border-bottom: solid 1px ${({ theme }) => theme.topBarBorderColor};
-  display: flex;
-  justify-content: space-between;
-  padding: 40px;
-`;
-
-const StyledItemsContainer = styled.div`
-  display: flex;
-
-  & > :not(:last-child) {
-    margin: 0 20px 0 0;
-  }
-`;
-
-const StyledListGridButton = styled.button<{ isActive?: Boolean }>`
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  height: 20px;
-  outline: 0;
-  padding: 0;
-  width: 20px;
-
-  & svg {
-    fill: ${({ isActive, theme }) => (isActive ? theme.topBarButtonActiveColor : theme.topBarButtonInactiveColor)};
-    height: 20px;
-    width: 20px;
-  }
-`;
-
 export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType, viewType }: Props) => (
-  <StyledContainer>
-    <StyledItemsContainer>
-      <StyledListGridButton onClick={() => setViewType('grid')} isActive={viewType === 'grid'} aria-label="grid">
-        <Icon type="grid" />
-      </StyledListGridButton>
-      <StyledListGridButton onClick={() => setViewType('list')} isActive={viewType === 'list'} aria-label="list">
-        <Icon type="list" />
-      </StyledListGridButton>
-    </StyledItemsContainer>
+  <Flex padding={3} justify="space-between">
     <Inline space={3}>
       <SearchIcon />
       <TextInput
@@ -77,5 +35,11 @@ export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType,
         <option value="za">Filename Z - A</option>
       </Select>
     </Inline>
-  </StyledContainer>
+    <Inline space={2}>
+      <Inline space={2}>
+        <Label size={0}>Details</Label>
+        <Switch onClick={() => setViewType(viewType === 'grid' ? 'list' : 'grid')} checked={viewType === 'list'} />
+      </Inline>
+    </Inline>
+  </Flex>
 );
