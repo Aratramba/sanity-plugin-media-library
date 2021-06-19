@@ -1,8 +1,8 @@
 import { FilterList } from './FilterList';
 import { UploadButton } from './UploadButton';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from '@sanity/ui';
+import { Button, Heading, Stack, Flex } from '@sanity/ui';
 import { CloseIcon } from '@sanity/icons';
 
 interface Props {
@@ -16,50 +16,11 @@ interface Props {
   tags?: Array<{ isActive: boolean; value: string }>;
 }
 
-const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.sidebarBackgroundColor};
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  justify-content: space-between;
-  width: 300px;
-`;
-
-const StyledFlexGrowContainer = styled.div`
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-`;
-
-const StyledFilterContainer = styled.div`
-  -ms-overflow-style: none; /* IE and Edge */
-  height: 100%;
-  left: 0;
-  overflow-y: scroll;
-  padding: 40px;
-  position: absolute;
-  scrollbar-width: none; /* Firefox */
-  top: 0;
-  width: 100%;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const StyledTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0 0 1em;
-`;
-
-const StyledButtonContainer = styled.div`
-  padding: 40px;
-
-  & > :not(:last-child) {
-    margin: 0 0 20px;
-  }
+const StyledDivider = styled.div`
+  height: 1px;
+  background: currentColor;
+  opacity: 0.1;
+  margin: '10px 0';
 `;
 
 export const Sidebar = ({
@@ -71,27 +32,40 @@ export const Sidebar = ({
   onTagDrop,
   onUpload,
   tags = [],
-}: Props) => (
-  <StyledContainer>
-    <StyledFlexGrowContainer>
-      <StyledFilterContainer>
-        <StyledTitle>Filters</StyledTitle>
-        <FilterList items={extensions} iconType="file" onItemClick={onExtensionClick} />
-        <FilterList items={tags} iconType="tag" onItemClick={onTagClick} onItemDrop={onTagDrop} />
-      </StyledFilterContainer>
-    </StyledFlexGrowContainer>
-    <StyledButtonContainer>
-      <Button
-        disabled={Boolean(loading) || [...extensions, ...tags].filter(({ isActive }) => isActive).length === 0}
-        onClick={onClearFilters}
-        fontSize={[2]}
-        icon={CloseIcon}
-        mode="ghost"
-        padding={[3, 3, 4]}
-        text="Clear all filters"
-      />
+}: Props) => {
+  const [hasActiveTags, setHasActiveTags] = useState<boolean>(false);
 
-      <UploadButton disabled={loading} onUpload={onUpload} />
-    </StyledButtonContainer>
-  </StyledContainer>
-);
+  useEffect(() => {
+    setHasActiveTags([...extensions, ...tags].filter(({ isActive }) => isActive).length === 0);
+  }, [extensions, tags]);
+
+  return (
+    <Flex direction="column" style={{ width: 250, marginTop: 60 }}>
+      <Stack padding={3} style={{ overflowY: 'auto' }}>
+        <Stack space={3}>
+          <Heading as="h2" size={1}>
+            Filters
+          </Heading>
+
+          <Button
+            disabled={Boolean(loading) || hasActiveTags}
+            onClick={onClearFilters}
+            fontSize={[1]}
+            icon={CloseIcon}
+            mode="ghost"
+            padding={2}
+            text="Clear filters"
+          />
+          <StyledDivider />
+          <FilterList items={extensions} onItemClick={onExtensionClick} />
+          <StyledDivider />
+          <FilterList items={tags} onItemClick={onTagClick} onItemDrop={onTagDrop} />
+        </Stack>
+      </Stack>
+
+      <Stack padding={3} space={3} style={{ marginTop: 'auto' }}>
+        <UploadButton disabled={loading} onUpload={onUpload} />
+      </Stack>
+    </Flex>
+  );
+};

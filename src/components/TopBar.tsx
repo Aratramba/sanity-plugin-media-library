@@ -13,7 +13,13 @@ interface Props {
 }
 
 export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType, viewType }: Props) => (
-  <Flex padding={3} justify="space-between">
+  <Flex padding={3} justify="space-between" align="center">
+    <Inline space={2}>
+      <Inline space={2}>
+        <Label size={0}>Details</Label>
+        <Switch onClick={() => setViewType(viewType === 'grid' ? 'list' : 'grid')} checked={viewType === 'list'} />
+      </Inline>
+    </Inline>
     <Inline space={3}>
       <SearchIcon />
       <TextInput
@@ -34,12 +40,6 @@ export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType,
         <option value="az">Filename A - Z</option>
         <option value="za">Filename Z - A</option>
       </Select>
-    </Inline>
-    <Inline space={2}>
-      <Inline space={2}>
-        <Label size={0}>Details</Label>
-        <Switch onClick={() => setViewType(viewType === 'grid' ? 'list' : 'grid')} checked={viewType === 'list'} />
-      </Inline>
     </Inline>
   </Flex>
 );

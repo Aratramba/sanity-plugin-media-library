@@ -10,7 +10,9 @@ interface Props {
 
 const StyledContainer = styled.div<{ shouldHighlight: Boolean }>`
   position: relative;
-  ${({ shouldHighlight, theme }) => (shouldHighlight ? ` & button { color: ${theme.filterListActiveColor}; } ` : '')}
+  outline: 1px solid transparent;
+  outline-offset: 4px;
+  outline-color: ${({ shouldHighlight, theme }) => (shouldHighlight ? 'currentColor' : 'transparent')};
 `;
 
 export const FilterListDropArea = ({ children, disabled, loading, onDrop }: Props) => {
