@@ -16,7 +16,7 @@ export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props)
     {tool ? (
       <App tool={tool} />
     ) : (
-      <Modal full onClose={onClose ? onClose : () => {}}>
+      <Modal onClose={onClose ? onClose : () => {}}>
         <App onClose={onClose} onSelect={onSelect} selectedAssets={selectedAssets} tool={tool} />
       </Modal>
     )}

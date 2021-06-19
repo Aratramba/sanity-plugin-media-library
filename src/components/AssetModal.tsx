@@ -1,14 +1,13 @@
 import { Asset } from '../types/Asset';
-import { Button } from './Button';
 import { customFields } from '../config';
 import { formatDate, formatSize } from '../shared/utils';
-import { Icon } from './Icon';
 import { LabelWithInput } from './LabelWithInput';
-import { Loader } from './Loader';
 import { Modal } from './Modal';
 import client from 'part:@sanity/base/client';
-import React, { Fragment, FormEvent, useState, useEffect } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Box, Stack, Button, Inline, Badge, Text, Spinner, Flex } from '@sanity/ui';
+import { CheckmarkIcon, DocumentIcon } from '@sanity/icons';
 
 interface Props {
   asset: Asset;
@@ -19,111 +18,16 @@ interface Props {
   setLoading: (value: Boolean) => void;
 }
 
-const StyledFormContainer = styled.form`
-  & > :not(:last-child) {
-    border-bottom: solid 1px ${({ theme }) => theme.assetModalBorderColor};
-    margin: 0 0 20px;
-    padding: 0 0 20px;
-  }
-`;
-
-const StyledImageInfoContainer = styled.div`
-  display: flex;
-`;
-
-const StyledThumbnailContainer = styled.div`
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  display: block;
-  flex-shrink: 0;
-  height: 100px;
-  margin: 0 20px 0 0;
-  overflow: hidden;
-  position: relative;
-  width: 100px;
-`;
-
-const StyledImage = styled.img`
-  height: 100%;
-  left: 0;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  width: 100%;
-`;
-
-const StyledFile = styled.div`
-  align-items: center;
-  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  line-height: 1.2;
-  padding: 20px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-
-  & svg {
-    fill: ${({ theme }) => theme.mediaItemIconColor};
-    height: 24px;
-    width: 24px;
-  }
-`;
-
-const StyledInfoContainer = styled.div`
-  color: ${({ theme }) => theme.assetModalInfoTextColor};
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.4;
-
-  & strong {
-    color: ${({ theme }) => theme.assetModalInfoTitleColor};
-    display: block;
-    font-weight: 500;
-    margin: 0 0 0.5em;
-  }
-`;
-
 const StyledInputsContainer = styled.div`
   padding-right: 8px !important;
   max-height: 30vh;
   overflow: hidden scroll;
-
-  & > :not(:last-child) {
-    margin: 0 0 20px;
-  }
-`;
-
-const StyledButtonsContainer = styled.div`
-  align-items: center;
-  display: flex;
-
-  & > :not(:last-child) {
-    margin: 0 20px 0 0;
-  }
-`;
-
-const StyledUsageLabel = styled.span`
-  background-color: ${({ theme }) => theme.usedLabelBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  color: ${({ theme }) => theme.usedLabelTextColor};
-  display: inline-block;
-  font-weight: 500;
-  line-height: 1;
-`;
-
-const StyledUsageLabelUnused = styled(StyledUsageLabel)`
-  background-color: ${({ theme }) => theme.unusedLabelBackgroundColor};
-  color: ${({ theme }) => theme.unusedLabelTextColor};
-  padding: 3px 5px;
 `;
 
 export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplete, setLoading }: Props) => {
   const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, title, url, usedBy } = asset;
   const { height, width } = metadata?.dimensions || {};
+  const [isChanged, setIsChanged] = useState<boolean>(false);
   const [localValues, setLocalValues] = useState<{ [key: string]: any }>({
     alt,
     tags: tags?.join(','),
@@ -141,19 +45,20 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
     ...customFields,
   ];
 
-  const isChanged = Object.entries(localValues).some(([key, newValue]) => {
-    const currentValue = asset[key];
+  useEffect(() => {
+    const hasChanges = Object.entries(localValues).some(([key, newValue]) => {
+      const currentValue = asset[key];
+      if (newValue === '' && typeof currentValue === 'undefined') {
+        return false;
+      }
+      return newValue !== currentValue;
+    });
+    setIsChanged(hasChanges);
+  }, [localValues]);
 
-    if (newValue === '' && typeof currentValue === 'undefined') {
-      return false;
-    }
-
-    return newValue !== currentValue;
-  });
-
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent | null) {
     try {
-      e.preventDefault();
+      e?.preventDefault();
 
       if (loading) {
         return;
@@ -179,59 +84,86 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
   }
 
   return (
-    <Modal onClose={onClose}>
-      <StyledFormContainer onSubmit={handleSubmit}>
-        <StyledImageInfoContainer>
-          <StyledThumbnailContainer>
+    <Modal onClose={onClose} title={originalFilename}>
+      <form onSubmit={handleSubmit}>
+        <Box padding={4}>
+          <Inline space={3}>
             {_type === 'sanity.imageAsset' ? (
-              <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
+              <img alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
             ) : (
-              <StyledFile>
-                <Icon type="file" />
-              </StyledFile>
+              <Text>
+                <DocumentIcon />
+              </Text>
             )}
-          </StyledThumbnailContainer>
-          <StyledInfoContainer>
-            <strong>{localValues.title || originalFilename}</strong>
-            {usedBy.length === 0 ? (
-              <StyledUsageLabelUnused>unused</StyledUsageLabelUnused>
-            ) : (
-              <StyledUsageLabel>
-                Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}
-              </StyledUsageLabel>
-            )}
-            <br />
-            {formatDate(_createdAt)}
-            <br />
-            {width && height && (
-              <Fragment>
-                {width} x {height}
-                <br />
-              </Fragment>
-            )}
-            {extension.toUpperCase()}, {formatSize(size)}
-          </StyledInfoContainer>
-        </StyledImageInfoContainer>
+
+            <Stack space={2}>
+              {usedBy && (
+                <>
+                  {usedBy.length === 0 ? (
+                    <Inline>
+                      <Badge mode="outline" tone="caution">
+                        Unused
+                      </Badge>
+                    </Inline>
+                  ) : (
+                    <Text size={1}>
+                      Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}
+                    </Text>
+                  )}
+                </>
+              )}
+              <Text size={1}>{formatDate(_createdAt)}</Text>
+              {width && height && (
+                <Text size={1}>
+                  {width} x {height}
+                  <br />
+                </Text>
+              )}
+              <Text size={1}>
+                {extension.toUpperCase()}, {formatSize(size)}
+              </Text>
+            </Stack>
+          </Inline>
+        </Box>
 
         <StyledInputsContainer>
-          {inputFields.map(({ name, ...rest }) => (
-            <LabelWithInput
-              key={name}
-              onChange={(value: any) => setLocalValues({ ...localValues, [name]: value })}
-              value={localValues[name]}
-              {...rest}
-            />
-          ))}
+          <Stack space={5} padding={4}>
+            {inputFields.map(({ name, ...rest }) => (
+              <LabelWithInput
+                key={name}
+                onChange={(value: any) => setLocalValues({ ...localValues, [name]: value })}
+                value={localValues[name]}
+                {...rest}
+              />
+            ))}
+          </Stack>
         </StyledInputsContainer>
 
-        <StyledButtonsContainer>
-          <Button disabled={!isChanged || loading}>Save Changes</Button>
-          <Button secondary onClick={() => onClose()}>
-            Cancel
-          </Button>
-          {loading && <Loader />}
-        </StyledButtonsContainer>
-      </StyledFormContainer>
+        <Box padding={4}>
+          <Flex>
+            <Inline space={3}>
+              <Button
+                disabled={!isChanged || Boolean(loading)}
+                tone="primary"
+                onClick={handleSubmit}
+                text="Save changes"
+                icon={loading ? Spinner : CheckmarkIcon}
+                padding={[3, 3, 4]}
+              />
+              <Button tone="primary" mode="ghost" onClick={() => onClose()} text="Cancel" padding={[3, 3, 4]} />
+            </Inline>
+            {/* <Button
+              disabled={!isChanged || Boolean(loading)}
+              style={{ marginLeft: 'auto' }}
+              tone="critical"
+              icon={RemoveIcon}
+              // onClick={() => onDelete(selectedAssets)}
+              text={`Delete Asset`}
+              padding={[3, 3, 4]}
+            /> */}
+          </Flex>
+        </Box>
+      </form>
     </Modal>
   );
 };

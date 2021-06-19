@@ -1,6 +1,7 @@
 import { Geopoint } from '../types/Asset';
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
+import { TextInput, Select, TextArea, Checkbox, Text, Inline, Stack } from '@sanity/ui';
 
 interface Props {
   label: string;
@@ -22,107 +23,12 @@ interface Props {
   value?: string | number | boolean | readonly string[] | undefined;
 }
 
-const StyledContainer = styled.label`
-  cursor: pointer;
-  display: block;
-  width: 100%;
-`;
-
-const StyledWrapper = styled.div`
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  margin-bottom: 8px;
-  width: 100%;
-
-  & > input {
-    margin-left: 16px;
-  }
-
-  & > span {
-    font-size: 14px;
-    margin: 0;
-    opacity: 0.8;
-  }
-`;
-
-const StyledLabel = styled.span`
-  color: ${({ theme }) => theme.inputLabelColor};
-  display: block;
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.1;
-  margin: 0 0 0.5em;
-  width: 100%;
-`;
-
-const StyledInput = styled.input`
-  background-color: ${({ theme }) => theme.inputBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  border: 0;
-  color: ${({ theme }) => theme.inputTextColor};
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 16px;
-  line-height: 1.1;
-  outline: 0;
-  padding: 16px;
-  width: 100%;
-`;
-
-const StyledTextArea = styled.textarea`
-  background-color: ${({ theme }) => theme.inputBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  border: 0;
-  color: ${({ theme }) => theme.inputTextColor};
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 16px;
-  line-height: 1.1;
-  outline: 0;
-  padding: 16px;
-  resize: vertical;
-  rows: 2;
-  width: 100%;
-`;
-
-const StyledSelectWrapper = styled.div`
-  position: relative;
-`;
-
-const StyledSelectArrow = styled.span`
-  background-color: ${({ theme }) => theme.inputTextColor};
-  bottom: 0;
-  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
-  content: '';
-  height: 0.5em;
-  pointer-events: none;
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0.8em;
-`;
-
-const StyledSelect = styled.select`
-  appearance: none;
-  background-color: ${({ theme }) => theme.inputBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  border: 0;
-  color: ${({ theme }) => theme.inputTextColor};
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 16px 16px 34px 16px;
-  line-height: 1.1;
-  outline: 0;
-  padding: 16px;
-  width: 100%;
-`;
-
 export const LabelWithInput = ({ label, onChange, type = 'text', ...rest }: Props) => {
   const elementsMap: { [key: string]: any } = {
-    checkbox: Checkbox,
+    checkbox: CustomCheckbox,
     location: Location,
-    textArea: StyledTextArea,
-    select: Select,
+    textArea: TextArea,
+    select: CustomSelect,
   };
 
   const onChangeMap: { [key: string]: (e: any) => void } = {
@@ -134,22 +40,21 @@ export const LabelWithInput = ({ label, onChange, type = 'text', ...rest }: Prop
 
   const defaultOnChange = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value);
   const handleOnChange = onChangeMap[type] || defaultOnChange;
-  const Element = elementsMap[type] || StyledInput;
+  const Element = elementsMap[type] || TextInput;
 
   return (
-    <StyledContainer>
-      <StyledLabel>{label}</StyledLabel>
+    <Stack space={3}>
+      <Text size={2}>{label}</Text>
       <Element onChange={handleOnChange} type={type} {...rest} />
-    </StyledContainer>
+    </Stack>
   );
 };
 
-const Checkbox = ({ value, ...rest }: { value: boolean | undefined }) => <input checked={!!value} {...rest} />;
+const CustomCheckbox = ({ value, ...rest }: { value: boolean | undefined }) => <Checkbox checked={!!value} {...rest} />;
 
 const Location = ({
   onChange,
   value = {},
-  ...rest
 }: {
   onChange: (value: Geopoint | ((prevState: Geopoint) => Geopoint)) => void;
   value?: Geopoint | undefined;
@@ -165,14 +70,14 @@ const Location = ({
   };
 
   return (
-    <StyledContainer as="div" {...rest}>
+    <Stack space={3}>
       {fields.map(({ label, name, ...rest }: { label: string; name: keyof Geopoint }) => (
-        <StyledWrapper key={name}>
-          <StyledLabel>{label}</StyledLabel>
-          <StyledInput onChange={handleInputchange} name={name} value={value[name]} {...rest} />
-        </StyledWrapper>
+        <Inline key={name} space={3}>
+          <Text size={2}>{label}</Text>
+          <TextInput onChange={handleInputchange} name={name} value={value[name]} {...rest} />
+        </Inline>
       ))}
-    </StyledContainer>
+    </Stack>
   );
 };
 
@@ -181,7 +86,7 @@ type SelectOption = {
   value: string;
 };
 
-const Select = ({
+const CustomSelect = ({
   options,
   placeholder,
   value,
@@ -192,16 +97,13 @@ const Select = ({
   value: string | undefined;
 }) => {
   return (
-    <StyledSelectWrapper>
-      <StyledSelect {...rest}>
-        <option value="">{placeholder}</option>
-        {options?.map((option: SelectOption) => (
-          <option key={option.value} value={option.value} selected={option.value === value}>
-            {option.title}
-          </option>
-        ))}
-      </StyledSelect>
-      <StyledSelectArrow />
-    </StyledSelectWrapper>
+    <Select {...rest}>
+      <option value="">{placeholder}</option>
+      {options?.map((option: SelectOption) => (
+        <option key={option.value} value={option.value} selected={option.value === value}>
+          {option.title}
+        </option>
+      ))}
+    </Select>
   );
 };
