@@ -3,11 +3,12 @@ import { customFields } from '../config';
 import { formatDate, formatSize } from '../shared/utils';
 import { LabelWithInput } from './LabelWithInput';
 import { Modal } from './Modal';
+import { DeleteModal } from './DeleteModal';
 import client from 'part:@sanity/base/client';
 import React, { FormEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Box, Stack, Button, Inline, Badge, Text, Spinner, Flex } from '@sanity/ui';
-import { CheckmarkIcon, DocumentIcon } from '@sanity/icons';
+import { CheckmarkIcon, DocumentIcon, RemoveIcon } from '@sanity/icons';
 
 interface Props {
   asset: Asset;
@@ -28,6 +29,8 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
   const { _createdAt, _id, _type, alt, extension, metadata, originalFilename, size, tags, title, url, usedBy } = asset;
   const { height, width } = metadata?.dimensions || {};
   const [isChanged, setIsChanged] = useState<boolean>(false);
+  const [checkDelete, setCheckDelete] = useState<boolean>(false);
+
   const [localValues, setLocalValues] = useState<{ [key: string]: any }>({
     alt,
     tags: tags?.join(','),
@@ -84,86 +87,99 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
   }
 
   return (
-    <Modal onClose={onClose} title={originalFilename}>
-      <form onSubmit={handleSubmit}>
-        <Box padding={4}>
-          <Inline space={3}>
-            {_type === 'sanity.imageAsset' ? (
-              <img alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
-            ) : (
-              <Text>
-                <DocumentIcon />
-              </Text>
-            )}
+    <>
+      {checkDelete ? (
+        <DeleteModal
+          assets={[asset]}
+          loading={false}
+          onClose={() => setCheckDelete(false)}
+          handleError={handleError}
+          onDeleteComplete={onSaveComplete}
+          setLoading={setLoading}
+        />
+      ) : (
+        <Modal onClose={onClose} title={originalFilename}>
+          <form onSubmit={handleSubmit}>
+            <Box padding={4}>
+              <Inline space={3}>
+                {_type === 'sanity.imageAsset' ? (
+                  <img alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
+                ) : (
+                  <Text>
+                    <DocumentIcon />
+                  </Text>
+                )}
 
-            <Stack space={2}>
-              {usedBy && (
-                <>
-                  {usedBy.length === 0 ? (
-                    <Inline>
-                      <Badge mode="outline" tone="caution">
-                        Unused
-                      </Badge>
-                    </Inline>
-                  ) : (
+                <Stack space={2}>
+                  {usedBy && (
+                    <>
+                      {usedBy.length === 0 ? (
+                        <Inline>
+                          <Badge mode="outline" tone="caution">
+                            Unused
+                          </Badge>
+                        </Inline>
+                      ) : (
+                        <Text size={1}>
+                          Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}
+                        </Text>
+                      )}
+                    </>
+                  )}
+                  <Text size={1}>{formatDate(_createdAt)}</Text>
+                  {width && height && (
                     <Text size={1}>
-                      Used by {usedBy.length} document{usedBy.length === 1 ? '' : 's'}
+                      {width} x {height}
+                      <br />
                     </Text>
                   )}
-                </>
-              )}
-              <Text size={1}>{formatDate(_createdAt)}</Text>
-              {width && height && (
-                <Text size={1}>
-                  {width} x {height}
-                  <br />
-                </Text>
-              )}
-              <Text size={1}>
-                {extension.toUpperCase()}, {formatSize(size)}
-              </Text>
-            </Stack>
-          </Inline>
-        </Box>
+                  <Text size={1}>
+                    {extension.toUpperCase()}, {formatSize(size)}
+                  </Text>
+                </Stack>
+              </Inline>
+            </Box>
 
-        <StyledInputsContainer>
-          <Stack space={5} padding={4}>
-            {inputFields.map(({ name, ...rest }) => (
-              <LabelWithInput
-                key={name}
-                onChange={(value: any) => setLocalValues({ ...localValues, [name]: value })}
-                value={localValues[name]}
-                {...rest}
-              />
-            ))}
-          </Stack>
-        </StyledInputsContainer>
+            <StyledInputsContainer>
+              <Stack space={5} padding={4}>
+                {inputFields.map(({ name, ...rest }) => (
+                  <LabelWithInput
+                    key={name}
+                    onChange={(value: any) => setLocalValues({ ...localValues, [name]: value })}
+                    value={localValues[name]}
+                    {...rest}
+                  />
+                ))}
+              </Stack>
+            </StyledInputsContainer>
 
-        <Box padding={4}>
-          <Flex>
-            <Inline space={3}>
-              <Button
-                disabled={!isChanged || Boolean(loading)}
-                tone="primary"
-                onClick={handleSubmit}
-                text="Save changes"
-                icon={loading ? Spinner : CheckmarkIcon}
-                padding={[3, 3, 4]}
-              />
-              <Button tone="primary" mode="ghost" onClick={() => onClose()} text="Cancel" padding={[3, 3, 4]} />
-            </Inline>
-            {/* <Button
-              disabled={!isChanged || Boolean(loading)}
-              style={{ marginLeft: 'auto' }}
-              tone="critical"
-              icon={RemoveIcon}
-              // onClick={() => onDelete(selectedAssets)}
-              text={`Delete Asset`}
-              padding={[3, 3, 4]}
-            /> */}
-          </Flex>
-        </Box>
-      </form>
-    </Modal>
+            <Box padding={4}>
+              <Flex>
+                <Inline space={3}>
+                  <Button
+                    disabled={!isChanged || Boolean(loading)}
+                    tone="primary"
+                    onClick={handleSubmit}
+                    text="Save changes"
+                    icon={loading ? Spinner : CheckmarkIcon}
+                    padding={[3, 3, 4]}
+                  />
+                  <Button tone="primary" mode="ghost" onClick={() => onClose()} text="Cancel" padding={[3, 3, 4]} />
+                </Inline>
+                <Button
+                  disabled={!isChanged || Boolean(loading)}
+                  style={{ marginLeft: 'auto' }}
+                  tone="critical"
+                  icon={RemoveIcon}
+                  onClick={() => setCheckDelete(true)}
+                  text={`Delete Asset`}
+                  padding={[3, 3, 4]}
+                />
+              </Flex>
+            </Box>
+          </form>
+        </Modal>
+      )}
+    </>
   );
 };
