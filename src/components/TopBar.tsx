@@ -53,6 +53,7 @@ export const TopBar = ({
       />
 
       <Select
+        id="sortSelect"
         fontSize={[2]}
         padding={[3]}
         space={[3, 3, 4]}

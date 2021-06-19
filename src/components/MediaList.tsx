@@ -66,7 +66,7 @@ export const MediaList = ({
     <StyledTable>
       <thead>
         <tr>
-          {['', '', 'Title', 'Alt', 'Tags', 'Dimensions', 'Type', 'Size', 'Created'].map((label) => (
+          {['', '', 'Title', 'Alt', 'Tags', 'Dimensions', 'Type', 'Size', 'Created at'].map((label) => (
             <StyledTh key={label}>
               <Label>{label}</Label>
             </StyledTh>
@@ -91,10 +91,13 @@ export const MediaList = ({
           } = asset;
 
           return (
-            <tr key={_id} onDoubleClick={() => onDoubleClick(asset)}>
+            <tr key={_id} onClick={(e) => onMediaItemClick(e, asset)} onDoubleClick={() => onDoubleClick(asset)}>
               <td>
                 <Checkbox
-                  onClick={(e) => onMediaItemClick(e, asset)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onMediaItemClick(e, asset);
+                  }}
                   checked={selectedAssets.findIndex((selectedAsset) => _id === selectedAsset._id) > -1}
                 />
               </td>
