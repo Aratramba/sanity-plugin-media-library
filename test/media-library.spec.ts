@@ -157,10 +157,10 @@ test.describe('Media library', () => {
     await page.click('text=Save changes');
 
     await page.selectOption('#sortSelect', 'az');
-    expect(await page.textContent('[draggable]')).toContain('TITLE_A');
+    expect(await page.textContent('tbody tr')).toContain('TITLE_A');
 
     await page.selectOption('#sortSelect', 'za');
-    expect(await page.textContent('[draggable]')).toContain('TITLE_D');
+    expect(await page.textContent('tbody tr')).toContain('TITLE_D');
   });
 
   test('show custom fields', async ({ page }) => {

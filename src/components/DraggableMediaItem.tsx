@@ -1,5 +1,4 @@
 import { AssetType } from '../types/Asset';
-import { Icon } from './Icon';
 import React, { DragEvent, ReactNode, useRef } from 'react';
 import styled from 'styled-components';
 
@@ -62,23 +61,6 @@ const StyledSelectedAmount = styled.div`
   z-index: 2;
 `;
 
-const StyledIconContainer = styled.div`
-  align-items: center;
-  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
-  display: flex;
-  flex-direction: column;
-  height: 150px;
-  justify-content: center;
-  padding: 20px;
-  width: 150px;
-
-  & svg {
-    fill: ${({ theme }) => theme.mediaItemIconColor}
-    height: 75%;
-    width: 75%;
-  }
-`;
-
 export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedAmount, _type, url }: Props) => {
   const mediaDragPreviewRef = useRef<HTMLDivElement>(null);
 
@@ -107,13 +89,7 @@ export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedA
 
 const MediaDragPreview = ({ selectedAmount, _type, url }: MediaDragPreviewProps) => (
   <StyledMediaDragPreview>
-    {_type === 'sanity.imageAsset' ? (
-      <img src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
-    ) : (
-      <StyledIconContainer>
-        <Icon type="file" />
-      </StyledIconContainer>
-    )}
+    {_type === 'sanity.imageAsset' && <img src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />}
     <StyledSelectedAmount>{selectedAmount}</StyledSelectedAmount>
   </StyledMediaDragPreview>
 );

@@ -27,7 +27,6 @@ interface Props {
 }
 
 const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.mediaLibraryBackgroundColor};
   display: flex;
   flex-direction: column;
   width: 100%;
