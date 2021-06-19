@@ -31,7 +31,7 @@
     "prepublishOnly": "yarn build && yarn test",
     "dev-studio": "cd test && yarn start",
     "test-studio": "cd test && yarn start-test-studio",
-    "test": "start-server-and-test \"cd test && yarn start-studio\" http-get://localhost:3000 \"cd test && yarn test\""
+    "test": "start-server-and-test \"cd test && yarn start-test-studio\" http-get://localhost:3000 \"cd test && yarn test\""
   },
   "dependencies": {
     "@sanity/icons": "^1.1.2",

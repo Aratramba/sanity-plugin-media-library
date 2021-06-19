@@ -295,6 +295,7 @@ export const App = ({ onClose, onSelect, selectedAssets, tool, mode }: Props) =>
               setIsDraggingMediaItem={setIsDraggingMediaItem}
               setSearchQuery={setSearchQuery}
               setSelectedAssets={setLocalSelectedAssets}
+              mode={mode}
             />
           </StyledSidebarGridContainer>
           {mode === 'tool' && (

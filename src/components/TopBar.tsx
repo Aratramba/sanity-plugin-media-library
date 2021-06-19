@@ -26,11 +26,11 @@ export const TopBar = ({
       <Inline space={2}>
         <Inline space={2} style={{ whiteSpace: 'nowrap' }}>
           <UlistIcon style={{ width: 18, height: 18 }} />
-          <label htmlFor="detailsCheckbox">
+          <label htmlFor="detailsViewCheckbox">
             <Label>details</Label>
           </label>
           <Switch
-            id="detailsCheckbox"
+            id="detailsViewCheckbox"
             onClick={() => setViewType(viewType === 'grid' ? 'list' : 'grid')}
             checked={viewType === 'list'}
           />

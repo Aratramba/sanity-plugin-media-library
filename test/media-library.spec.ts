@@ -65,18 +65,18 @@ test.describe('Media library', () => {
   });
 
   test('listview', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
-    expect(await page.textContent('header')).toContain('Title');
-    expect(await page.textContent('header')).toContain('Alt');
-    expect(await page.textContent('header')).toContain('Tags');
-    expect(await page.textContent('header')).toContain('Dimensions');
-    expect(await page.textContent('header')).toContain('Type');
-    expect(await page.textContent('header')).toContain('Size');
-    expect(await page.textContent('header')).toContain('Created at');
+    await page.click('label[for="detailsViewCheckbox"]');
+    expect(await page.textContent('thead')).toContain('Title');
+    expect(await page.textContent('thead')).toContain('Alt');
+    expect(await page.textContent('thead')).toContain('Tags');
+    expect(await page.textContent('thead')).toContain('Dimensions');
+    expect(await page.textContent('thead')).toContain('Type');
+    expect(await page.textContent('thead')).toContain('Size');
+    expect(await page.textContent('thead')).toContain('Created at');
   });
 
   test('imagedata', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     expect(await page.textContent('[draggable]')).toContain('-unsplash.jpg');
     expect(await page.textContent('[draggable]')).toContain(' x ');
     expect(await page.textContent('[draggable]')).toContain('JPG');
@@ -84,7 +84,7 @@ test.describe('Media library', () => {
   });
 
   test('search', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', 'ricky');
     expect(await countSelector(page, '[draggable]')).toBe(1);
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', '');
@@ -92,7 +92,7 @@ test.describe('Media library', () => {
   });
 
   test('edit dialog double click', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`text=${IMAGES[0]}`);
     expect(await dialogVisible(page)).toBeTruthy();
     expect(await page.textContent('[role="dialog"]')).toContain(IMAGES[0]);
@@ -102,7 +102,7 @@ test.describe('Media library', () => {
   });
 
   test('edit dialog edit asset', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.click(`text=${IMAGES[0]}`);
     await page.click('text=Edit asset');
     await dialogVisible(page);
@@ -113,7 +113,7 @@ test.describe('Media library', () => {
   });
 
   test('edit title', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`text=${IMAGES[0]}`);
     await dialogVisible(page);
     expect(await page.textContent('[role="dialog"]')).toContain(IMAGES[0]);
@@ -124,7 +124,7 @@ test.describe('Media library', () => {
   });
 
   test('edit tags', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`img`);
     await dialogVisible(page);
     await page.fill('[placeholder="No tags yet"]', 'TEST_TAG1');
@@ -140,7 +140,7 @@ test.describe('Media library', () => {
   });
 
   test('sort assets', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`[draggable]:nth-of-type(1)`);
     await page.fill('[role="dialog"] input[type="text"]', 'TITLE_A');
     await page.click('text=Save changes');
@@ -157,7 +157,7 @@ test.describe('Media library', () => {
     await page.fill('[role="dialog"] input[type="text"]', 'TITLE_D');
     await page.click('text=Save changes');
 
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.selectOption('select', 'az');
     expect(await page.textContent('[draggable]')).toContain('TITLE_A');
 
@@ -166,7 +166,7 @@ test.describe('Media library', () => {
   });
 
   test('show custom fields', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick('[draggable]');
     expect(await page.textContent('[role="dialog"]')).toContain('Title');
     expect(await page.textContent('[role="dialog"]')).toContain('Alt text');
@@ -182,7 +182,7 @@ test.describe('Media library', () => {
   });
 
   test('change custom fields', async ({ page }) => {
-    await page.click('button[aria-label="list"]');
+    await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick('[draggable]');
     await page.fill('[role="dialog"] [placeholder="No alt text yet"]', 'TEST_ALT');
     await page.fill('[role="dialog"] [placeholder="No tags yet"]', 'TEST_TAG');
