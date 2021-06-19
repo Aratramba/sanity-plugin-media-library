@@ -1,7 +1,6 @@
 import { Geopoint } from '../types/Asset';
 import React, { ChangeEvent } from 'react';
-import styled from 'styled-components';
-import { TextInput, Select, TextArea, Checkbox, Text, Inline, Stack } from '@sanity/ui';
+import { TextInput, Select, TextArea, Label, Checkbox, Inline, Stack } from '@sanity/ui';
 
 interface Props {
   label: string;
@@ -44,8 +43,10 @@ export const LabelWithInput = ({ label, onChange, type = 'text', ...rest }: Prop
 
   return (
     <Stack space={3}>
-      <Text size={2}>{label}</Text>
-      <Element onChange={handleOnChange} type={type} {...rest} />
+      <label htmlFor={label}>
+        <Label size={2}>{label}</Label>
+      </label>
+      <Element id={label} onChange={handleOnChange} type={type} {...rest} />
     </Stack>
   );
 };
@@ -73,8 +74,10 @@ const Location = ({
     <Stack space={3}>
       {fields.map(({ label, name, ...rest }: { label: string; name: keyof Geopoint }) => (
         <Inline key={name} space={3}>
-          <Text size={2}>{label}</Text>
-          <TextInput onChange={handleInputchange} name={name} value={value[name]} {...rest} />
+          <label htmlFor={label}>
+            <Label size={1}>{label}</Label>
+          </label>
+          <TextInput id={label} onChange={handleInputchange} name={name} value={value[name]} {...rest} />
         </Inline>
       ))}
     </Stack>
@@ -90,14 +93,16 @@ const CustomSelect = ({
   options,
   placeholder,
   value,
+  label,
   ...rest
 }: {
   options: Array<SelectOption>;
   placeholder: string | undefined;
+  label: string;
   value: string | undefined;
 }) => {
   return (
-    <Select {...rest}>
+    <Select id={label} {...rest}>
       <option value="">{placeholder}</option>
       {options?.map((option: SelectOption) => (
         <option key={option.value} value={option.value} selected={option.value === value}>

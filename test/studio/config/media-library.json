@@ -24,7 +24,8 @@
     {
       "label": "Attribution",
       "name": "attribution",
-      "placeholder": "No attribution yet"
+      "placeholder": "No attribution yet",
+      "type": "textarea"
     },
     {
       "name": "location",

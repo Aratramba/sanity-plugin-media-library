@@ -11,6 +11,7 @@ import { UploadDropArea } from './components/UploadDropArea';
 import client from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Card } from '@sanity/ui';
 
 type Props = {
   onClose?: () => void;
@@ -20,8 +21,8 @@ type Props = {
 };
 
 const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.appBackgroundColor};
-  color: ${({ theme }) => theme.appTextColor};
+  background-color: var(--white);
+  color: var(--body-text);
   height: 100%;
   left: 0;
   position: absolute;
@@ -262,60 +263,62 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
   return (
     <StyledContainer>
-      <UploadDropArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
-        <StyledSidebarGridContainer>
-          <Sidebar
-            extensions={extensions}
-            loading={loading}
-            onClearFilters={onClearFilters}
-            onExtensionClick={onExtensionClick}
-            onTagClick={onTagClick}
-            onTagDrop={onTagDrop}
-            onUpload={onUpload}
-            tags={tags}
-          />
-          <MediaLibrary
-            assets={filteredAssets}
-            handleSelect={handleSelect}
-            isAssetSource={!tool}
-            loading={loading}
-            onClose={onClose}
-            onDelete={setAssetsToDelete}
-            onEdit={setAssetToEdit}
-            onSortChange={setSort}
-            searchQuery={searchQuery}
-            selectedAssets={localSelectedAssets}
-            setIsDraggingMediaItem={setIsDraggingMediaItem}
-            setSearchQuery={setSearchQuery}
-            setSelectedAssets={setLocalSelectedAssets}
-          />
-        </StyledSidebarGridContainer>
-        {assetToEdit && (
-          <AssetModal
-            asset={assetToEdit}
-            handleError={handleError}
-            loading={loading}
-            onClose={() => setAssetToEdit(null)}
-            onSaveComplete={() => {
-              setAssetToEdit(null);
-            }}
-            setLoading={setLoading}
-          />
-        )}
-        {assetsToDelete && (
-          <DeleteModal
-            assets={assetsToDelete}
-            handleError={handleError}
-            loading={loading}
-            onClose={() => setAssetsToDelete(null)}
-            onDeleteComplete={() => {
-              setAssetsToDelete(null);
-            }}
-            setLoading={setLoading}
-          />
-        )}
-        {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
-      </UploadDropArea>
+      <Card style={{ height: '100%' }}>
+        <UploadDropArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
+          <StyledSidebarGridContainer>
+            <Sidebar
+              extensions={extensions}
+              loading={loading}
+              onClearFilters={onClearFilters}
+              onExtensionClick={onExtensionClick}
+              onTagClick={onTagClick}
+              onTagDrop={onTagDrop}
+              onUpload={onUpload}
+              tags={tags}
+            />
+            <MediaLibrary
+              assets={filteredAssets}
+              handleSelect={handleSelect}
+              isAssetSource={!tool}
+              loading={loading}
+              onClose={onClose}
+              onDelete={setAssetsToDelete}
+              onEdit={setAssetToEdit}
+              onSortChange={setSort}
+              searchQuery={searchQuery}
+              selectedAssets={localSelectedAssets}
+              setIsDraggingMediaItem={setIsDraggingMediaItem}
+              setSearchQuery={setSearchQuery}
+              setSelectedAssets={setLocalSelectedAssets}
+            />
+          </StyledSidebarGridContainer>
+          {assetToEdit && (
+            <AssetModal
+              asset={assetToEdit}
+              handleError={handleError}
+              loading={loading}
+              onClose={() => setAssetToEdit(null)}
+              onSaveComplete={() => {
+                setAssetToEdit(null);
+              }}
+              setLoading={setLoading}
+            />
+          )}
+          {assetsToDelete && (
+            <DeleteModal
+              assets={assetsToDelete}
+              handleError={handleError}
+              loading={loading}
+              onClose={() => setAssetsToDelete(null)}
+              onDeleteComplete={() => {
+                setAssetsToDelete(null);
+              }}
+              setLoading={setLoading}
+            />
+          )}
+          {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
+        </UploadDropArea>
+      </Card>
     </StyledContainer>
   );
 };

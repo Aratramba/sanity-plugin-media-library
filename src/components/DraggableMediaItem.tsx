@@ -31,9 +31,8 @@ const StyledMediaDragPreviewContainer = styled.div`
 `;
 
 const StyledMediaDragPreview = styled.div`
-  background-color: ${({ theme }) => theme.draggableMediaItemBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  border: solid 4px ${({ theme }) => theme.draggableMediaItemBorderColor};
+  background-color: white;
+  border: solid 4px black;
   height: 150px;
   overflow: hidden;
   position: relative;
@@ -46,11 +45,10 @@ const StyledMediaDragPreview = styled.div`
 
 const StyledSelectedAmount = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => theme.draggableMediaItemAmountBackgroundColor};
+  background-color: rgba(0, 0, 0, 0.75);
   border-radius: 50%;
-  color: ${({ theme }) => theme.draggableMediaItemAmountColor};
+  color: white;
   display: flex;
-  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 16px;
   font-weight: 600;
   height: 50px;

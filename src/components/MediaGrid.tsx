@@ -21,6 +21,7 @@ const StyledMediaInfo = styled.div`
   height: 150px;
   max-width: 100%;
   max-height: 100%;
+  border: 1px solid whitesmoke;
 `;
 
 export const MediaGrid = ({

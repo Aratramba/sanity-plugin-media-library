@@ -21,6 +21,7 @@ export const UploadButton = ({ disabled, onUpload }: Props) => {
   return (
     <div>
       <Button
+        style={{ width: '100%' }}
         fontSize={[2]}
         icon={UploadIcon}
         padding={[3, 3, 4]}

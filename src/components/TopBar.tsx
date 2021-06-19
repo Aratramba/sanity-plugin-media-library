@@ -2,7 +2,7 @@ import { SortOption } from '../types/SortOption';
 import { ViewTypes } from '../types/ViewTypes';
 import React from 'react';
 import { TextInput, Inline, Select, Flex, Switch, Label } from '@sanity/ui';
-import { SearchIcon } from '@sanity/icons';
+import { SearchIcon, UlistIcon } from '@sanity/icons';
 
 interface Props {
   onSortChange: (value: SortOption) => void;
@@ -16,13 +16,25 @@ export const TopBar = ({ onSortChange, searchQuery, setSearchQuery, setViewType,
   <Flex padding={3} justify="space-between" align="center">
     <Inline space={2}>
       <Inline space={2}>
-        <Label size={0}>Details</Label>
-        <Switch onClick={() => setViewType(viewType === 'grid' ? 'list' : 'grid')} checked={viewType === 'list'} />
+        <UlistIcon style={{ width: 18, height: 18 }} />
+        <label htmlFor="detailsCheckbox">
+          <Label>details</Label>
+        </label>
+        <Switch
+          id="detailsCheckbox"
+          onClick={() => setViewType(viewType === 'grid' ? 'list' : 'grid')}
+          checked={viewType === 'list'}
+        />
       </Inline>
     </Inline>
     <Inline space={3}>
-      <SearchIcon />
+      <label htmlFor="searchField">
+        <SearchIcon style={{ width: 24, height: 24, marginRight: -6 }} />
+      </label>
+
       <TextInput
+        id="searchField"
+        style={{ width: 300 }}
         fontSize={[2]}
         padding={[3]}
         placeholder="Search by filename, title, alt or tag"
