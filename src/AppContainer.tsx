@@ -1,7 +1,7 @@
 import { App } from './App';
 import { Asset } from './types/Asset';
 import { Modal } from './components/Modal';
-import { studioTheme, ThemeProvider } from '@sanity/ui';
+import { studioTheme, ThemeProvider, Portal, Layer } from '@sanity/ui';
 import React from 'react';
 
 type Props = {
@@ -14,11 +14,17 @@ type Props = {
 export const AppContainer = ({ onClose, onSelect, selectedAssets, tool }: Props) => (
   <ThemeProvider theme={studioTheme}>
     {tool ? (
-      <App tool={tool} />
+      <App tool={tool} mode="tool" />
     ) : (
-      <Modal onClose={onClose ? onClose : () => {}}>
-        <App onClose={onClose} onSelect={onSelect} selectedAssets={selectedAssets} tool={tool} />
-      </Modal>
+      <Portal>
+        <Layer zOffset={999}>
+          <Modal onClose={onClose ? onClose : () => {}} width={3}>
+            <div style={{ height: 1024 }}>
+              <App mode="modal" onClose={onClose} onSelect={onSelect} selectedAssets={selectedAssets} tool={tool} />
+            </div>
+          </Modal>
+        </Layer>
+      </Portal>
     )}
   </ThemeProvider>
 );

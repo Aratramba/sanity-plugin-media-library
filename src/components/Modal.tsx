@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
-import { Dialog } from '@sanity/ui';
+import { Dialog, Layer } from '@sanity/ui';
 
 interface Props {
   children: ReactNode;
@@ -33,11 +33,11 @@ export const Modal = ({ children, title, onClose, width = 1 }: Props) => {
   }, []);
 
   return (
-    <>
+    <Layer>
       <StyledOverlay onClick={onClose} />
       <Dialog id="media-library-dialog" onClose={onClose} cardShadow={2} width={width} header={title}>
         {children}
       </Dialog>
-    </>
+    </Layer>
   );
 };

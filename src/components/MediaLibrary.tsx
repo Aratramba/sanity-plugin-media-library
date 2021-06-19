@@ -8,7 +8,7 @@ import { ViewTypes } from '../types/ViewTypes';
 import React, { MouseEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Card, Text, Box } from '@sanity/ui';
-
+import { ToolType } from '../types/ToolType';
 interface Props {
   assets?: Array<Asset>;
   handleSelect?: (selectedAssets: Array<Asset>) => void;
@@ -23,6 +23,7 @@ interface Props {
   setIsDraggingMediaItem: (value: Boolean) => void;
   setSearchQuery: (value: string) => void;
   setSelectedAssets: (value: Array<Asset>) => void;
+  mode?: ToolType;
 }
 
 const StyledContainer = styled.div`
@@ -67,6 +68,7 @@ export const MediaLibrary = ({
   setIsDraggingMediaItem,
   setSearchQuery,
   setSelectedAssets,
+  mode,
 }: Props) => {
   const [viewType, setViewType] = useState<ViewTypes>('grid');
 
@@ -119,6 +121,7 @@ export const MediaLibrary = ({
         setSearchQuery={setSearchQuery}
         setViewType={setViewType}
         viewType={viewType}
+        showDetails={mode === 'tool'}
       />
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>

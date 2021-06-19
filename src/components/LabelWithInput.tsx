@@ -77,7 +77,7 @@ const Location = ({
           <label htmlFor={label}>
             <Label size={1}>{label}</Label>
           </label>
-          <TextInput id={label} onChange={handleInputchange} name={name} value={value[name]} {...rest} />
+          <TextInput id={label} onChange={handleInputchange} name={name} value={value ? value[name] : ''} {...rest} />
         </Inline>
       ))}
     </Stack>
