@@ -7,6 +7,7 @@ import { TopBar } from './TopBar';
 import { ViewTypes } from '../types/ViewTypes';
 import React, { MouseEvent, useState } from 'react';
 import styled from 'styled-components';
+import { Card, Text, Box } from '@sanity/ui';
 
 interface Props {
   assets?: Array<Asset>;
@@ -50,10 +51,6 @@ const StyledMediaGridContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const StyledMessage = styled.div`
-  padding: 40px;
 `;
 
 export const MediaLibrary = ({
@@ -126,7 +123,11 @@ export const MediaLibrary = ({
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
           {!Boolean(assets.length) && !loading ? (
-            <StyledMessage id="noContent">No assets found</StyledMessage>
+            <Box padding={3}>
+              <Card padding={[3, 3, 4]} radius={2} shadow={1}>
+                <Text size={3}>No assets found</Text>
+              </Card>
+            </Box>
           ) : (
             <ViewElement
               assets={assets}

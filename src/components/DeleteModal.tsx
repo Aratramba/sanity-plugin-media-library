@@ -1,10 +1,9 @@
 import { Asset } from '../types/Asset';
-import { Button } from './Button';
-import { Loader } from './Loader';
 import { Modal } from './Modal';
 import client from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { Inline, Text, Spinner, Stack, Button } from '@sanity/ui';
+import { WarningOutlineIcon } from '@sanity/icons';
 
 interface Props {
   assets: Array<Asset>;
@@ -15,31 +14,10 @@ interface Props {
   setLoading: (value: Boolean) => void;
 }
 
-const StyledContainer = styled.div`
-  & > :not(:last-child) {
-    margin: 0 0 20px;
-  }
-`;
-
-const StyledButtonsContainer = styled.div`
-  align-items: center;
-  display: flex;
-
-  & > :not(:last-child) {
-    margin: 0 20px 0 0;
-  }
-`;
-
-const StyledTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0 0 1em;
-`;
-
 export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteComplete, setLoading }: Props) => {
   const plural = assets.length > 1;
   const [usedBy, setUsedBy] = useState(0);
+  const title = `Are you sure you want to delete ${plural ? `${assets.length} assets` : 'this asset'}?`;
 
   async function onDelete() {
     try {
@@ -62,24 +40,24 @@ export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteCom
   }, [assets]);
 
   return (
-    <Modal onClose={onClose}>
-      <StyledContainer>
-        <StyledTitle>Are you sure you want to delete {plural ? `${assets.length} assets` : 'this asset'}?</StyledTitle>
-
-        <p>
+    <Modal onClose={onClose} title={title} width={0}>
+      <Stack padding={4} space={4}>
+        <Text>
           Used by {usedBy} document{usedBy === 1 ? '' : 's'}.
-        </p>
+        </Text>
 
-        <StyledButtonsContainer>
-          <Button disabled={loading} onClick={onDelete}>
-            Delete asset{plural ? 's' : ''}
-          </Button>
-          <Button secondary onClick={() => onClose()}>
-            Cancel
-          </Button>
-          {loading && <Loader />}
-        </StyledButtonsContainer>
-      </StyledContainer>
+        <Inline space={3}>
+          <Button
+            disabled={!!loading}
+            tone="critical"
+            icon={loading ? Spinner : WarningOutlineIcon}
+            onClick={onDelete}
+            text={`Delete Asset${plural ? 's' : ''}`}
+          />
+
+          <Button mode="ghost" onClick={onClose} text="Cancel" />
+        </Inline>
+      </Stack>
     </Modal>
   );
 };

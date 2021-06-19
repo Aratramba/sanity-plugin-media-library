@@ -1,9 +1,10 @@
 import { Asset } from '../types/Asset';
 import { DraggableMediaItem } from './DraggableMediaItem';
 import { formatDate, formatSize } from '../shared/utils';
-import { Icon } from './Icon';
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
+import { Label, Text, Box, Checkbox, Inline, Badge } from '@sanity/ui';
+import { DocumentIcon } from '@sanity/icons';
 
 interface Props {
   assets?: Array<Asset>;
@@ -14,49 +15,7 @@ interface Props {
   setIsDraggingMediaItem: (value: Boolean) => void;
 }
 
-interface MediaRowProps extends Asset {
-  onClick: (e: MouseEvent) => void;
-  onDoubleClick: () => void;
-  selected?: Boolean;
-}
-
-const StyledHeader = styled.header`
-  align-items: center;
-  border-bottom: solid 1px ${({ theme }) => theme.mediaListBorderColor};
-  display: grid;
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 14px;
-  font-weight: 500;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 0.5fr 0.5fr 1fr;
-  line-height: 1.1;
-  padding: 20px 40px;
-`;
-
-const StyledRow = styled.div<{ selected?: Boolean }>`
-  align-items: center;
-  border-left: ${({ selected, theme }) => (selected ? `solid 2px ${theme.mediaListSelectedBorderColor}` : '0')};
-  cursor: pointer;
-  display: grid;
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 14px;
-  font-weight: 400;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 4fr 1fr 1fr 1fr 0.5fr 0.5fr 1fr;
-  line-height: 1.1;
-  padding: 20px 40px;
-
-  &:not(:last-child) {
-    border-bottom: solid 1px ${({ theme }) => theme.mediaListBorderColor};
-  }
-
-  & > :nth-child(2) {
-    font-weight: 500;
-  }
-`;
-
 const StyledThumbnailContainer = styled.div`
-  border-radius: ${({ theme }) => theme.appBorderRadius};
   display: block;
   flex-shrink: 0;
   height: 100px;
@@ -66,18 +25,8 @@ const StyledThumbnailContainer = styled.div`
   width: 100px;
 `;
 
-const StyledImage = styled.img`
-  height: 100%;
-  left: 0;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  width: 100%;
-`;
-
 const StyledFile = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -88,12 +37,21 @@ const StyledFile = styled.div`
   position: absolute;
   top: 0;
   width: 100%;
+`;
 
-  & svg {
-    fill: ${({ theme }) => theme.mediaItemIconColor};
-    height: 24px;
-    width: 24px;
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border: 0;
+
+  tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.025);
   }
+`;
+
+const StyledTh = styled.th`
+  text-align: left;
+  padding: 10px 0;
 `;
 
 export const MediaList = ({
@@ -104,82 +62,95 @@ export const MediaList = ({
   selectedAssets,
   setIsDraggingMediaItem,
 }: Props) => (
-  <div>
-    <MediaListHeader />
-    {assets.map((asset) => (
-      <DraggableMediaItem
-        key={asset._id}
-        _type={asset._type}
-        onDragEnd={() => setIsDraggingMediaItem(false)}
-        onDragStart={() => {
-          onDragStart(asset);
-          setIsDraggingMediaItem(true);
-        }}
-        selectedAmount={selectedAssets.length}
-        url={asset.url}
-      >
-        <MediaRow
-          key={asset._id}
-          onClick={(e) => onMediaItemClick(e, asset)}
-          onDoubleClick={() => onDoubleClick(asset)}
-          selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
-          {...asset}
-        />
-      </DraggableMediaItem>
-    ))}
-  </div>
+  <Box padding={3}>
+    <StyledTable>
+      <thead>
+        <tr>
+          {['', '', 'Title', 'Alt', 'Tags', 'Dimensions', 'Type', 'Size', 'Created'].map((label) => (
+            <StyledTh key={label}>
+              <Label>{label}</Label>
+            </StyledTh>
+          ))}
+        </tr>
+      </thead>
+
+      <tbody>
+        {assets.map((asset: Asset) => {
+          const {
+            _createdAt,
+            _type,
+            alt,
+            _id,
+            extension,
+            metadata,
+            originalFilename,
+            size,
+            tags = [],
+            title,
+            url,
+          } = asset;
+
+          return (
+            <tr key={_id} onDoubleClick={() => onDoubleClick(asset)}>
+              <td>
+                <Checkbox
+                  onClick={(e) => onMediaItemClick(e, asset)}
+                  checked={selectedAssets.findIndex((selectedAsset) => _id === selectedAsset._id) > -1}
+                />
+              </td>
+              <td>
+                <DraggableMediaItem
+                  _type={_type}
+                  onDragEnd={() => setIsDraggingMediaItem(false)}
+                  onDragStart={() => {
+                    onDragStart(asset);
+                    setIsDraggingMediaItem(true);
+                  }}
+                  selectedAmount={selectedAssets.length}
+                  url={url}
+                >
+                  <StyledThumbnailContainer>
+                    {_type === 'sanity.imageAsset' ? (
+                      <img alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} loading="lazy" />
+                    ) : (
+                      <StyledFile>
+                        <DocumentIcon style={{ width: 24, height: 24 }} />
+                      </StyledFile>
+                    )}
+                  </StyledThumbnailContainer>
+                </DraggableMediaItem>
+              </td>
+              <td>
+                <Text size={1}>{title || originalFilename}</Text>
+              </td>
+              <td>
+                <Text size={1}>{alt}</Text>
+              </td>
+              <td>
+                <Inline space={2}>
+                  {tags?.map((tag) => (
+                    <Badge mode="outline"> {tag}</Badge>
+                  ))}
+                </Inline>
+              </td>
+              <td>
+                <Text size={1}>
+                  {metadata?.dimensions && `${metadata?.dimensions.width} x ${metadata?.dimensions.height}`}
+                </Text>
+              </td>
+              <td>
+                <Text size={1}>{extension.toUpperCase()}</Text>
+              </td>
+              <td>
+                <Text size={1}>{formatSize(size)}</Text>
+              </td>
+              <td>
+                <Text size={1}>{formatDate(_createdAt)}</Text>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </StyledTable>
+  </Box>
 );
-
-const MediaListHeader = () => (
-  <StyledHeader>
-    <div />
-    <div>Title</div>
-    <div>Alt</div>
-    <div>Tags</div>
-    <div>Dimensions</div>
-    <div>Type</div>
-    <div>Size</div>
-    <div>Created at</div>
-  </StyledHeader>
-);
-
-const MediaRow = ({
-  _createdAt,
-  _type,
-  alt,
-  extension,
-  metadata,
-  onClick,
-  onDoubleClick,
-  originalFilename,
-  selected,
-  size,
-  tags = [],
-  title,
-  url,
-}: MediaRowProps) => {
-  const { height, width } = metadata?.dimensions || {};
-
-  return (
-    <StyledRow selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
-      <div>
-        <StyledThumbnailContainer>
-          {_type === 'sanity.imageAsset' ? (
-            <StyledImage alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} loading="lazy" />
-          ) : (
-            <StyledFile>
-              <Icon type="file" />
-            </StyledFile>
-          )}
-        </StyledThumbnailContainer>
-      </div>
-      <div>{title || originalFilename}</div>
-      <div>{alt}</div>
-      <div>{tags.join(', ')}</div>
-      <div>{width && height && `${width} x ${height}`}</div>
-      <div>{extension.toUpperCase()}</div>
-      <div>{formatSize(size)}</div>
-      <div>{formatDate(_createdAt)}</div>
-    </StyledRow>
-  );
-};

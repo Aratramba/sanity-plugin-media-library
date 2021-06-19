@@ -1,4 +1,3 @@
-import { Icon } from './Icon';
 import React, { DragEvent, ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import { Heading } from '@sanity/ui';

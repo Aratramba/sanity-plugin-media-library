@@ -15,7 +15,7 @@ const StyledContainer = styled.div<{ shouldHighlight: Boolean }>`
     content: '';
     display: block;
     opacity: ${({ shouldHighlight }) => (shouldHighlight ? '.1' : '0')};
-    transition: opacity 0.15s;
+    transition: opacity 0.05s;
     pointer-events: none;
     position: absolute;
     top: -6px;
