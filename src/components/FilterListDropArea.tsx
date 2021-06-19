@@ -12,7 +12,7 @@ const StyledContainer = styled.div<{ shouldHighlight: Boolean }>`
   position: relative;
   outline: 1px solid transparent;
   outline-offset: 4px;
-  outline-color: ${({ shouldHighlight, theme }) => (shouldHighlight ? 'currentColor' : 'transparent')};
+  outline-color: ${({ shouldHighlight }) => (shouldHighlight ? 'currentColor' : 'transparent')};
 `;
 
 export const FilterListDropArea = ({ children, disabled, loading, onDrop }: Props) => {

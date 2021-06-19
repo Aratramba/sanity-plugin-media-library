@@ -29,7 +29,8 @@
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
     "prepublishOnly": "yarn build && yarn test",
-    "test-studio": "cd test && yarn start-studio",
+    "dev-studio": "cd test && yarn start",
+    "test-studio": "cd test && yarn start-test-studio",
     "test": "start-server-and-test \"cd test && yarn start-studio\" http-get://localhost:3000 \"cd test && yarn test\""
   },
   "dependencies": {

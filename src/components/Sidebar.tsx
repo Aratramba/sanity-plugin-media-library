@@ -40,8 +40,8 @@ export const Sidebar = ({
   }, [extensions, tags]);
 
   return (
-    <Flex direction="column" style={{ width: 250, marginTop: 60 }}>
-      <Stack padding={3} style={{ overflowY: 'auto' }}>
+    <Flex direction="column" style={{ width: 250 }}>
+      <Stack padding={4} style={{ overflowY: 'auto' }}>
         <Stack space={3}>
           <Heading as="h2" size={1}>
             Filters

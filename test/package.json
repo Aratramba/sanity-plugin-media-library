@@ -5,7 +5,8 @@
   "main": "package.json",
   "license": "UNLICENSED",
   "scripts": {
-    "start-studio": "cd studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
+    "start": "cd studio && SANITY_STUDIO_API_DATASET=production sanity start --port 3001",
+    "start-test-studio": "cd studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
     "test": "playwright test test/media-library.spec.ts --headed",
     "test-debug": "DEBUG=pw:api playwright test test/media-library.spec.ts --headed"
   },
