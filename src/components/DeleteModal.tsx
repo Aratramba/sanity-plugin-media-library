@@ -52,7 +52,7 @@ export const DeleteModal = ({ assets, loading, handleError, onClose, onDeleteCom
             tone="critical"
             icon={loading ? Spinner : WarningOutlineIcon}
             onClick={onDelete}
-            text={`Delete Asset${plural ? 's' : ''}`}
+            text={`Delete now`}
           />
 
           <Button mode="ghost" onClick={onClose} text="Cancel" />

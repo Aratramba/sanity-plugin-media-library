@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const path = require('path');
 
 const DOMAIN = 'http://localhost:3000';
-const INTERNET_SPEED_TIMEOUT = 5000;
+const INTERNET_SPEED_TIMEOUT = 2000;
 
 require('dotenv').config();
 
@@ -62,6 +62,20 @@ test.describe('Media library', () => {
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     const draggables = await page.$$('[draggable]');
     expect(draggables.length).toBe(IMAGES.length);
+  });
+
+  test('delete from modal', async ({ page }) => {
+    await page.dblclick('[draggable]');
+    await dialogVisible(page);
+    await page.click('#media-library-dialog :text("Delete asset")');
+    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
+    await page.click('text=Cancel');
+    await page.click('#media-library-dialog :text("Delete asset")');
+    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
+    await page.click('text=Delete now');
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT); // todo: is this for fetching the new list?
+    const draggables = await page.$$('[draggable]');
+    expect(draggables.length).toBe(IMAGES.length - 1);
   });
 
   test('listview', async ({ page }) => {

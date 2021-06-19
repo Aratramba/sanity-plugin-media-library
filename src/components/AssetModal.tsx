@@ -172,7 +172,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
                   tone="critical"
                   icon={RemoveIcon}
                   onClick={() => setCheckDelete(true)}
-                  text={`Delete Asset`}
+                  text={`Delete asset`}
                   padding={[3, 3, 4]}
                 />
               </Flex>
