@@ -50,6 +50,7 @@ test.describe('Media library', () => {
   });
 
   test('login', async ({ page }) => {
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
@@ -208,6 +209,7 @@ test.describe('Media library', () => {
     await page.goto(
       `${DOMAIN}/desk/imageAsset%2Ctemplate%3DimageAsset;0b947db4-a12c-4d91-86d1-be430f783008%2Ctemplate%3DimageAsset`
     );
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.textContent('h3')).toBe('No documents of this type found');
     await page.click('text=Select');
     expect(await countSelector(page, '[draggable]')).toBe(4);
