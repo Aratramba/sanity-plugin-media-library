@@ -22,6 +22,12 @@ const StyledMediaInfo = styled.div`
   max-width: 100%;
   max-height: 100%;
   border: 1px solid whitesmoke;
+  border-radius: 5px;
+`;
+
+const StyledThumbnail = styled.img`
+  display: block;
+  border-radius: 5px;
 `;
 
 export const MediaGrid = ({
@@ -55,11 +61,10 @@ export const MediaGrid = ({
           onDoubleClick={() => onDoubleClick(asset)}
         >
           {asset._type === 'sanity.imageAsset' ? (
-            <img
+            <StyledThumbnail
               alt={asset.alt}
               src={`${asset.url}?w=150&h=150&fit=crop&auto=format&q=80`}
               loading="lazy"
-              style={{ display: 'block' }}
             />
           ) : (
             <StyledMediaInfo>

@@ -23,6 +23,7 @@ const StyledThumbnailContainer = styled.div`
   overflow: hidden;
   position: relative;
   width: 100px;
+  border-radius: 5px;
 `;
 
 const StyledFile = styled.div`
@@ -46,6 +47,11 @@ const StyledTable = styled.table`
 
   tbody tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.025);
+  }
+
+  td:nth-of-type(2) {
+    width: 120px;
+    padding: 4px 10px;
   }
 `;
 

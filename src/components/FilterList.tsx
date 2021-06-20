@@ -1,6 +1,6 @@
 import { FilterListDropArea } from './FilterListDropArea';
 import React from 'react';
-import { Stack, Switch, Inline, Container } from '@sanity/ui';
+import { Stack, Switch, Inline, Container, Text } from '@sanity/ui';
 
 interface Props {
   items?: Array<{ isActive: boolean; value: string }>;
@@ -14,7 +14,9 @@ export const FilterList = ({ items = [], onItemClick, onItemDrop }: Props) => (
       const inner = (
         <Inline>
           <Switch checked={isActive} id={value} onClick={() => onItemClick(value)} style={{ marginRight: 8 }} />
-          <label htmlFor={value}>{value}</label>
+          <label htmlFor={value}>
+            <Text size={1}>{value}</Text>
+          </label>
         </Inline>
       );
 

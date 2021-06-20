@@ -2,7 +2,7 @@ import { FilterList } from './FilterList';
 import { UploadButton } from './UploadButton';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button, Heading, Stack, Flex } from '@sanity/ui';
+import { Button, Heading, Stack, Flex, Inline } from '@sanity/ui';
 import { CloseIcon } from '@sanity/icons';
 
 interface Props {
@@ -17,10 +17,8 @@ interface Props {
 }
 
 const StyledDivider = styled.div`
-  height: 1px;
-  background: currentColor;
   opacity: 0.1;
-  margin: '10px 0';
+  margin: '20px 0';
 `;
 
 export const Sidebar = ({
@@ -47,15 +45,17 @@ export const Sidebar = ({
             Filters
           </Heading>
 
-          <Button
-            disabled={Boolean(loading) || hasActiveTags}
-            onClick={onClearFilters}
-            fontSize={[1]}
-            icon={CloseIcon}
-            mode="ghost"
-            padding={2}
-            text="Clear filters"
-          />
+          <Inline>
+            <Button
+              disabled={Boolean(loading) || hasActiveTags}
+              onClick={onClearFilters}
+              fontSize={[1]}
+              icon={CloseIcon}
+              mode="ghost"
+              padding={2}
+              text="Clear filters"
+            />
+          </Inline>
           <StyledDivider />
           <FilterList items={extensions} onItemClick={onExtensionClick} />
           <StyledDivider />
