@@ -136,11 +136,9 @@ export const MediaList = ({
                 <Text size={1}>{alt}</Text>
               </td>
               <td>
-                <Inline space={2}>
-                  {tags?.map((tag) => (
-                    <Badge mode="outline"> {tag}</Badge>
-                  ))}
-                </Inline>
+                <Text size={1} muted>
+                  {tags?.join(', ')}
+                </Text>
               </td>
               <td>
                 <Text size={1}>
