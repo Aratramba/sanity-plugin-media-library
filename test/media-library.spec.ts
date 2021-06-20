@@ -50,11 +50,9 @@ test.describe('Media library', () => {
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
   });
 
-  test.afterEach(async ({ context }) => {
-    await context.close();
-  });
-
   test('login', async ({ page }) => {
+    await page.waitForNavigation();
+    await page.click('text=Media Library');
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
