@@ -47,10 +47,14 @@ test.describe('Media library', () => {
   test.beforeEach(async ({ page, context }) => {
     await setCookies(context);
     await page.goto(`${DOMAIN}/media-library`);
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
+  });
+
+  test.afterEach(async ({ context }) => {
+    await context.close();
   });
 
   test('login', async ({ page }) => {
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
