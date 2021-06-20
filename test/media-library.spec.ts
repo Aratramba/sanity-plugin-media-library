@@ -51,8 +51,7 @@ test.describe('Media library', () => {
   });
 
   test('login', async ({ page }) => {
-    await page.waitForNavigation();
-    await page.click('text=Media Library');
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
@@ -208,6 +207,7 @@ test.describe('Media library', () => {
   });
 
   test('asset modal', async ({ page }) => {
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.goto(
       `${DOMAIN}/desk/imageAsset%2Ctemplate%3DimageAsset;0b947db4-a12c-4d91-86d1-be430f783008%2Ctemplate%3DimageAsset`
     );
