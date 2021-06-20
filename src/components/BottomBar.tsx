@@ -28,9 +28,8 @@ export const BottomBar = ({
 
   return (
     <Flex padding={4} justify="flex-end" align="center">
-      {loading && <Spinner style={{ marginRight: 'auto' }} />}
       {isAssetSource ? (
-        <Inline space={3}>
+        <Inline space={3} style={{ marginRight: 'auto' }}>
           <Button mode="ghost" onClick={onCancel ? onCancel : () => {}} text="Cancel" />
           <Button
             tone="primary"
@@ -38,9 +37,11 @@ export const BottomBar = ({
             onClick={() => (handleSelect ? handleSelect(selectedAssets) : null)}
             text="Select"
           />
+          {loading && <Spinner style={{ marginRight: 'auto' }} />}
         </Inline>
       ) : (
         <Inline space={3}>
+          {loading && <Spinner style={{ marginRight: 'auto' }} />}
           <Button
             tone="primary"
             disabled={!selectedAsset || selectedAssets.length > 1}
