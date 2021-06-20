@@ -2,9 +2,10 @@
 
 The missing media library for Sanity. With support for filters per tag and extension 🔥
 
-![Media library in dark theme](https://user-images.githubusercontent.com/2776959/102903827-c528b900-4468-11eb-8aa1-c4f687c6a16f.png)
+![Media library List view](https://user-images.githubusercontent.com/580312/122677114-301d3780-d1e1-11eb-8ddc-e27a999c4ae2.png)
+![Media library Grid view](https://user-images.githubusercontent.com/580312/122677117-31e6fb00-d1e1-11eb-8c36-952766228107.png)
 
-![Media library in light theme](https://user-images.githubusercontent.com/2776959/102904010-0751fa80-4469-11eb-9980-eb45282c6f2a.png)
+![Media library Asset input view](https://user-images.githubusercontent.com/580312/122677171-78d4f080-d1e1-11eb-9c27-a4f34a48f9dc.png)
 
 ## Features
 - Media library appears in CMS navigation
@@ -122,7 +123,7 @@ See [Sanity Custom Asset Sources](https://www.sanity.io/docs/custom-asset-source
 ---
 
 ## Theming
-In a recent release support for custom themes was dropped in favor of using [Sanity UI](sanity.io/ui)
+In a recent release support for custom themes was dropped, the interface is now built using [Sanity UI](sanity.io/ui).
 
 ---
 
