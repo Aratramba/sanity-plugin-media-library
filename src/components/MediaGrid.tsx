@@ -52,7 +52,6 @@ export const MediaGrid = ({
         url={asset.url}
       >
         <Card
-          height="fill"
           style={{
             outlineOffset: -4,
             outline: selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1 ? '4px solid currentColor' : 0,
