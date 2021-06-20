@@ -2,7 +2,7 @@ import { Asset } from '../types/Asset';
 import { DraggableMediaItem } from './DraggableMediaItem';
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
-import { Flex, Card, Text } from '@sanity/ui';
+import { Flex, Card, Text, Tooltip, Box } from '@sanity/ui';
 import { DocumentIcon } from '@sanity/icons';
 
 interface Props {
@@ -60,11 +60,24 @@ export const MediaGrid = ({
           onDoubleClick={() => onDoubleClick(asset)}
         >
           {asset._type === 'sanity.imageAsset' ? (
-            <StyledThumbnail
-              alt={asset.alt}
-              src={`${asset.url}?w=150&h=150&fit=crop&auto=format&q=80`}
-              loading="lazy"
-            />
+            <Tooltip
+              portal={true}
+              content={
+                <Box padding={2}>
+                  <Text muted size={1}>
+                    {asset.title || asset.originalFilename}
+                  </Text>
+                </Box>
+              }
+              fallbackPlacements={['top', 'bottom']}
+              placement="top"
+            >
+              <StyledThumbnail
+                alt={asset.alt}
+                src={`${asset.url}?w=150&h=150&fit=crop&auto=format&q=80`}
+                loading="lazy"
+              />
+            </Tooltip>
           ) : (
             <StyledMediaInfo>
               <DocumentIcon />
