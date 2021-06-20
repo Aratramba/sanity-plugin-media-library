@@ -45,7 +45,7 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page, context }) => {
-    setCookies(context);
+    await setCookies(context);
     await page.goto(`${DOMAIN}/media-library`);
   });
 
