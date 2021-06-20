@@ -54,6 +54,8 @@ test.describe('Media library', () => {
   });
 
   test('upload', async ({ page }) => {
+    expect(await page.isVisible('#noContent'));
+
     await page.setInputFiles(
       'input[type="file"]',
       IMAGES.map((img) => path.join(__dirname, 'fixtures', img)),
@@ -62,20 +64,6 @@ test.describe('Media library', () => {
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     const draggables = await page.$$('[draggable]');
     expect(draggables.length).toBe(IMAGES.length);
-  });
-
-  test('delete from modal', async ({ page }) => {
-    await page.dblclick('[draggable]');
-    await dialogVisible(page);
-    await page.click('#media-library-dialog :text("Delete asset")');
-    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
-    await page.click('text=Cancel');
-    await page.click('#media-library-dialog :text("Delete asset")');
-    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
-    await page.click('text=Delete now');
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT); // todo: is this for fetching the new list?
-    const draggables = await page.$$('[draggable]');
-    expect(draggables.length).toBe(IMAGES.length - 1);
   });
 
   test('listview', async ({ page }) => {
@@ -126,6 +114,20 @@ test.describe('Media library', () => {
     expect(await dialogHidden(page)).toBeTruthy();
   });
 
+  test('sort assets', async ({ page }) => {
+    await page.click('label[for="detailsViewCheckbox"]');
+
+    await page.selectOption('#sortSelect', 'az');
+    expect(await page.textContent('tbody tr td:nth-of-type(3)')).toContain(
+      IMAGES.sort((a, b) => a.localeCompare(b))[0]
+    );
+
+    await page.selectOption('#sortSelect', 'za');
+    expect(await page.textContent('tbody tr td:nth-of-type(3)')).toContain(
+      IMAGES.sort((a, b) => b.localeCompare(a))[0]
+    );
+  });
+
   test('edit title', async ({ page }) => {
     await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`text=${IMAGES[0]}`);
@@ -150,31 +152,6 @@ test.describe('Media library', () => {
     expect(await countSelector(page, '[draggable]')).toBe(1);
     await page.click('text=Clear filters');
     expect(await countSelector(page, '[draggable]')).toBe(4);
-  });
-
-  test('sort assets', async ({ page }) => {
-    await page.click('label[for="detailsViewCheckbox"]');
-    await page.dblclick(`[draggable]:nth-of-type(1)`);
-    await page.fill('#media-library-dialog input[type="text"]', 'TITLE_A');
-    await page.click('text=Save changes');
-
-    await page.dblclick(`[draggable]:nth-of-type(2)`);
-    await page.fill('#media-library-dialog input[type="text"]', 'TITLE_B');
-    await page.click('text=Save changes');
-
-    await page.dblclick(`[draggable]:nth-of-type(3)`);
-    await page.fill('#media-library-dialog input[type="text"]', 'TITLE_C');
-    await page.click('text=Save changes');
-
-    await page.dblclick(`[draggable]:nth-of-type(4)`);
-    await page.fill('#media-library-dialog input[type="text"]', 'TITLE_D');
-    await page.click('text=Save changes');
-
-    await page.selectOption('#sortSelect', 'az');
-    expect(await page.textContent('tbody tr')).toContain('TITLE_A');
-
-    await page.selectOption('#sortSelect', 'za');
-    expect(await page.textContent('tbody tr')).toContain('TITLE_D');
   });
 
   test('show custom fields', async ({ page }) => {
@@ -237,25 +214,36 @@ test.describe('Media library', () => {
     await page.click('text=Cancel');
   });
 
+  test('delete from modal', async ({ page }) => {
+    await page.dblclick('[draggable]');
+    await dialogVisible(page);
+    await page.click('#media-library-dialog :text("Delete asset")');
+    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
+    await page.click('text=Cancel');
+    await page.click('#media-library-dialog :text("Delete asset")');
+    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
+    await page.click('text=Delete now');
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT); // todo: is this for fetching the new list?
+    const draggables = await page.$$('[draggable]');
+    expect(draggables.length).toBe(IMAGES.length - 1);
+  });
+
   test('remove files', async ({ page }) => {
     await page.click(`[draggable]`, { modifiers: ['Shift'] });
     await page.click('text=Delete Asset');
     expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete this asset?');
-    await page.click('#media-library-dialog button');
+    await page.click('text=Delete now');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
-
-    await page.click(`[draggable]`, { modifiers: ['Shift'] });
-    await page.click('text=Delete Asset');
-    expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete this asset?');
-    await page.click('#media-library-dialog button');
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
+    await dialogHidden(page);
 
     await page.click(`[draggable]`, { modifiers: ['Shift'] });
     await page.click(`[draggable]:nth-of-type(2)`, { modifiers: ['Shift'] });
-    await page.click('text=Delete Asset');
+    await page.click('text=Delete Assets');
     expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete 2 assets?');
-    await page.click('#media-library-dialog button');
+    await page.click('text=Delete now');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
+    await dialogHidden(page);
+    expect(await countSelector(page, '[draggable]')).toBe(0);
 
     expect(await page.isVisible('#noContent'));
   });

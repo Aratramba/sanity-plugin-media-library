@@ -125,7 +125,7 @@ export const MediaLibrary = ({
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
           {!Boolean(assets.length) && !loading ? (
-            <Box padding={3}>
+            <Box padding={3} id="noContent">
               <Card padding={[3, 3, 4]} radius={2} shadow={1}>
                 <Text size={3}>No assets found</Text>
               </Card>

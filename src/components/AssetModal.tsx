@@ -167,7 +167,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
                   <Button tone="primary" mode="ghost" onClick={() => onClose()} text="Cancel" padding={[3, 3, 4]} />
                 </Inline>
                 <Button
-                  disabled={!isChanged || Boolean(loading)}
+                  disabled={Boolean(loading)}
                   style={{ marginLeft: 'auto' }}
                   tone="critical"
                   icon={RemoveIcon}
