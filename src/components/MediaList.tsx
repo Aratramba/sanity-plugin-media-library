@@ -3,7 +3,7 @@ import { DraggableMediaItem } from './DraggableMediaItem';
 import { formatDate, formatSize } from '../shared/utils';
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
-import { Label, Text, Box, Checkbox, Inline, Badge } from '@sanity/ui';
+import { Label, Text, Box, Checkbox } from '@sanity/ui';
 import { DocumentIcon } from '@sanity/icons';
 
 interface Props {
