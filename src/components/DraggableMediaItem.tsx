@@ -1,5 +1,4 @@
 import { AssetType } from '../types/Asset';
-import { Icon } from './Icon';
 import React, { DragEvent, ReactNode, useRef } from 'react';
 import styled from 'styled-components';
 
@@ -31,9 +30,8 @@ const StyledMediaDragPreviewContainer = styled.div`
 `;
 
 const StyledMediaDragPreview = styled.div`
-  background-color: ${({ theme }) => theme.draggableMediaItemBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  border: solid 4px ${({ theme }) => theme.draggableMediaItemBorderColor};
+  background-color: white;
+  border: solid 4px black;
   height: 150px;
   overflow: hidden;
   position: relative;
@@ -46,11 +44,10 @@ const StyledMediaDragPreview = styled.div`
 
 const StyledSelectedAmount = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => theme.draggableMediaItemAmountBackgroundColor};
+  background-color: rgba(0, 0, 0, 0.75);
   border-radius: 50%;
-  color: ${({ theme }) => theme.draggableMediaItemAmountColor};
+  color: white;
   display: flex;
-  font-family: ${({ theme }) => theme.appFontFamily};
   font-size: 16px;
   font-weight: 600;
   height: 50px;
@@ -62,23 +59,6 @@ const StyledSelectedAmount = styled.div`
   transform: translate(-50%, -50%);
   width: 50px;
   z-index: 2;
-`;
-
-const StyledIconContainer = styled.div`
-  align-items: center;
-  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
-  display: flex;
-  flex-direction: column;
-  height: 150px;
-  justify-content: center;
-  padding: 20px;
-  width: 150px;
-
-  & svg {
-    fill: ${({ theme }) => theme.mediaItemIconColor}
-    height: 75%;
-    width: 75%;
-  }
 `;
 
 export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedAmount, _type, url }: Props) => {
@@ -109,13 +89,7 @@ export const DraggableMediaItem = ({ children, onDragStart, onDragEnd, selectedA
 
 const MediaDragPreview = ({ selectedAmount, _type, url }: MediaDragPreviewProps) => (
   <StyledMediaDragPreview>
-    {_type === 'sanity.imageAsset' ? (
-      <img src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />
-    ) : (
-      <StyledIconContainer>
-        <Icon type="file" />
-      </StyledIconContainer>
-    )}
+    {_type === 'sanity.imageAsset' && <img src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} />}
     <StyledSelectedAmount>{selectedAmount}</StyledSelectedAmount>
   </StyledMediaDragPreview>
 );

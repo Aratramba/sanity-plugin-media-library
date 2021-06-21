@@ -1,10 +1,11 @@
 # Media Library for Sanity
 
-The missing media library for Sanity. With support for filters per tag and extension. And it's fully themeable! 🔥
+The missing media library for Sanity. With support for filters per tag and extension 🔥
 
-![Media library in dark theme](https://user-images.githubusercontent.com/2776959/102903827-c528b900-4468-11eb-8aa1-c4f687c6a16f.png)
+![Media library List view](https://user-images.githubusercontent.com/580312/122677114-301d3780-d1e1-11eb-8ddc-e27a999c4ae2.png)
+![Media library Grid view](https://user-images.githubusercontent.com/580312/122677117-31e6fb00-d1e1-11eb-8c36-952766228107.png)
 
-![Media library in light theme](https://user-images.githubusercontent.com/2776959/102904010-0751fa80-4469-11eb-9980-eb45282c6f2a.png)
+![Media library Asset input view](https://user-images.githubusercontent.com/580312/122677171-78d4f080-d1e1-11eb-9c27-a4f34a48f9dc.png)
 
 ## Features
 - Media library appears in CMS navigation
@@ -33,8 +34,6 @@ The missing media library for Sanity. With support for filters per tag and exten
 - Quick action: Double click an asset to trigger it's primary action
 - Customizable fields
   - Define custom fields for your assets (text, number, checkbox, textarea)
-- Customizable theme:
-  - Comes with a dark and light theme, both are fully customizable.
 
 ---
 
@@ -123,34 +122,18 @@ See [Sanity Custom Asset Sources](https://www.sanity.io/docs/custom-asset-source
 
 ---
 
-## Configuration / Theming
+## Theming
+In a recent release support for custom themes was dropped, the interface is now built using [Sanity UI](sanity.io/ui).
+
+---
+
+## Configuration
 After installing the plugin, a config file is automatically created at `config/media-library.json`.
 
-In this file you can set the theme to `light` or `dark` and optionally add themeChanges. For a list of available options see the keys in [/src/themes/darkTheme.ts](/src/themes/darkTheme.ts).
-
-```json
-{
-  "theme": "dark",
-  "themeChanges": {}
-}
-```
-
-Example with themeChanges:
-```json
-{
-  "theme": "light",
-  "themeChanges": {
-    "bottomBarBorderColor": "hotpink",
-    "buttonPrimaryBorderColor": "hotpink"
-  }
-}
-```
 
 Example with asset fields listed and custom fields added:
 ```json
 {
-  "theme": "dark",
-  "themeChanges": {},
   "customFields": [
     {
       "label": "Additional description",
@@ -198,7 +181,6 @@ Example with asset fields listed and custom fields added:
 ```
 
 ## Contributing
-To contribute a theme, add it in `themes/[themename].ts`.
 If you run into problems or have feature requests, please create an issue or pull request and I'll look into it as soon as I can.
 
 ## Development

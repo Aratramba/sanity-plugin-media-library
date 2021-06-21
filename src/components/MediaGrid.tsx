@@ -1,8 +1,9 @@
 import { Asset } from '../types/Asset';
 import { DraggableMediaItem } from './DraggableMediaItem';
-import { Icon } from './Icon';
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
+import { Flex, Card, Text, Tooltip, Box } from '@sanity/ui';
+import { DocumentIcon } from '@sanity/icons';
 
 interface Props {
   assets?: Array<Asset>;
@@ -13,58 +14,20 @@ interface Props {
   setIsDraggingMediaItem: (value: Boolean) => void;
 }
 
-interface MediaItemProps extends Asset {
-  onClick: (e: MouseEvent) => void;
-  onDoubleClick: () => void;
-  selected?: Boolean;
-}
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 40px;
-
-  & > * {
-    margin: 0 15px 15px 0;
-  }
-`;
-
-const StyledMediaItem = styled.div<{ selected?: Boolean }>`
-  align-items: center;
-  background-color: ${({ theme }) => theme.mediaItemBackgroundColor};
-  border-radius: ${({ theme }) => theme.appBorderRadius};
-  border: ${({ selected, theme }) => (selected ? `solid 4px ${theme.mediaGridSelectedBorderColor}` : '0')};
-  color: ${({ theme }) => theme.mediaItemTextColor};
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  font-family: ${({ theme }) => theme.appFontFamily};
-  font-size: 14px;
-  font-weight: 500;
-  height: 150px;
-  justify-content: center;
-  line-height: 1.2;
-  overflow: hidden;
-  padding: 20px;
-  position: relative;
+const StyledMediaInfo = styled.div`
+  padding: 30px 10px;
   text-align: center;
   width: 150px;
+  height: 150px;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+`;
 
-  & img {
-    height: 100%;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-  }
-
-  & svg {
-    fill: ${({ theme }) => theme.mediaItemIconColor};
-    height: 24px;
-    margin: 0 0 8px;
-    width: 24px;
-  }
+const StyledThumbnail = styled.img`
+  display: block;
+  border-radius: 5px;
 `;
 
 export const MediaGrid = ({
@@ -75,43 +38,56 @@ export const MediaGrid = ({
   selectedAssets,
   setIsDraggingMediaItem,
 }: Props) => (
-  <StyledContainer>
-    {assets.map((asset) => {
-      const Element = asset._type === 'sanity.imageAsset' ? ImageItem : FileItem;
-      return (
-        <DraggableMediaItem
-          key={asset._id}
-          _type={asset._type}
-          onDragEnd={() => setIsDraggingMediaItem(false)}
-          onDragStart={() => {
-            onDragStart(asset);
-            setIsDraggingMediaItem(true);
+  <Flex wrap="wrap" gap={3} padding={3}>
+    {assets.map((asset) => (
+      <DraggableMediaItem
+        key={asset._id}
+        _type={asset._type}
+        onDragEnd={() => setIsDraggingMediaItem(false)}
+        onDragStart={() => {
+          onDragStart(asset);
+          setIsDraggingMediaItem(true);
+        }}
+        selectedAmount={selectedAssets.length}
+        url={asset.url}
+      >
+        <Card
+          style={{
+            outlineOffset: -4,
+            outline: selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1 ? '4px solid currentColor' : 0,
           }}
-          selectedAmount={selectedAssets.length}
-          url={asset.url}
+          onClick={(e) => onMediaItemClick(e, asset)}
+          onDoubleClick={() => onDoubleClick(asset)}
         >
-          <Element
-            key={asset._id}
-            onClick={(e) => onMediaItemClick(e, asset)}
-            onDoubleClick={() => onDoubleClick(asset)}
-            selected={selectedAssets.findIndex(({ _id }) => _id === asset._id) > -1}
-            {...asset}
-          />
-        </DraggableMediaItem>
-      );
-    })}
-  </StyledContainer>
-);
-
-const ImageItem = ({ alt, onClick, onDoubleClick, selected, url }: MediaItemProps) => (
-  <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
-    <img alt={alt} src={`${url}?w=150&h=150&fit=crop&auto=format&q=80`} loading="lazy" />
-  </StyledMediaItem>
-);
-
-const FileItem = ({ title, originalFilename, onClick, onDoubleClick, selected }: MediaItemProps) => (
-  <StyledMediaItem selected={selected} onClick={(e) => onClick(e)} onDoubleClick={onDoubleClick}>
-    <Icon type="file" />
-    <div>{title || originalFilename}</div>
-  </StyledMediaItem>
+          {asset._type === 'sanity.imageAsset' ? (
+            <Tooltip
+              portal={true}
+              content={
+                <Box padding={2}>
+                  <Text muted size={1}>
+                    {asset.title || asset.originalFilename}
+                  </Text>
+                </Box>
+              }
+              fallbackPlacements={['top', 'bottom']}
+              placement="top"
+            >
+              <StyledThumbnail
+                alt={asset.alt}
+                src={`${asset.url}?w=150&h=150&fit=crop&auto=format&q=80`}
+                loading="lazy"
+              />
+            </Tooltip>
+          ) : (
+            <StyledMediaInfo>
+              <DocumentIcon />
+              <Text muted size={1}>
+                {asset.title || asset.originalFilename}
+              </Text>
+            </StyledMediaInfo>
+          )}
+        </Card>
+      </DraggableMediaItem>
+    ))}
+  </Flex>
 );

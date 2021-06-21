@@ -1,6 +1,7 @@
-import { Icon } from './Icon';
 import React, { DragEvent, ReactNode, useState } from 'react';
 import styled from 'styled-components';
+import { Heading } from '@sanity/ui';
+import { UploadIcon } from '@sanity/icons';
 
 interface Props {
   children: ReactNode;
@@ -19,7 +20,7 @@ const StyledContainer = styled.div`
 
 const StyledContentContainer = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => theme.uploadDropAreaBackgroundColor};
+  background-color: rgba(0, 0, 0, 0.1);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -33,20 +34,6 @@ const StyledContentContainer = styled.div`
   top: 0;
   width: 100%;
   z-index: 999999;
-
-  & svg {
-    fill: ${({ theme }) => theme.uploadDropAreaIconColor};
-    height: 56px;
-    margin: 0 0 16px;
-    width: 56px;
-  }
-`;
-
-const StyledTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0;
 `;
 
 export const UploadDropArea = ({ children, disabled, loading, onUpload }: Props) => {
@@ -80,8 +67,8 @@ export const UploadDropArea = ({ children, disabled, loading, onUpload }: Props)
     <StyledContainer onDragEnter={onDragOver} onDragLeave={onDragLeave} onDragOver={onDragOver} onDrop={onDrop}>
       {isDraggedOn && !loading && (
         <StyledContentContainer>
-          <Icon type="upload" />
-          <StyledTitle>Drop your files here to upload them</StyledTitle>
+          <UploadIcon style={{ width: 32, height: 32 }} />
+          <Heading as="h3">Drop your files here to upload them</Heading>
         </StyledContentContainer>
       )}
       {children}

@@ -7,7 +7,8 @@ import { TopBar } from './TopBar';
 import { ViewTypes } from '../types/ViewTypes';
 import React, { MouseEvent, useState } from 'react';
 import styled from 'styled-components';
-
+import { Card, Text, Box } from '@sanity/ui';
+import { ToolType } from '../types/ToolType';
 interface Props {
   assets?: Array<Asset>;
   handleSelect?: (selectedAssets: Array<Asset>) => void;
@@ -22,10 +23,10 @@ interface Props {
   setIsDraggingMediaItem: (value: Boolean) => void;
   setSearchQuery: (value: string) => void;
   setSelectedAssets: (value: Array<Asset>) => void;
+  mode?: ToolType;
 }
 
 const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.mediaLibraryBackgroundColor};
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -52,10 +53,6 @@ const StyledMediaGridContainer = styled.div`
   }
 `;
 
-const StyledMessage = styled.div`
-  padding: 40px;
-`;
-
 export const MediaLibrary = ({
   assets = [],
   handleSelect,
@@ -70,6 +67,7 @@ export const MediaLibrary = ({
   setIsDraggingMediaItem,
   setSearchQuery,
   setSelectedAssets,
+  mode,
 }: Props) => {
   const [viewType, setViewType] = useState<ViewTypes>('grid');
 
@@ -122,11 +120,16 @@ export const MediaLibrary = ({
         setSearchQuery={setSearchQuery}
         setViewType={setViewType}
         viewType={viewType}
+        showDetails={mode === 'tool'}
       />
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
           {!Boolean(assets.length) && !loading ? (
-            <StyledMessage id="noContent">No assets found</StyledMessage>
+            <Box padding={3} id="noContent">
+              <Card padding={[3, 3, 4]} radius={2} shadow={1}>
+                <Text size={3}>No assets found</Text>
+              </Card>
+            </Box>
           ) : (
             <ViewElement
               assets={assets}

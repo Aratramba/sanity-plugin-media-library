@@ -1,26 +1,16 @@
 import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
+import { Dialog, Layer } from '@sanity/ui';
 
 interface Props {
   children: ReactNode;
-  full?: Boolean;
   onClose: () => void;
+  title?: string;
+  width?: number;
 }
 
-const StyledContainer = styled.div`
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 999999;
-`;
-
 const StyledOverlay = styled.div`
-  background-color: ${({ theme }) => theme.modalOverlayBackgroundColor};
+  background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   height: 100%;
   left: 0;
@@ -30,19 +20,7 @@ const StyledOverlay = styled.div`
   z-index: 1;
 `;
 
-const StyledModal = styled.div<{ full?: Boolean }>`
-  background-color: ${({ theme }) => theme.modalBackgroundColor};
-  box-shadow: 0 2px 10px ${({ theme }) => theme.modalBoxShadowColor};
-  height: ${({ full }) => (full ? 'calc(100% - 200px)' : 'auto')};
-  max-width: ${({ full }) => (full ? 'calc(100% - 200px)' : '400px')};
-  padding: 40px;
-  position: relative;
-  width: 100%;
-  z-index: 2;
-  max-height: 100%;
-`;
-
-export const Modal = ({ children, full, onClose }: Props) => {
+export const Modal = ({ children, title, onClose, width = 1 }: Props) => {
   useEffect(() => {
     function onKeyDown(e: any) {
       if (e.key === 'Escape') {
@@ -55,9 +33,11 @@ export const Modal = ({ children, full, onClose }: Props) => {
   }, []);
 
   return (
-    <StyledContainer role="dialog">
+    <Layer>
       <StyledOverlay onClick={onClose} />
-      <StyledModal full={full}>{children}</StyledModal>
-    </StyledContainer>
+      <Dialog id="media-library-dialog" onClose={onClose} cardShadow={2} width={width} header={title}>
+        {children}
+      </Dialog>
+    </Layer>
   );
 };

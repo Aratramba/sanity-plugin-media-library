@@ -3,25 +3,28 @@ import { Asset } from './types/Asset';
 import { AssetModal } from './components/AssetModal';
 import { customFields } from './config';
 import { DeleteModal } from './components/DeleteModal';
-import { ErrorNotifications } from './components/ErrorNotifications';
 import { MediaLibrary } from './components/MediaLibrary';
 import { Sidebar } from './components/Sidebar';
 import { SortOption } from './types/SortOption';
 import { UploadDropArea } from './components/UploadDropArea';
-import client from 'part:@sanity/base/client';
+import sanityClient from 'part:@sanity/base/client';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Card, useToast } from '@sanity/ui';
+import { ToolType } from './types/ToolType';
+const client = sanityClient.withConfig({ apiVersion: '2021-06-19' });
 
 type Props = {
   onClose?: () => void;
   onSelect?: (assets: Array<any>) => void;
   selectedAssets?: Asset[];
   tool?: string;
+  mode?: ToolType;
 };
 
 const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.appBackgroundColor};
-  color: ${({ theme }) => theme.appTextColor};
+  background-color: var(--white);
+  color: var(--body-text);
   height: 100%;
   left: 0;
   position: absolute;
@@ -40,19 +43,19 @@ const StyledSidebarGridContainer = styled.div`
   height: 100%;
 `;
 
-export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
+export const App = ({ onClose, onSelect, selectedAssets, tool, mode }: Props) => {
   const [activeExtensions, setActiveExtensions] = useState<Array<string>>([]);
   const [activeTags, setActiveTags] = useState<Array<string>>([]);
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [assetsToDelete, setAssetsToDelete] = useState<Array<Asset> | null>(null);
   const [assetToEdit, setAssetToEdit] = useState<Asset | null>(null);
-  const [errors, setErrors] = useState<Array<string>>([]);
   const [filteredAssets, setFilteredAssets] = useState<Array<Asset>>(assets);
   const [isDraggingMediaItem, setIsDraggingMediaItem] = useState<Boolean>(false);
   const [loading, setLoading] = useState<Boolean>(true);
   const [localSelectedAssets, setLocalSelectedAssets] = useState<Array<Asset>>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sort, setSort] = useState<SortOption>('date');
+  const toast = useToast();
 
   const types = tool ? '"sanity.imageAsset", "sanity.fileAsset"' : '"sanity.imageAsset"';
   const includedFields = [
@@ -78,8 +81,8 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
     if (searchQuery && searchQuery !== '') {
       newFilteredAssets = newFilteredAssets.filter(({ alt = '', originalFilename = '', title = '', tags = [] }) =>
-        [originalFilename, title, alt, tags.join('')].some(
-          (value) => value.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
+        [originalFilename, title, alt, tags?.join('')].some(
+          (value) => value?.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
         )
       );
     }
@@ -208,14 +211,10 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
   function handleError(error: any) {
     console.error(error);
-    setErrors([...errors, error.toString()]);
-  }
-
-  function onRemoveError(error: string) {
-    const index = errors.indexOf(error);
-    const newErrors = [...errors];
-    newErrors.splice(index, 1);
-    setErrors(newErrors);
+    toast.push({
+      status: 'error',
+      title: error.toString(),
+    });
   }
 
   const onExtensionClick = (value: string) => onFilterClick(value, activeExtensions, setActiveExtensions);
@@ -262,60 +261,68 @@ export const App = ({ onClose, onSelect, selectedAssets, tool }: Props) => {
 
   return (
     <StyledContainer>
-      <UploadDropArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
-        <StyledSidebarGridContainer>
-          <Sidebar
-            extensions={extensions}
-            loading={loading}
-            onClearFilters={onClearFilters}
-            onExtensionClick={onExtensionClick}
-            onTagClick={onTagClick}
-            onTagDrop={onTagDrop}
-            onUpload={onUpload}
-            tags={tags}
-          />
-          <MediaLibrary
-            assets={filteredAssets}
-            handleSelect={handleSelect}
-            isAssetSource={!tool}
-            loading={loading}
-            onClose={onClose}
-            onDelete={setAssetsToDelete}
-            onEdit={setAssetToEdit}
-            onSortChange={setSort}
-            searchQuery={searchQuery}
-            selectedAssets={localSelectedAssets}
-            setIsDraggingMediaItem={setIsDraggingMediaItem}
-            setSearchQuery={setSearchQuery}
-            setSelectedAssets={setLocalSelectedAssets}
-          />
-        </StyledSidebarGridContainer>
-        {assetToEdit && (
-          <AssetModal
-            asset={assetToEdit}
-            handleError={handleError}
-            loading={loading}
-            onClose={() => setAssetToEdit(null)}
-            onSaveComplete={() => {
-              setAssetToEdit(null);
-            }}
-            setLoading={setLoading}
-          />
-        )}
-        {assetsToDelete && (
-          <DeleteModal
-            assets={assetsToDelete}
-            handleError={handleError}
-            loading={loading}
-            onClose={() => setAssetsToDelete(null)}
-            onDeleteComplete={() => {
-              setAssetsToDelete(null);
-            }}
-            setLoading={setLoading}
-          />
-        )}
-        {errors && <ErrorNotifications errors={errors} removeError={onRemoveError} />}
-      </UploadDropArea>
+      <Card style={{ height: '100%' }}>
+        <UploadDropArea disabled={isDraggingMediaItem} loading={loading} onUpload={onUpload}>
+          <StyledSidebarGridContainer>
+            {mode === 'tool' && (
+              <Sidebar
+                extensions={extensions}
+                loading={loading}
+                onClearFilters={onClearFilters}
+                onExtensionClick={onExtensionClick}
+                onTagClick={onTagClick}
+                onTagDrop={onTagDrop}
+                onUpload={onUpload}
+                tags={tags}
+              />
+            )}
+            <MediaLibrary
+              assets={filteredAssets}
+              handleSelect={handleSelect}
+              isAssetSource={!tool}
+              loading={loading}
+              onClose={onClose}
+              onDelete={setAssetsToDelete}
+              onEdit={setAssetToEdit}
+              onSortChange={setSort}
+              searchQuery={searchQuery}
+              selectedAssets={localSelectedAssets}
+              setIsDraggingMediaItem={setIsDraggingMediaItem}
+              setSearchQuery={setSearchQuery}
+              setSelectedAssets={setLocalSelectedAssets}
+              mode={mode}
+            />
+          </StyledSidebarGridContainer>
+          {mode === 'tool' && (
+            <>
+              {assetToEdit && (
+                <AssetModal
+                  asset={assetToEdit}
+                  handleError={handleError}
+                  loading={loading}
+                  onClose={() => setAssetToEdit(null)}
+                  onSaveComplete={() => {
+                    setAssetToEdit(null);
+                  }}
+                  setLoading={setLoading}
+                />
+              )}
+              {assetsToDelete && (
+                <DeleteModal
+                  assets={assetsToDelete}
+                  handleError={handleError}
+                  loading={loading}
+                  onClose={() => setAssetsToDelete(null)}
+                  onDeleteComplete={() => {
+                    setAssetsToDelete(null);
+                  }}
+                  setLoading={setLoading}
+                />
+              )}
+            </>
+          )}
+        </UploadDropArea>
+      </Card>
     </StyledContainer>
   );
 };
