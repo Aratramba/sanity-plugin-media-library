@@ -212,10 +212,30 @@ test.describe('Media library', () => {
       `${DOMAIN}/desk/imageAsset%2Ctemplate%3DimageAsset;0b947db4-a12c-4d91-86d1-be430f783008%2Ctemplate%3DimageAsset`
     );
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
-    expect(await page.textContent('h3')).toBe('No documents of this type found');
+    await page.click('[href="/intent/create/type=imageAsset;template=imageAsset/"]');
     await page.click('text=Select');
+    await dialogVisible(page);
     expect(await countSelector(page, '[draggable]')).toBe(4);
     await page.click('text=Cancel');
+    await dialogHidden(page);
+
+    await page.click('text=Select');
+    await page.click('[draggable]');
+    await page.click('#media-library-dialog :text("Select")');
+    await dialogHidden(page);
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT * 2); // time for sanity to reflect changes
+    expect(await countSelector(page, 'img')).toBe(2);
+
+    await page.click('text=Remove');
+    await page.click('text=Select');
+    await page.dblclick('[draggable]');
+    await dialogHidden(page);
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
+    expect(await countSelector(page, 'img')).toBe(2);
+
+    await page.click('[aria-label="Actions"]');
+    await page.click('[aria-label="Delete"]');
+    await page.click('text=Delete now');
   });
 
   test('delete from modal', async ({ page }) => {
