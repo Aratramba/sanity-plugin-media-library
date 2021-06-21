@@ -8,7 +8,7 @@
     "start": "cd studio && SANITY_STUDIO_API_DATASET=production sanity start --port 3001",
     "start-test-studio": "cd studio && SANITY_STUDIO_API_DATASET=testing sanity start --port 3000",
     "test": "DEBUG=pw:api playwright test test/media-library.spec.ts",
-    "test-headed": "yarn test --headed --browser=firefox"
+    "test-headed": "yarn test --headed"
   },
   "devDependencies": {
     "@playwright/test": "^1.12.2",
