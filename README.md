@@ -123,7 +123,7 @@ See [Sanity Custom Asset Sources](https://www.sanity.io/docs/custom-asset-source
 ---
 
 ## Theming
-In a recent release support for custom themes was dropped, the interface is now built using [Sanity UI](sanity.io/ui).
+From release `1.1.0` onward support for custom themes is dropped, the interface is now built using [Sanity UI](sanity.io/ui).
 
 ---
 
