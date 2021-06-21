@@ -45,6 +45,7 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page, context }) => {
+    // TODO: see if this logic can be moved to beforeAll to speed things up
     await setCookies(context);
     await page.goto(`${DOMAIN}/media-library`);
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
