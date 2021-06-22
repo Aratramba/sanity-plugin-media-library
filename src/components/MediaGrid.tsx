@@ -23,11 +23,18 @@ const StyledMediaInfo = styled.div`
   max-height: 100%;
   border: 1px solid whitesmoke;
   border-radius: 5px;
+  overflow: hidden;
 `;
 
 const StyledThumbnail = styled.img`
   display: block;
   border-radius: 5px;
+  max-width: 150px;
+  max-height: 150px;
+`;
+
+const StyledFilename = styled.span`
+  word-break: break-all;
 `;
 
 export const MediaGrid = ({
@@ -82,7 +89,7 @@ export const MediaGrid = ({
             <StyledMediaInfo>
               <DocumentIcon />
               <Text muted size={1}>
-                {asset.title || asset.originalFilename}
+              <StyledFilename>{asset.title || asset.originalFilename}</StyledFilename>
               </Text>
             </StyledMediaInfo>
           )}
