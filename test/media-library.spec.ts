@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
-const INTERNET_SPEED_TIMEOUT = 5000; // time for sanity to reflect changes
+const INTERNET_SPEED_TIMEOUT = 4000; // time for sanity to reflect changes
 
 require('dotenv').config();
 const DOMAIN = 'http://localhost:3000';
