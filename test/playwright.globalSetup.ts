@@ -18,7 +18,7 @@ async function globalSetup() {
   ]);
 
   await page.context().storageState({ path: 'state.json' });
-  // await browser.close();
+  await browser.close();
 }
 
 export default globalSetup;
