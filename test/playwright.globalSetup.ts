@@ -1,6 +1,7 @@
 import { chromium } from '@playwright/test';
 
 require('dotenv').config();
+const DOMAIN = 'http://localhost:3000';
 
 async function globalSetup() {
   const browser = await chromium.launch();
@@ -18,6 +19,7 @@ async function globalSetup() {
   ]);
 
   await page.context().storageState({ path: 'state.json' });
+  await page.goto(`${DOMAIN}/media-library`);
   await browser.close();
 }
 

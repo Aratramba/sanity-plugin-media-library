@@ -5,7 +5,6 @@ const path = require('path');
 const INTERNET_SPEED_TIMEOUT = 4000; // time for sanity to reflect changes
 
 require('dotenv').config();
-const DOMAIN = 'http://localhost:3000';
 test.use({ storageState: 'state.json' });
 
 const IMAGES = [
@@ -31,10 +30,6 @@ async function dialogHidden(page) {
 }
 
 test.describe('Media library', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`);
-  });
-
   test('empty state', async ({ page }) => {
     expect(await page.isVisible('text=No assets found'));
   });
