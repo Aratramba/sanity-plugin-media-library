@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
-const INTERNET_SPEED_TIMEOUT = 2000;
+const INTERNET_SPEED_TIMEOUT = 5000; // time for sanity to reflect changes
 
 require('dotenv').config();
 const DOMAIN = 'http://localhost:3000';
@@ -33,10 +33,6 @@ async function dialogHidden(page) {
 test.describe('Media library', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${DOMAIN}/media-library`);
-  });
-
-  test('login', async ({ page }) => {
-    expect(await page.textContent('h2')).toBe('Filters');
   });
 
   test('upload', async ({ page }) => {
@@ -206,20 +202,20 @@ test.describe('Media library', () => {
     await page.click('[draggable]');
     await page.click('#media-library-dialog :text("Select")');
     await dialogHidden(page);
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT * 2); // time for sanity to reflect changes
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await countSelector(page, 'img')).toBeTruthy();
 
     await page.click('text=Remove');
     await page.click('text=Select');
     await page.dblclick('[draggable]');
     await dialogHidden(page);
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT * 2);
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await countSelector(page, 'img')).toBeTruthy();
 
     await page.click('[aria-label="Actions"]');
     await page.click('[aria-label="Delete"]');
     await page.click('text=Delete now');
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT * 2);
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.isVisible('text=No documents of this type found');
   });
 
