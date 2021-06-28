@@ -32,11 +32,10 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`);
+    await page.click(`text=Media Library`);
   });
 
   test('login', async ({ page }) => {
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.textContent('h2')).toBe('Filters');
   });
 
