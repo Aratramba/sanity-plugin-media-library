@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "sameSite": "None",
+      "name": "sanitySession",
+      "value": "skzqKGWmNkJjLjHxf23ebcGYwkPlIFnItbK240ppzewnQZtEY4CyN1yWYfIUKLxU2V3UzltdSDLR8gcTm3AUkkKmeufvt2nWSP68Qm1sWz46MQom8sn4LZ8OqItaxZIJVmymRhJNj8ikv7ouEQMpn1mBOv2hjmIbRSJuOBMEG2vZHtl3PX6q",
+      "domain": ".q74m7lt8.api.sanity.io",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true
+    }
+  ],
+  "origins": []
+}

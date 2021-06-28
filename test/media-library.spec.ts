@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
-const DOMAIN = 'http://localhost:3000';
 const INTERNET_SPEED_TIMEOUT = 2000;
 
 require('dotenv').config();
+const DOMAIN = 'http://localhost:3000';
+test.use({ storageState: 'state.json' });
 
 const IMAGES = [
   'alejandro-contreras-wTPp323zAEw-unsplash.jpg',
@@ -13,20 +14,6 @@ const IMAGES = [
   'gwen-weustink-I3C1sSXj1i8-unsplash.jpg',
   'ricky-kharawala-adK3Vu70DEQ-unsplash.jpg',
 ];
-
-async function setCookies(context) {
-  await context.addCookies([
-    {
-      name: 'sanitySession',
-      value: process.env.SANITY_PLAYWRIGHT_TEST_TOKEN,
-      secure: true,
-      path: '/',
-      httpOnly: true,
-      sameSite: 'None',
-      domain: `.${process.env.SANITY_PROJECT_ID}.api.sanity.io`,
-    },
-  ]);
-}
 
 async function countSelector(page, selector) {
   const items = await page.$$(selector);
@@ -44,11 +31,8 @@ async function dialogHidden(page) {
 }
 
 test.describe('Media library', () => {
-  test.beforeEach(async ({ page, context }) => {
-    // TODO: see if this logic can be moved to beforeAll to speed things up
-    await setCookies(context);
+  test.beforeEach(async ({ page }) => {
     await page.goto(`${DOMAIN}/media-library`);
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
   });
 
   test('login', async ({ page }) => {
@@ -247,7 +231,7 @@ test.describe('Media library', () => {
     await page.click('#media-library-dialog :text("Delete asset")');
     expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete');
     await page.click('text=Delete now');
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT); // todo: is this for fetching the new list?
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     const draggables = await page.$$('[draggable]');
     expect(draggables.length).toBe(IMAGES.length - 1);
   });
