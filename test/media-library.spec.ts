@@ -35,6 +35,10 @@ test.describe('Media library', () => {
     await page.goto(`${DOMAIN}/media-library`);
   });
 
+  test('empty state', async ({ page }) => {
+    expect(await page.isVisible('text=No assets found'));
+  });
+
   test('upload', async ({ page }) => {
     expect(await page.isVisible('#noContent'));
 
