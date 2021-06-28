@@ -19,7 +19,6 @@ async function globalSetup() {
   ]);
 
   await page.context().storageState({ path: 'state.json' });
-  await page.goto(DOMAIN);
   await browser.close();
 }
 

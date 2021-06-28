@@ -32,7 +32,7 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page }) => {
-    await page.click(`text=Media Library`);
+    await page.goto(`${DOMAIN}/media-library`);
   });
 
   test('login', async ({ page }) => {
@@ -219,6 +219,8 @@ test.describe('Media library', () => {
     await page.click('[aria-label="Actions"]');
     await page.click('[aria-label="Delete"]');
     await page.click('text=Delete now');
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT * 2);
+    await page.isVisible('text=No documents of this type found');
   });
 
   test('delete from modal', async ({ page }) => {
