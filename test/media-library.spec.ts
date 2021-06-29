@@ -39,6 +39,7 @@ test.describe('Media library', () => {
   });
 
   test('empty state', async ({ page }) => {
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.isVisible('text=No assets found'));
   });
 
@@ -202,6 +203,7 @@ test.describe('Media library', () => {
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Select');
     await dialogVisible(page);
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await countSelector(page, '[draggable]')).toBe(4);
     await page.click('text=Cancel');
     await dialogHidden(page);
