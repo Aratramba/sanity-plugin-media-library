@@ -32,7 +32,7 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`);
+    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     if (process.env.GITHUB) {
       await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     }
