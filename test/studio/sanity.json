@@ -20,5 +20,24 @@
       "name": "part:@sanity/base/schema",
       "path": "./schemas/schema"
     }
+  ],
+  "__experimental_spaces": [
+    {
+      "name": "production",
+      "title": "Prod",
+      "default": true,
+      "api": {
+        "projectId": "q74m7lt8",
+        "dataset": "production"
+      }
+    },
+    {
+      "name": "testing",
+      "title": "Testing",
+      "api": {
+        "projectId": "q74m7lt8",
+        "dataset": "testing"
+      }
+    }
   ]
 }

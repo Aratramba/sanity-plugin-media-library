@@ -6,3 +6,4 @@ node_modules
 test/studio/plugins/sanity-plugin-media-library
 .env*
 test/state.json
+test/studio/dist

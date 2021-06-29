@@ -32,7 +32,8 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
+    await page.goto(`${DOMAIN}/testing/media-library`, { timeout: 60000 });
+
     if (process.env.GITHUB) {
       await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     }
@@ -196,10 +197,11 @@ test.describe('Media library', () => {
 
   test('asset source', async ({ page }) => {
     await page.click('text=Desk');
+    await page.reload(); // somehow the asset source isn't showing up inside sanity
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Image Asset');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
-    await page.click('[href="/intent/create/type=imageAsset;template=imageAsset/"]');
+    await page.click('[title="Create new Image Asset"]');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Select');
     await dialogVisible(page);
