@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
-const INTERNET_SPEED_TIMEOUT: number = +process.env.ACTION_TIMEOUT || 2000; // time for sanity to reflect changes
+const INTERNET_SPEED_TIMEOUT: number = process.env.GITHUB ? 5000 : 2000; // time for sanity to reflect changes
 const DOMAIN = 'http://localhost:3000';
 
 require('dotenv').config();
@@ -32,13 +32,13 @@ async function dialogHidden(page) {
 
 test.describe('Media library', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, {
-      waitUntil: 'domcontentloaded',
-    });
+    await page.goto(`${DOMAIN}/media-library`);
+    if (process.env.GITHUB) {
+      await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
+    }
   });
 
   test('empty state', async ({ page }) => {
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.isVisible('text=No assets found'));
   });
 
