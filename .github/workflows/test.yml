@@ -28,5 +28,6 @@ jobs:
         cd ../
         yarn test
       env:
+        ACTION_TIMEOUT: 5000
         SANITY_PROJECT_ID: ${{secrets.SANITY_PROJECT_ID}}
         SANITY_PLAYWRIGHT_TEST_TOKEN: ${{secrets.SANITY_PLAYWRIGHT_TEST_TOKEN}}

@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
-const INTERNET_SPEED_TIMEOUT = 4000; // time for sanity to reflect changes
+const INTERNET_SPEED_TIMEOUT: number = +process.env.ACTION_TIMEOUT || 2000; // time for sanity to reflect changes
+const DOMAIN = 'http://localhost:3000';
 
 require('dotenv').config();
 test.use({ storageState: 'state.json' });
@@ -30,7 +31,14 @@ async function dialogHidden(page) {
 }
 
 test.describe('Media library', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(`${DOMAIN}/media-library`, {
+      waitUntil: 'domcontentloaded',
+    });
+  });
+
   test('empty state', async ({ page }) => {
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.isVisible('text=No assets found'));
   });
 
@@ -186,11 +194,12 @@ test.describe('Media library', () => {
   });
 
   test('asset source', async ({ page }) => {
-    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Desk');
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Image Asset');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('[href="/intent/create/type=imageAsset;template=imageAsset/"]');
+    await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Select');
     await dialogVisible(page);
     expect(await countSelector(page, '[draggable]')).toBe(4);
