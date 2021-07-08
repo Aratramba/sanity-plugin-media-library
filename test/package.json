@@ -7,7 +7,8 @@
   "scripts": {
     "test": "DEBUG=pw:api playwright test test/media-library.spec.ts --headed",
     "start": "PORT=3000 node ./server",
-    "build": "cd studio && sanity build"
+    "build": "cd studio && sanity build",
+    "dev": "cd studio && sanity start"
   },
   "devDependencies": {
     "@playwright/test": "^1.12.3",
