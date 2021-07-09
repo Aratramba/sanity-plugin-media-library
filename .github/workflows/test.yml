@@ -25,7 +25,9 @@ jobs:
         ln -s $PWD ./test/studio/plugins
         cd test/
         yarn
-        cd ../
+        cd studio/
+        npx sanity build
+        cd ../../
         yarn test
       env:
         GITHUB: 1

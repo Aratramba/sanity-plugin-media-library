@@ -89,7 +89,7 @@ export const MediaGrid = ({
             <StyledMediaInfo>
               <DocumentIcon />
               <Text muted size={1}>
-              <StyledFilename>{asset.title || asset.originalFilename}</StyledFilename>
+                <StyledFilename>{asset.title || asset.originalFilename}</StyledFilename>
               </Text>
             </StyledMediaInfo>
           )}
