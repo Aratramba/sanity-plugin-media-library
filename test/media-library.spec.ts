@@ -222,8 +222,8 @@ test.describe('Media library', () => {
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await countSelector(page, 'img')).toBeTruthy();
 
-    await page.click('[aria-label="Actions"]');
-    await page.click('[aria-label="Delete"]');
+    await page.click('[aria-label="Open document actions"]');
+    await page.click('text=Delete');
     await page.click('text=Delete now');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.isVisible('text=No documents of this type found');
