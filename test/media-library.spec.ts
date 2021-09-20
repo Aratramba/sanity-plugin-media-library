@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const path = require('path');
 
-const INTERNET_SPEED_TIMEOUT: number = process.env.GITHUB ? 5000 : 2000; // time for sanity to reflect changes
+const INTERNET_SPEED_TIMEOUT: number = process.env.GITHUB ? 10000 : 2000; // time for sanity to reflect changes
 const DOMAIN = 'http://localhost:3000';
 
 require('dotenv').config();
