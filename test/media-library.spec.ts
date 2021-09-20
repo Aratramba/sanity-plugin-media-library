@@ -31,14 +31,16 @@ async function dialogHidden(page) {
 }
 
 test.describe('Media library', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(`${DOMAIN}/media-library`, { timeout: INTERNET_SPEED_TIMEOUT * 12 });
+  });
+
   test('empty state', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     expect(await page.isVisible('text=No assets found'));
   });
 
   test('upload', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     expect(await page.isVisible('#noContent'));
 
     await page.setInputFiles(
@@ -52,7 +54,6 @@ test.describe('Media library', () => {
   });
 
   test('listview', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     expect(await page.textContent('thead')).toContain('Title');
     expect(await page.textContent('thead')).toContain('Alt');
@@ -64,7 +65,6 @@ test.describe('Media library', () => {
   });
 
   test('imagedata', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     expect(await page.textContent('tbody tr')).toContain('-unsplash.jpg');
     expect(await page.textContent('tbody tr')).toContain(' x ');
@@ -73,7 +73,6 @@ test.describe('Media library', () => {
   });
 
   test('search', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.fill('[placeholder="Search by filename, title, alt or tag"]', 'ricky');
     expect(await countSelector(page, '[draggable]')).toBe(1);
@@ -82,7 +81,6 @@ test.describe('Media library', () => {
   });
 
   test('edit dialog double click', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`text=${IMAGES[0]}`);
     expect(await dialogVisible(page)).toBeTruthy();
@@ -93,7 +91,6 @@ test.describe('Media library', () => {
   });
 
   test('edit dialog edit asset', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.click(`text=${IMAGES[0]}`);
     await page.click('text=Edit asset');
@@ -105,7 +102,6 @@ test.describe('Media library', () => {
   });
 
   test('sort assets', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
 
     await page.selectOption('#sortSelect', 'az');
@@ -120,7 +116,6 @@ test.describe('Media library', () => {
   });
 
   test('edit title', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`text=${IMAGES[0]}`);
     await dialogVisible(page);
@@ -132,7 +127,6 @@ test.describe('Media library', () => {
   });
 
   test('edit tags', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick(`img`);
     await dialogVisible(page);
@@ -148,7 +142,6 @@ test.describe('Media library', () => {
   });
 
   test('show custom fields', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick('[draggable]');
     expect(await page.textContent('#media-library-dialog')).toContain('Title');
@@ -165,7 +158,6 @@ test.describe('Media library', () => {
   });
 
   test('change custom fields', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('label[for="detailsViewCheckbox"]');
     await page.dblclick('[draggable]');
     await page.fill('#media-library-dialog [placeholder="No alt text yet"]', 'TEST_ALT');
@@ -183,7 +175,6 @@ test.describe('Media library', () => {
   });
 
   test('check custom fields', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.dblclick('[draggable]');
     expect(await countSelector(page, '#media-library-dialog [value="TEST_ALT"]')).toBe(1);
     expect(await countSelector(page, '#media-library-dialog [value="TEST_TAG"]')).toBe(1);
@@ -201,7 +192,6 @@ test.describe('Media library', () => {
   });
 
   test('asset source', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click('text=Desk');
     await page.waitForTimeout(INTERNET_SPEED_TIMEOUT);
     await page.click('text=Image Asset');
@@ -237,7 +227,6 @@ test.describe('Media library', () => {
   });
 
   test('delete from modal', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.dblclick('[draggable]');
     await dialogVisible(page);
     await page.click('#media-library-dialog :text("Delete asset")');
@@ -252,7 +241,6 @@ test.describe('Media library', () => {
   });
 
   test('delete files', async ({ page }) => {
-    await page.goto(`${DOMAIN}/media-library`, { timeout: 60000 });
     await page.click(`[draggable]`, { modifiers: ['Shift'] });
     await page.click('text=Delete Asset');
     expect(await page.textContent('#media-library-dialog')).toContain('Are you sure you want to delete this asset?');
