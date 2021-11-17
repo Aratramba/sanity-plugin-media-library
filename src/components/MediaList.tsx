@@ -52,7 +52,7 @@ const StyledTable = styled.table`
   border: 0;
 
   tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.025);
+    background-color: rgba(0, 0, 0, 0.01);
   }
 
   td:nth-of-type(2) {

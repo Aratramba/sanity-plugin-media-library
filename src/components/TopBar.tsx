@@ -27,7 +27,7 @@ export const TopBar = ({
         <Inline space={2} style={{ whiteSpace: 'nowrap' }}>
           <UlistIcon style={{ width: 18, height: 18 }} />
           <label htmlFor="detailsViewCheckbox">
-            <Label>details</Label>
+            <Label>{viewType === 'grid' ? 'Show' : 'Hide'} details</Label>
           </label>
           <Switch
             id="detailsViewCheckbox"
