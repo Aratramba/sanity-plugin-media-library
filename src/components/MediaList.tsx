@@ -16,7 +16,9 @@ interface Props {
 }
 
 const StyledThumbnailContainer = styled.div`
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-shrink: 0;
   height: 100px;
   margin: 0 20px 0 0;
@@ -24,6 +26,9 @@ const StyledThumbnailContainer = styled.div`
   position: relative;
   width: 100px;
   border-radius: 5px;
+  border: 1px solid whitesmoke;
+  padding: 2px;
+  background: white;
 `;
 
 const StyledFile = styled.div`
@@ -38,6 +43,7 @@ const StyledFile = styled.div`
   position: absolute;
   top: 0;
   width: 100%;
+  background: white;
 `;
 
 const StyledTable = styled.table`
