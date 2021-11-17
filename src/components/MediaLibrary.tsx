@@ -120,7 +120,6 @@ export const MediaLibrary = ({
         setSearchQuery={setSearchQuery}
         setViewType={setViewType}
         viewType={viewType}
-        showDetails={mode === 'tool'}
       />
       <StyledFlexGrowContainer>
         <StyledMediaGridContainer>
