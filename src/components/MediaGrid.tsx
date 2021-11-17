@@ -31,6 +31,10 @@ const StyledThumbnail = styled.img`
   border-radius: 5px;
   max-width: 150px;
   max-height: 150px;
+  width: 150px;
+  height: 150px;
+  border: 1px solid whitesmoke;
+  padding: 2px;
 `;
 
 const StyledFilename = styled.span`
@@ -89,7 +93,7 @@ export const MediaGrid = ({
             <StyledMediaInfo>
               <DocumentIcon />
               <Text muted size={1}>
-              <StyledFilename>{asset.title || asset.originalFilename}</StyledFilename>
+                <StyledFilename>{asset.title || asset.originalFilename}</StyledFilename>
               </Text>
             </StyledMediaInfo>
           )}
