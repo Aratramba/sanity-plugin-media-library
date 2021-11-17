@@ -67,7 +67,6 @@ export const MediaLibrary = ({
   setIsDraggingMediaItem,
   setSearchQuery,
   setSelectedAssets,
-  mode,
 }: Props) => {
   const [viewType, setViewType] = useState<ViewTypes>('grid');
 
