@@ -91,7 +91,7 @@ export const MediaGrid = ({
             </Tooltip>
           ) : (
             <StyledMediaInfo>
-              <DocumentIcon />
+              <DocumentIcon fr />
               <Text muted size={1}>
                 <StyledFilename>{asset.title || asset.originalFilename}</StyledFilename>
               </Text>

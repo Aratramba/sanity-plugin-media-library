@@ -106,7 +106,7 @@ export const AssetModal = ({ asset, loading, handleError, onClose, onSaveComplet
                   <img alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} />
                 ) : (
                   <Text>
-                    <DocumentIcon />
+                    <DocumentIcon fr />
                   </Text>
                 )}
 

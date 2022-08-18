@@ -67,7 +67,7 @@ export const UploadDropArea = ({ children, disabled, loading, onUpload }: Props)
     <StyledContainer onDragEnter={onDragOver} onDragLeave={onDragLeave} onDragOver={onDragOver} onDrop={onDrop}>
       {isDraggedOn && !loading && (
         <StyledContentContainer>
-          <UploadIcon style={{ width: 32, height: 32 }} />
+          <UploadIcon fr style={{ width: 32, height: 32 }} />
           <Heading as="h3">Drop your files here to upload them</Heading>
         </StyledContentContainer>
       )}

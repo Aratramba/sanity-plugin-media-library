@@ -129,7 +129,7 @@ export const MediaList = ({
                       <img alt={alt} src={`${url}?w=100&h=100&fit=crop&auto=format&q=80`} loading="lazy" />
                     ) : (
                       <StyledFile>
-                        <DocumentIcon style={{ width: 24, height: 24 }} />
+                        <DocumentIcon fr style={{ width: 24, height: 24 }} />
                       </StyledFile>
                     )}
                   </StyledThumbnailContainer>
