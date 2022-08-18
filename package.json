@@ -1,7 +1,7 @@
 {
   "name": "sanity-plugin-media-library",
   "description": "The missing media library for Sanity. With filters per tag and filetype.",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "license": "MIT",
   "author": "Dennis Passway / Arjen Scherff-de Water",
   "main": "lib/index.js",
@@ -28,15 +28,15 @@
   "scripts": {
     "build": "rimraf lib && tsc",
     "dev": "tsc -w",
-    "prepublishOnly": "yarn build && yarn test",
+    "prepublishOnly": "yarn build",
     "dev-studio": "cd test && yarn start",
     "test-studio": "cd test && yarn start-test-studio",
     "test": "start-server-and-test \"cd test && yarn start-test-studio\" http-get://localhost:3000 \"cd test && yarn test\""
   },
   "dependencies": {
-    "@sanity/icons": "^1.1.7",
-    "@sanity/ui": "^0.36.10",
-    "styled-components": "^5.3.1"
+    "@sanity/icons": "^1.3.1",
+    "@sanity/ui": "^0.37.12",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@babel/cli": "7.15.7",
@@ -52,10 +52,5 @@
     "rimraf": "^3.0.2",
     "start-server-and-test": "^1.14.0",
     "typescript": "4.4.3"
-  },
-  "peerDependencies": {
-    "@sanity/base": ">= 2.0.2",
-    "@sanity/form-builder": ">= 2.0.2",
-    "react": ">= 16.9"
   }
 }
