@@ -62,7 +62,6 @@ export const MediaLibrary = ({
   onDelete,
   onEdit,
   onSortChange,
-  searchQuery,
   selectedAssets,
   setIsDraggingMediaItem,
   setSearchQuery,
@@ -115,7 +114,6 @@ export const MediaLibrary = ({
     <StyledContainer>
       <TopBar
         onSortChange={onSortChange}
-        searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setViewType={setViewType}
         viewType={viewType}
