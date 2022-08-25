@@ -1,7 +1,7 @@
 {
   "name": "sanity-plugin-media-library",
   "description": "The missing media library for Sanity. With filters per tag and filetype.",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "license": "MIT",
   "author": "Dennis Passway / Arjen Scherff-de Water",
   "main": "lib/index.js",
