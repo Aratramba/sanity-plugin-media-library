@@ -8,6 +8,7 @@ The missing media library for Sanity. With support for filters per tag and exten
 ![Media library Asset input view](https://user-images.githubusercontent.com/580312/122677171-78d4f080-d1e1-11eb-9c27-a4f34a48f9dc.png)
 
 ## Features
+
 - Media library appears in CMS navigation
 - Support for images and files
 - View/Edit your assets in once single place:
@@ -16,7 +17,7 @@ The missing media library for Sanity. With support for filters per tag and exten
   - Easily add custom fields to your assets (like location and attribution)
 - Grid view and list view (with more details):
   - Sort by latest or alphabetically
-  - Search by alt, tag, or file name
+  - Search by alt, id, tag, or file name
   - View asset details in a list view
 - Asset organizing:
   - Add tags to your assets to create structure in your media library
@@ -40,6 +41,7 @@ The missing media library for Sanity. With support for filters per tag and exten
 ## Installation
 
 ### Automagically
+
 In your Sanity project's directory run :
 
 ```
@@ -59,6 +61,7 @@ npm install --save sanity-plugin-media-library
 ```
 
 #### Adding the library
+
 In your `sanity.json` add it to the list of plugins:
 
 ```json
@@ -92,46 +95,48 @@ By default the media library will be added to all image fields, next to any othe
 In `assetSources.js`:
 
 ```javascript
-import AssetSource from "part:sanity-plugin-media-library/asset-source";
+import AssetSource from 'part:sanity-plugin-media-library/asset-source';
 export default [AssetSource];
 ```
 
 #### Setting per field
+
 If you want to define the media library for specific fields, you can set the sources option on your field:
 
 ```js
-import AssetSource from "part:sanity-plugin-media-library/asset-source";
+import AssetSource from 'part:sanity-plugin-media-library/asset-source';
 
 export default {
-  name: "mySchema",
-  type: "document",
-  title: "My Schema",
+  name: 'mySchema',
+  type: 'document',
+  title: 'My Schema',
   fields: [
     {
-      name: "image",
-      type: "image",
-      title: "Image",
+      name: 'image',
+      type: 'image',
+      title: 'Image',
       options: { sources: [AssetSource] },
     },
   ],
 };
-
-````
+```
 
 See [Sanity Custom Asset Sources](https://www.sanity.io/docs/custom-asset-sources) for more options.
 
 ---
 
 ## Theming
+
 In the 2.0.0 release support for custom themes has been dropped, the interface is built using [Sanity UI](sanity.io/ui). If you want to continue theming, pick a version in the 1.0.x range.
 
 ---
 
 ## Configuration
+
 After installing the plugin, a config file is automatically created at `config/media-library.json`.
 
-
 Example with asset fields listed and custom fields added:
+
 ```json
 {
   "customFields": [
@@ -175,22 +180,24 @@ Example with asset fields listed and custom fields added:
         { "title": "Public Domain", "value": "public-domain" },
         { "title": "Creative Commons", "value": "creative-commons" }
       ]
-    },
-  ],
+    }
+  ]
 }
 ```
 
 ## Contributing
+
 If you run into problems or have feature requests, please create an issue or pull request and I'll look into it as soon as I can.
 
 ## Development
+
 Run `yarn dev` in the root folder to make changes.
 
 Optional: To use the included studio while developing, make a symlink inside the `/test/studio/plugins` folder that links to the root directory. Then run `sanity start` in `test/studio`. You can also add the plugin to the plugins directory in a Sanity studio of your own.
 
-
 ## Testing
-Create a Sanity bot token with write access at [manage.sanity.io](manage.sanity.io). Add a dataset named 'testing'. Then make a .env file  inside the `/test` folder:
+
+Create a Sanity bot token with write access at [manage.sanity.io](manage.sanity.io). Add a dataset named 'testing'. Then make a .env file inside the `/test` folder:
 
 ```
 SANITY_PLAYWRIGHT_TEST_TOKEN=<SANITY_WRITE_API_TOKEN>

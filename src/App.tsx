@@ -80,10 +80,11 @@ export const App = ({ onClose, onSelect, selectedAssets, tool, mode }: Props) =>
     let newFilteredAssets = [...assets];
 
     if (searchQuery && searchQuery !== '') {
-      newFilteredAssets = newFilteredAssets.filter(({ alt = '', originalFilename = '', title = '', tags = [] }) =>
-        [originalFilename, title, alt, tags?.join('')].some(
-          (value) => value?.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
-        )
+      newFilteredAssets = newFilteredAssets.filter(
+        ({ _id = '', alt = '', originalFilename = '', title = '', tags = [] }) =>
+          [originalFilename, title, alt, tags?.join(''), _id].some(
+            (value) => value?.toUpperCase().indexOf(searchQuery.toUpperCase()) > -1
+          )
       );
     }
 
