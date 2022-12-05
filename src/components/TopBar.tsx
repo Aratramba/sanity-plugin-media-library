@@ -59,6 +59,7 @@ export const TopBar = ({ onSortChange, setSearchQuery, setViewType, viewType }: 
           onChange={(e) => onSortChange(e.currentTarget.value as SortOption)}
         >
           <option value="date">Latest first</option>
+          <option value="mostUsed">Most used</option>
           <option value="az">Filename A - Z</option>
           <option value="za">Filename Z - A</option>
         </Select>
