@@ -1,1 +1,1 @@
-export type SortOption = 'date' | 'az' | 'za';
+export type SortOption = 'date' | 'az' | 'za' | 'mostUsed';

@@ -116,6 +116,10 @@ export const App = ({ onClose, onSelect, selectedAssets, tool, mode }: Props) =>
       newFilteredAssets.sort((a, b) => (b.title || b.originalFilename).localeCompare(a.title || a.originalFilename));
     }
 
+    if (sort === 'mostUsed') {
+      newFilteredAssets.sort((a, b) => (a.usedBy.length > b.usedBy.length ? -1 : 1));
+    }
+
     setFilteredAssets(newFilteredAssets);
 
     // Update selected assets so it does not include assets that are no longer visible
